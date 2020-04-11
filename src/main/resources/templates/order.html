@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<body>
+    <section layout:fragment="content">
+
+        <h1 th:text="#{order.title}">Place Order</h1>
+
+        <div class="order">
+
+            <form th:action="@{/order}" method="post" class="form">
+                <table>
+                    <tr>
+                        <td th:text="#{order.customer.name}">Name</td>
+                        <td><input name="name" size="30"></td>
+                    </tr>
+                    <tr>
+                        <td th:text="#{order.customer.address}">Address</td>
+                        <td><input name="address" size="50"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><button th:text="#{order.submit}" type="submit">Submit</button></td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+
+    </section>
+</body>
+</html>

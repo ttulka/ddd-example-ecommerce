@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<body>
+    <section layout:fragment="content">
+
+        <h1 th:text="#{order.success.title}">Your Order</h1>
+
+        <div class="order">
+            <p class="success" th:text="#{order.success.text}">Has been successfully created.</p>
+        </div>
+
+    </section>
+</body>
+</html>

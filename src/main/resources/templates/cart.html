@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<body>
+    <section layout:fragment="content">
+
+        <h1 th:text="#{cart.title}">Shopping Cart</h1>
+
+        <div th:unless="${#lists.isEmpty(items)}" class="cart">
+
+            <table cellpadding="10" cellspacing="0" border="0">
+                <tr th:each="item: ${items}" class="item">
+                    <td th:text="${item.title}" class="title" />
+                    <td th:text="${item.quantity}" class="quantity" />
+                    <td class="remove">
+                        <a th:href="@{/cart/remove?productCode=__${item.code}__}">&#x2718;</a>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="order">
+                <a th:href="@{/order}" th:text="#{cart.place}">Place Order</a>
+            </div>
+        </div>
+
+    </section>
+</body>
+</html>

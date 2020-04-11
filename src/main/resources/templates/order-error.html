@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<body>
+    <section layout:fragment="content">
+
+        <h1 th:text="#{order.error.title}">Order Error</h1>
+
+        <div class="error">
+            <p class="message" th:text="#{order.error.msg.__${messageCode}__}">Unexpected error.</p>
+        </div>
+
+    </section>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title th:text="#{layout.title}">DDD Example E-Commerce</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8">
+    <link rel="stylesheet" th:href="@{/layout.css}"/>
+</head>
+<body>
+    <header id="header" layout:fragment="header">
+        <nav th:if="${categories}" class="categories">
+            <a th:href="@{/}" class="home">&#127968;</a>
+            <a th:each="category: ${categories}" th:href="'/category/' + ${category.uri}" th:text="${category.title}"></a>
+            <a th:href="@{/cart}" class="cart">&#x1F6D2;</a>
+        </nav>
+    </header>
+    <section id="content" layout:fragment="content">
+        <!-- page content goes here -->
+    </section>
+    <footer id="footer" layout:fragment="footer" th:text="#{layout.footer}">
+        DDD Example E-Commerce &copy; 2020
+    </footer>
+</body>
+</html>
