@@ -9,6 +9,7 @@ import com.ttulka.ecommerce.shipping.UpdateDelivery;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
 import com.ttulka.ecommerce.warehouse.GoodsFetched;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import lombok.NonNull;
@@ -25,6 +26,7 @@ class DispatchingListener {
     private final @NonNull ResendEvent resendEvent;
 
     @TransactionalEventListener
+    @Async
     public void on(GoodsFetched event) {
         var orderId = new OrderId(event.orderId);
         if (findDeliveries.isPrepared(orderId)) {
@@ -35,6 +37,7 @@ class DispatchingListener {
     }
 
     @TransactionalEventListener
+    @Async
     public void on(PaymentCollected event) {
         var orderId = new OrderId(event.referenceId);
         if (findDeliveries.isPrepared(orderId)) {
