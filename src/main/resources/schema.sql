@@ -61,14 +61,6 @@ CREATE TABLE IF NOT EXISTS delivery_items (
     PRIMARY KEY (delivery_id, product_code)
 );
 
-CREATE TABLE IF NOT EXISTS delivery_fetched (
-    order_id VARCHAR(64) NOT NULL PRIMARY KEY
-);
-
-CREATE TABLE IF NOT EXISTS delivery_paid (
-    order_id VARCHAR(64) NOT NULL PRIMARY KEY
-);
-
 -- ------ WAREHOUSE ------
 
 CREATE TABLE IF NOT EXISTS products_in_stock (

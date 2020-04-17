@@ -31,7 +31,7 @@ class OrderWorkFlowTest {
     }
 
     @Test
-    void order_is_delivered() {
+    void order_is_delivered() throws Exception {
         CookieFilter cookieFilter = new CookieFilter(); // share cookies among requests
 
         with() // add an cart item
@@ -53,6 +53,8 @@ class OrderWorkFlowTest {
                 .andReturn();
 
         // delivery is dispatched
+
+        Thread.sleep(120);  // possible resend delay due to events ordering
 
         Object orderId = with()
                 .port(port)

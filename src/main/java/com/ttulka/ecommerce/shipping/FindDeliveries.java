@@ -23,4 +23,12 @@ public interface FindDeliveries {
      * @return the delivery
      */
     Delivery byOrderId(OrderId orderId);
+
+    /**
+     * Checks if a delivery is prepared for the order ID.
+     *
+     * @param orderId the order ID
+     * @return true if a delivery is prepared, otherwise false
+     */
+    boolean isPrepared(OrderId orderId);
 }

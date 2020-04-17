@@ -28,7 +28,10 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -60,16 +63,38 @@ class ShippingListenersTest {
 
     @Test
     void on_goods_fetched_a_delivery_is_updated() {
+        when(findDeliveries.isPrepared(eq(new OrderId("TEST123")))).thenReturn(true);
+
         runTx(() -> eventPublisher.raise(new GoodsFetched(Instant.now(), "TEST123")));
 
         verify(updateDelivery).asFetched(new OrderId("TEST123"));
     }
 
     @Test
+    void on_goods_fetched_an_unprepared_delivery_is_not_updated() {
+        when(findDeliveries.isPrepared(eq(new OrderId("TEST123")))).thenReturn(false);
+
+        runTx(() -> eventPublisher.raise(new GoodsFetched(Instant.now(), "TEST123")));
+
+        verifyNoInteractions(updateDelivery);
+    }
+
+    @Test
     void on_payment_received_a_delivery_is_updated() {
+        when(findDeliveries.isPrepared(eq(new OrderId("TEST123")))).thenReturn(true);
+
         runTx(() -> eventPublisher.raise(new PaymentCollected(Instant.now(), "TEST123")));
 
         verify(updateDelivery).asPaid(new OrderId("TEST123"));
+    }
+
+    @Test
+    void on_payment_received_an_unprepared_delivery_is_not_updated() {
+        when(findDeliveries.isPrepared(eq(new OrderId("TEST123")))).thenReturn(false);
+
+        runTx(() -> eventPublisher.raise(new PaymentCollected(Instant.now(), "TEST123")));
+
+        verifyNoInteractions(updateDelivery);
     }
 
     private void runTx(Runnable runnable) {

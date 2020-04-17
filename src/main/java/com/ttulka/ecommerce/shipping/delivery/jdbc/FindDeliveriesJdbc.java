@@ -32,8 +32,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 class FindDeliveriesJdbc implements FindDeliveries {
 
-    private final @NonNull StatusTracking statusTracking;
-
     private final @NonNull JdbcTemplate jdbcTemplate;
     private final @NonNull EventPublisher eventPublisher;
 
@@ -56,17 +54,23 @@ class FindDeliveriesJdbc implements FindDeliveries {
                     "WHERE delivery_id = ?", delivery.get("id"));
 
             if (delivery != null && items != null) {
-                return toDelivery(delivery, items, statusTracking.isFetched(orderId), statusTracking.isPaid(orderId));
+                return toDelivery(delivery, items);
             }
         } catch (DataAccessException ignore) {
             log.debug("Delivery by order ID {} was not found.", orderId);
         }
-        return new UntrackedDelivery(orderId, statusTracking);
+        return new UnknownDelivery();
+    }
+
+    @Override
+    public boolean isPrepared(OrderId orderId) {
+        return jdbcTemplate.queryForObject(
+                "SELECT COUNT(order_id) FROM deliveries " +
+                "WHERE order_id = ?", Integer.class, orderId.value()) > 0;
     }
 
     private DeliveryJdbc toDelivery(
-            Map<String, Object> delivery, List<Map<String, Object>> items,
-            boolean fetched, boolean paid) {
+            Map<String, Object> delivery, List<Map<String, Object>> items) {
         return new DeliveryJdbc(
                 new DeliveryId(delivery.get("id")),
                 new OrderId(delivery.get("orderId")),
@@ -78,35 +82,7 @@ class FindDeliveriesJdbc implements FindDeliveries {
                 new Address(
                         new Person((String) delivery.get("person")),
                         new Place((String) delivery.get("place"))),
-                mergedStatus(
-                        Enum.valueOf(DeliveryJdbc.Status.class, (String) delivery.get("status")),
-                        fetched, paid),
+                Enum.valueOf(DeliveryJdbc.Status.class, (String) delivery.get("status")),
                 jdbcTemplate, eventPublisher);
-    }
-
-    private DeliveryJdbc.Status mergedStatus(DeliveryJdbc.Status status, boolean fetched, boolean paid) {
-        if (fetched || paid) {
-            switch (status) {
-                case NEW:
-                case PREPARED:
-                    if (fetched) {
-                        return DeliveryJdbc.Status.FETCHED;
-                    }
-                    if (paid) {
-                        return DeliveryJdbc.Status.PAID;
-                    }
-                case FETCHED:
-                    if (paid) {
-                        return DeliveryJdbc.Status.READY;
-                    }
-                    break;
-                case PAID:
-                    if (fetched) {
-                        return DeliveryJdbc.Status.READY;
-                    }
-                    break;
-            }
-        }
-        return status;
     }
 }

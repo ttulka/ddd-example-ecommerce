@@ -11,22 +11,15 @@ import com.ttulka.ecommerce.shipping.delivery.OrderId;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Null object JDBC implementation for Delivery entity.
- * <p>
- * Tracks Paid and Fetched events for unknown deliveries.
  */
 @RequiredArgsConstructor
 @Slf4j
-final class UntrackedDelivery implements Delivery {
-
-    private final @NonNull OrderId orderId;
-
-    private final @NonNull StatusTracking statusTracking;
+final class UnknownDelivery implements Delivery {
 
     @Override
     public DeliveryId id() {
@@ -35,7 +28,7 @@ final class UntrackedDelivery implements Delivery {
 
     @Override
     public OrderId orderId() {
-        return orderId;
+        return new OrderId(0);
     }
 
     @Override
@@ -57,12 +50,12 @@ final class UntrackedDelivery implements Delivery {
 
     @Override
     public void markAsFetched() {
-        statusTracking.markAsFetched(orderId);
+        // do nothing
     }
 
     @Override
     public void markAsPaid() {
-        statusTracking.markAsPaid(orderId);
+        // do nothing
     }
 
     @Override

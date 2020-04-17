@@ -75,4 +75,18 @@ class FindDeliveriesTest {
 
         assertThat(delivery.isDispatched()).isTrue();
     }
+
+    @Test
+    void delivery_for_an_order_is_prepared() {
+        boolean isPrepared = findDeliveries.isPrepared(new OrderId(3001));
+
+        assertThat(isPrepared).isTrue();
+    }
+
+    @Test
+    void delivery_for_an_order_is_not_prepared() {
+        boolean isPrepared = findDeliveries.isPrepared(new OrderId("WRONG"));
+
+        assertThat(isPrepared).isFalse();
+    }
 }

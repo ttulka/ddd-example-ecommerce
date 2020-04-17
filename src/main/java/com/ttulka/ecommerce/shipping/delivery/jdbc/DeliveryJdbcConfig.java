@@ -15,22 +15,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 class DeliveryJdbcConfig {
 
     @Bean
-    FindDeliveriesJdbc findDeliveries(StatusTracking statusTracking, JdbcTemplate jdbcTemplate, EventPublisher eventPublisher) {
-        return new FindDeliveriesJdbc(statusTracking, jdbcTemplate, eventPublisher);
+    FindDeliveriesJdbc findDeliveries(JdbcTemplate jdbcTemplate, EventPublisher eventPublisher) {
+        return new FindDeliveriesJdbc(jdbcTemplate, eventPublisher);
     }
 
     @Bean
-    PrepareDeliveryJdbc prepareDelivery(StatusTracking statusTracking, JdbcTemplate jdbcTemplate, EventPublisher eventPublisher) {
-        return new PrepareDeliveryJdbc(statusTracking, jdbcTemplate, eventPublisher);
+    PrepareDeliveryJdbc prepareDelivery(JdbcTemplate jdbcTemplate, EventPublisher eventPublisher) {
+        return new PrepareDeliveryJdbc(jdbcTemplate, eventPublisher);
     }
 
     @Bean
     UpdateDelivery updateDelivery(FindDeliveries findDeliveries) {
         return new UpdateDelivery(findDeliveries);
-    }
-
-    @Bean
-    StatusTracking statusTracking(JdbcTemplate jdbcTemplate) {
-        return new StatusTracking(jdbcTemplate);
     }
 }
