@@ -17,12 +17,17 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * Listener for GoodsFetched and PaymentCollected events.
+ * <p>
+ * It is possible that those events come before the Delivery is prepared. In such a case the events must not be accepted.
+ * <p>
+ * The current implementation re-send the unordered events with a delay for later processing.
  */
 @RequiredArgsConstructor
 class DispatchingListener {
 
     private final @NonNull UpdateDelivery updateDelivery;
     private final @NonNull FindDeliveries findDeliveries;
+
     private final @NonNull ResendEvent resendEvent;
 
     @TransactionalEventListener
