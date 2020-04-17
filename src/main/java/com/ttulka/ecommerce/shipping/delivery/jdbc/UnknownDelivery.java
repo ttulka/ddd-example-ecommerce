@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Null object JDBC implementation for Delivery entity.
+ * Null object implementation for Delivery entity.
  */
 @RequiredArgsConstructor
 @Slf4j

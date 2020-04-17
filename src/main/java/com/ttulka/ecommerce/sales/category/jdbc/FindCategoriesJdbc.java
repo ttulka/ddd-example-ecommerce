@@ -4,7 +4,6 @@ import com.ttulka.ecommerce.sales.FindCategories;
 import com.ttulka.ecommerce.sales.category.Categories;
 import com.ttulka.ecommerce.sales.category.Category;
 import com.ttulka.ecommerce.sales.category.CategoryId;
-import com.ttulka.ecommerce.sales.category.UnknownCategory;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 

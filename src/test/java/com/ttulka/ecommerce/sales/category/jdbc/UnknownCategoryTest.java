@@ -1,4 +1,8 @@
-package com.ttulka.ecommerce.sales.category;
+package com.ttulka.ecommerce.sales.category.jdbc;
+
+import com.ttulka.ecommerce.sales.category.Category;
+import com.ttulka.ecommerce.sales.category.CategoryId;
+import com.ttulka.ecommerce.sales.category.Title;
 
 import org.junit.jupiter.api.Test;
 

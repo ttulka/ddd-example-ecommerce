@@ -1,6 +1,11 @@
-package com.ttulka.ecommerce.sales.product;
+package com.ttulka.ecommerce.sales.product.jdbc;
 
 import com.ttulka.ecommerce.sales.category.CategoryId;
+import com.ttulka.ecommerce.sales.product.Description;
+import com.ttulka.ecommerce.sales.product.Price;
+import com.ttulka.ecommerce.sales.product.Product;
+import com.ttulka.ecommerce.sales.product.ProductId;
+import com.ttulka.ecommerce.sales.product.Title;
 
 import org.junit.jupiter.api.Test;
 

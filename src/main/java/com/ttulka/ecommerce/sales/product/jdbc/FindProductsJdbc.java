@@ -5,7 +5,6 @@ import com.ttulka.ecommerce.sales.category.Uri;
 import com.ttulka.ecommerce.sales.product.Code;
 import com.ttulka.ecommerce.sales.product.Product;
 import com.ttulka.ecommerce.sales.product.Products;
-import com.ttulka.ecommerce.sales.product.UnknownProduct;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 

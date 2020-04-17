@@ -10,7 +10,6 @@ import com.ttulka.ecommerce.sales.FindOrders;
 import com.ttulka.ecommerce.sales.order.Order;
 import com.ttulka.ecommerce.sales.order.OrderId;
 import com.ttulka.ecommerce.sales.order.OrderItem;
-import com.ttulka.ecommerce.sales.order.UnknownOrder;
 import com.ttulka.ecommerce.sales.order.customer.Address;
 import com.ttulka.ecommerce.sales.order.customer.Customer;
 import com.ttulka.ecommerce.sales.order.customer.Name;

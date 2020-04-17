@@ -1,6 +1,12 @@
-package com.ttulka.ecommerce.sales.product;
+package com.ttulka.ecommerce.sales.product.jdbc;
 
 import com.ttulka.ecommerce.sales.category.CategoryId;
+import com.ttulka.ecommerce.sales.product.Code;
+import com.ttulka.ecommerce.sales.product.Description;
+import com.ttulka.ecommerce.sales.product.Price;
+import com.ttulka.ecommerce.sales.product.Product;
+import com.ttulka.ecommerce.sales.product.ProductId;
+import com.ttulka.ecommerce.sales.product.Title;
 
 import lombok.ToString;
 
@@ -8,7 +14,7 @@ import lombok.ToString;
  * Null object implementation for Product entity.
  */
 @ToString
-public final class UnknownProduct implements Product {
+final class UnknownProduct implements Product {
 
     @Override
     public ProductId id() {

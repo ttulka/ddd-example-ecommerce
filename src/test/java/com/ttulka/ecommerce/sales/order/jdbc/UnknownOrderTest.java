@@ -1,4 +1,7 @@
-package com.ttulka.ecommerce.sales.order;
+package com.ttulka.ecommerce.sales.order.jdbc;
+
+import com.ttulka.ecommerce.sales.order.Order;
+import com.ttulka.ecommerce.sales.order.OrderId;
 
 import org.junit.jupiter.api.Test;
 

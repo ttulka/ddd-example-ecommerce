@@ -1,4 +1,9 @@
-package com.ttulka.ecommerce.sales.category;
+package com.ttulka.ecommerce.sales.category.jdbc;
+
+import com.ttulka.ecommerce.sales.category.Category;
+import com.ttulka.ecommerce.sales.category.CategoryId;
+import com.ttulka.ecommerce.sales.category.Title;
+import com.ttulka.ecommerce.sales.category.Uri;
 
 import lombok.ToString;
 
@@ -6,7 +11,7 @@ import lombok.ToString;
  * Null object implementation for Category entity.
  */
 @ToString
-public final class UnknownCategory implements Category {
+final class UnknownCategory implements Category {
 
     @Override
     public CategoryId id() {
