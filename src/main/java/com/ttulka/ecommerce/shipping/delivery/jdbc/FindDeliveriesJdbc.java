@@ -17,7 +17,6 @@ import com.ttulka.ecommerce.shipping.delivery.Place;
 import com.ttulka.ecommerce.shipping.delivery.ProductCode;
 import com.ttulka.ecommerce.shipping.delivery.Quantity;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,22 +43,19 @@ class FindDeliveriesJdbc implements FindDeliveries {
     @Transactional
     @Override
     public Delivery byOrderId(OrderId orderId) {
-        try {
-            Map<String, Object> delivery = jdbcTemplate.queryForMap(
-                    "SELECT id, order_id orderId, person, place, status FROM deliveries " +
-                    "WHERE order_id = ?", orderId.value());
+        var delivery = jdbcTemplate.queryForList(
+                "SELECT id, order_id orderId, person, place, status FROM deliveries " +
+                "WHERE order_id = ?", orderId.value())
+                .stream().findAny();
 
-            List<Map<String, Object>> items = jdbcTemplate.queryForList(
-                    "SELECT product_code productCode, quantity FROM delivery_items " +
-                    "WHERE delivery_id = ?", delivery.get("id"));
-
-            if (delivery != null && items != null) {
-                return toDelivery(delivery, items);
-            }
-        } catch (DataAccessException ignore) {
-            log.debug("Delivery by order ID {} was not found.", orderId);
-        }
-        return new UnknownDelivery();
+        return delivery
+                .map(d -> {
+                    var items = jdbcTemplate.queryForList(
+                            "SELECT product_code productCode, quantity FROM delivery_items " +
+                            "WHERE delivery_id = ?", d.get("id"));
+                    return toDelivery(d, items);
+                })
+                .orElseGet(() -> new UnknownDelivery());
     }
 
     @Override
@@ -69,7 +65,7 @@ class FindDeliveriesJdbc implements FindDeliveries {
                 "WHERE order_id = ?", Integer.class, orderId.value()) > 0;
     }
 
-    private DeliveryJdbc toDelivery(
+    private Delivery toDelivery(
             Map<String, Object> delivery, List<Map<String, Object>> items) {
         return new DeliveryJdbc(
                 new DeliveryId(delivery.get("id")),

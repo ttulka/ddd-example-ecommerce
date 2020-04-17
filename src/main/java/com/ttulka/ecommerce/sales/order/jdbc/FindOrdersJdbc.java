@@ -14,7 +14,6 @@ import com.ttulka.ecommerce.sales.order.customer.Address;
 import com.ttulka.ecommerce.sales.order.customer.Customer;
 import com.ttulka.ecommerce.sales.order.customer.Name;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import lombok.NonNull;
@@ -33,22 +32,18 @@ final class FindOrdersJdbc implements FindOrders {
 
     @Override
     public Order byId(OrderId id) {
-        try {
-            Map<String, Object> order = jdbcTemplate.queryForMap(
-                    "SELECT id, customer, address FROM orders WHERE id = ?",
-                    id.value());
+        var items = jdbcTemplate.queryForList(
+                "SELECT product_code code, title, price, quantity FROM order_items WHERE order_id = ?",
+                id.value());
 
-            List<Map<String, Object>> items = jdbcTemplate.queryForList(
-                    "SELECT product_code code, title, price, quantity FROM order_items WHERE order_id = ?",
-                    id.value());
+        var order = jdbcTemplate.queryForList(
+                "SELECT id, customer, address FROM orders WHERE id = ?",
+                id.value())
+                .stream().findAny();
 
-            if (order != null && items != null) {
-                return toOrder(order, items);
-            }
-        } catch (DataAccessException ignore) {
-            log.warn("Order by ID {} was not found.", id);
-        }
-        return new UnknownOrder();
+        return order
+                .map(o -> toOrder(o, items))
+                .orElseGet(() -> new UnknownOrder());
     }
 
     private Order toOrder(Map<String, Object> order, List<Map<String, Object>> items) {
