@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
@@ -13,6 +14,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
  * Spring Boot based monolithic application.
  */
 @SpringBootApplication
+@EnableAsync
 public class ECommerceApplication {
 
     public static void main(String[] args) {
