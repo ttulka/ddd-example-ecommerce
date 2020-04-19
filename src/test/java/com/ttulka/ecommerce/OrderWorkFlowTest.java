@@ -47,14 +47,14 @@ class OrderWorkFlowTest {
                 .filter(cookieFilter)
                 .port(port)
                 .basePath("/order")
-                .formParam("name", "test name")
-                .formParam("address", "test address")
+                .formParam("name", "Test Name")
+                .formParam("address", "Test Address 123")
                 .post()
                 .andReturn();
 
         // delivery is dispatched
 
-        Thread.sleep(120);  // possible resend delay due to events ordering
+        Thread.sleep(1200);  // possible resend delay due to events ordering
 
         Object orderId = with()
                 .port(port)
@@ -74,8 +74,8 @@ class OrderWorkFlowTest {
 
         assertAll(
                 () -> assertThat(deliveryJson.getBoolean("dispatched")).isTrue().as("Delivery is not dispatched."),
-                () -> assertThat(deliveryJson.getMap("address").get("person")).isEqualTo("test name"),
-                () -> assertThat(deliveryJson.getMap("address").get("place")).isEqualTo("test address"));
+                () -> assertThat(deliveryJson.getMap("address").get("person")).isEqualTo("Test Name"),
+                () -> assertThat(deliveryJson.getMap("address").get("place")).isEqualTo("Test Address 123"));
     }
 
     @Test
@@ -95,12 +95,12 @@ class OrderWorkFlowTest {
                 .filter(cookieFilter)
                 .port(port)
                 .basePath("/order")
-                .formParam("name", "test name")
-                .formParam("address", "test address")
+                .formParam("name", "Test Name")
+                .formParam("address", "Test Address 123")
                 .post()
                 .andReturn();
 
-        Thread.sleep(120);  // possible resend delay due to events ordering
+        Thread.sleep(1200);  // possible resend delay due to events ordering
 
         // (1000-123) left in stock
         String leftInStock = with()
@@ -130,12 +130,12 @@ class OrderWorkFlowTest {
                 .filter(cookieFilter)
                 .port(port)
                 .basePath("/order")
-                .formParam("name", "test name")
-                .formParam("address", "test address")
+                .formParam("name", "Test Name")
+                .formParam("address", "Test Address 123")
                 .post()
                 .andReturn();
 
-        Thread.sleep(120);  // possible resend delay due to events ordering
+        Thread.sleep(1200);  // possible resend delay due to events ordering
 
         // payment is collected
 

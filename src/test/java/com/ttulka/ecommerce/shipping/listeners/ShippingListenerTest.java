@@ -42,13 +42,15 @@ class ShippingListenerTest {
     private FindDeliveries findDeliveries;
 
     @Test
-    void on_order_placed_a_delivery_is_accepted() {
+    void on_order_placed_a_delivery_is_accepted() throws Exception {
         String orderId = UUID.randomUUID().toString();
         when(findDeliveries.isPrepared(eq(new OrderId(orderId)))).thenReturn(true);
 
         runTx(() -> eventPublisher.raise(
                 new OrderPlaced(Instant.now(), orderId,
                                 List.of(new OrderPlaced.OrderItemData("test-code", "Title", 123.5f, 2)))));
+
+        Thread.sleep(120);
 
         verify(updateDelivery).asAccepted(new OrderId(orderId));
     }
@@ -72,11 +74,13 @@ class ShippingListenerTest {
     }
 
     @Test
-    void on_goods_fetched_a_delivery_is_updated() {
+    void on_goods_fetched_a_delivery_is_updated() throws Exception {
         String orderId = UUID.randomUUID().toString();
         when(findDeliveries.isPrepared(eq(new OrderId(orderId)))).thenReturn(true);
 
         runTx(() -> eventPublisher.raise(new GoodsFetched(Instant.now(), orderId)));
+
+        Thread.sleep(120);
 
         verify(updateDelivery).asFetched(new OrderId(orderId));
     }
@@ -98,11 +102,13 @@ class ShippingListenerTest {
     }
 
     @Test
-    void on_payment_received_a_delivery_is_updated() {
+    void on_payment_received_a_delivery_is_updated() throws Exception {
         String orderId = UUID.randomUUID().toString();
         when(findDeliveries.isPrepared(eq(new OrderId(orderId)))).thenReturn(true);
 
         runTx(() -> eventPublisher.raise(new PaymentCollected(Instant.now(), orderId)));
+
+        Thread.sleep(120);
 
         verify(updateDelivery).asPaid(new OrderId(orderId));
     }
