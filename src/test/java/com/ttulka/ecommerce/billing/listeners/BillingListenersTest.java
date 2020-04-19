@@ -42,7 +42,7 @@ class BillingListenersTest {
                 new OrderPlaced(Instant.now(), "TEST123",
                                 List.of(new OrderPlaced.OrderItemData("test", "Title", 123.5f, 2)))));
 
-        Thread.sleep(120);
+        Thread.sleep(1200);
 
         verify(collectPayment).collect(new ReferenceId("TEST123"), new Money(247.));
     }

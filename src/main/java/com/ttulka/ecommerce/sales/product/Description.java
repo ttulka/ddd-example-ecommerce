@@ -14,11 +14,7 @@ public final class Description {
     private final @NonNull String description;
 
     public Description(String description) {
-        var descriptionVal = description != null ? description.strip() : "";
-        if (descriptionVal.length() > 50) {
-            throw new IllegalArgumentException("Description cannot be longer than 50 characters!");
-        }
-        this.description = descriptionVal;
+        this.description = description != null ? description.strip() : "";
     }
 
     public String value() {

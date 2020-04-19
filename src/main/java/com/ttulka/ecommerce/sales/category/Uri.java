@@ -1,5 +1,7 @@
 package com.ttulka.ecommerce.sales.category;
 
+import java.util.regex.Pattern;
+
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
@@ -11,6 +13,8 @@ import lombok.ToString;
 @ToString
 public final class Uri {
 
+    private static final String PATTERN = "[a-z]([a-z0-9-]*[a-z0-9])?";
+
     private final @NonNull String uri;
 
     public Uri(@NonNull String uri) {
@@ -18,8 +22,8 @@ public final class Uri {
         if (uriVal.isBlank()) {
             throw new IllegalArgumentException("URI cannot be empty!");
         }
-        if (uriVal.length() > 20) {
-            throw new IllegalArgumentException("URI cannot be longer than 20 characters!");
+        if (!Pattern.matches(PATTERN, uriVal)) {
+            throw new IllegalArgumentException("URI value is invalid!");
         }
         this.uri = uriVal;
     }

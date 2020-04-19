@@ -18,9 +18,6 @@ public final class Code {
         if (codeVal.isBlank()) {
             throw new IllegalArgumentException("Code cannot be empty!");
         }
-        if (codeVal.length() > 50) {
-            throw new IllegalArgumentException("Code cannot be longer than 50 characters!");
-        }
         this.code = codeVal;
     }
 

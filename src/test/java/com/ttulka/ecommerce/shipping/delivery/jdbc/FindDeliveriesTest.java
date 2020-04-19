@@ -27,8 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @JdbcTest
 @ContextConfiguration(classes = DeliveryJdbcConfig.class)
 @Sql(statements = "INSERT INTO deliveries VALUES" +
-                  "('000101', '1001', 'Person 1', 'Place 1', TRUE, TRUE, TRUE, TRUE, FALSE)," +
-                  "('000102', '1002', 'Person 2', 'Place 2', TRUE, TRUE, TRUE, TRUE, TRUE)")
+                  "('000101', '1001', 'Test PersonA', 'Place 1', TRUE, TRUE, TRUE, TRUE, FALSE)," +
+                  "('000102', '1002', 'Test PersonB', 'Place 2', TRUE, TRUE, TRUE, TRUE, TRUE)")
 class FindDeliveriesTest {
 
     @Autowired
@@ -57,7 +57,7 @@ class FindDeliveriesTest {
         assertAll(
                 () -> assertThat(delivery.id()).isEqualTo(new DeliveryId("000101")),
                 () -> assertThat(delivery.orderId()).isEqualTo(new OrderId("1001")),
-                () -> assertThat(delivery.address()).isEqualTo(new Address(new Person("Person 1"), new Place("Place 1"))),
+                () -> assertThat(delivery.address()).isEqualTo(new Address(new Person("Test PersonA"), new Place("Place 1"))),
                 () -> assertThat(delivery.isReadyToDispatch()).isTrue(),
                 () -> assertThat(delivery.isDispatched()).isFalse()
         );

@@ -18,9 +18,6 @@ public final class DeliveryId {
         if (idVal.isBlank()) {
             throw new IllegalArgumentException("ID cannot be empty!");
         }
-        if (idVal.length() > 64) {
-            throw new IllegalArgumentException("ID cannot be longer than 64 characters!");
-        }
         this.id = idVal;
     }
 

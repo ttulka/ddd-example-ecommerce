@@ -28,15 +28,4 @@ class TitleTest {
     void title_fails_for_an_empty_string() {
         assertThrows(IllegalArgumentException.class, () -> new Title(""));
     }
-
-    @Test
-    void title_has_20_characters() {
-        Title title = new Title("01234567890123456789");
-        assertThat(title.value()).isEqualTo("01234567890123456789");
-    }
-
-    @Test
-    void title_fails_for_more_than_20_characters() {
-        assertThrows(IllegalArgumentException.class, () -> new Title("01234567890123456789X"));
-    }
 }

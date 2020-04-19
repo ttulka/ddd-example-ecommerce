@@ -45,7 +45,7 @@ class WarehouseListenersTest {
                 new OrderPlaced(Instant.now(), "TEST123",
                                 List.of(new OrderPlaced.OrderItemData("test-1", "Title", 123.5f, 2)))));
 
-        Thread.sleep(120);
+        Thread.sleep(1200);
 
         verify(fetchGoods).fetchFromOrder(new OrderId("TEST123"), List.of(new ToFetch(new ProductCode("test-1"), new Amount(2))));
     }
@@ -54,7 +54,7 @@ class WarehouseListenersTest {
     void on_delivery_dispatched_removes_fetched_goods() throws Exception {
         runTx(() -> eventPublisher.raise(new DeliveryDispatched(Instant.now(), "TEST123")));
 
-        Thread.sleep(120);
+        Thread.sleep(1200);
 
         verify(removeFetchedGoods).removeForOrder(new OrderId("TEST123"));
     }

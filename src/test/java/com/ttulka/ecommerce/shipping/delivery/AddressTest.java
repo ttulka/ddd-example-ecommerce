@@ -9,8 +9,8 @@ class AddressTest {
 
     @Test
     void address_values() {
-        Person person = new Person("test");
-        Place place = new Place("test");
+        Person person = new Person("Test Person");
+        Place place = new Place("Test Address 123");
         Address address = new Address(person, place);
 
         assertAll(

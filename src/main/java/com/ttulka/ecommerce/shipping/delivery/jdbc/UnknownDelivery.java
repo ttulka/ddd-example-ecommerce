@@ -30,8 +30,8 @@ final class UnknownDelivery implements Delivery {
     @Override
     public Address address() {
         return new Address(
-                new Person("unknown"),
-                new Place("unknown"));
+                new Person("Unknown Person"),
+                new Place("Unknown"));
     }
 
     @Override

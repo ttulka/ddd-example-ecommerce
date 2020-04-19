@@ -61,8 +61,8 @@ class OrderControllerTest {
         mockMvc.perform(
                 post("/order")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                        .param("name", "test name")
-                        .param("address", "test address"))
+                        .param("name", "Test Name")
+                        .param("address", "Test Address 123"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/order/success"));
 
@@ -74,13 +74,13 @@ class OrderControllerTest {
         mockMvc.perform(
                 post("/order")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                        .param("name", "test name")
-                        .param("address", "test address"))
+                        .param("name", "Test Name")
+                        .param("address", "Test Address 123"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/order/success"));
 
         verify(prepareOrderDelivery).prepareDelivery(any(),
-                eq(new Address(new Person("test name"), new Place("test address"))));
+                eq(new Address(new Person("Test Name"), new Place("Test Address 123"))));
     }
 
     @Test
@@ -113,8 +113,8 @@ class OrderControllerTest {
         mockMvc.perform(
                 post("/order")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                        .param("name", "test name")
-                        .param("address", "test address")
+                        .param("name", "Test Name")
+                        .param("address", "Test Address 123")
                         .requestAttr("request", new MockHttpServletRequest()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/order/error?message=noitems"));

@@ -29,11 +29,11 @@ import static org.mockito.Mockito.verify;
 @JdbcTest
 @ContextConfiguration(classes = DeliveryJdbcConfig.class)
 @Sql(statements = "INSERT INTO deliveries VALUES " +
-                  "('101', '1001', 'Test Person 1', 'Test Place 1', FALSE, FALSE, FALSE, FALSE, FALSE), " +
-                  "('102', '1002', 'Test Person 2', 'Test Place 2', TRUE, FALSE, FALSE, FALSE, FALSE), " +
-                  "('103', '1003', 'Test Person 3', 'Test Place 3', TRUE, TRUE, TRUE, FALSE, FALSE), " +
-                  "('104', '1004', 'Test Person 4', 'Test Place 4', TRUE, TRUE, TRUE, TRUE, FALSE), " +
-                  "('105', '1005', 'Test Person 5', 'Test Place 5', TRUE, TRUE, TRUE, TRUE, TRUE);")
+                  "('101', '1001', 'Test PersonA', 'Test Place 1', FALSE, FALSE, FALSE, FALSE, FALSE), " +
+                  "('102', '1002', 'Test PersonB', 'Test Place 2', TRUE, FALSE, FALSE, FALSE, FALSE), " +
+                  "('103', '1003', 'Test PersonC', 'Test Place 3', TRUE, TRUE, TRUE, FALSE, FALSE), " +
+                  "('104', '1004', 'Test PersonD', 'Test Place 4', TRUE, TRUE, TRUE, TRUE, FALSE), " +
+                  "('105', '1005', 'Test PersonE', 'Test Place 5', TRUE, TRUE, TRUE, TRUE, TRUE);")
 class DeliveryTest {
 
     @Autowired
@@ -48,7 +48,7 @@ class DeliveryTest {
         assertAll(
                 () -> assertThat(delivery.id()).isEqualTo(new DeliveryId(101)),
                 () -> assertThat(delivery.orderId()).isEqualTo(new OrderId(1001)),
-                () -> assertThat(delivery.address()).isEqualTo(new Address(new Person("Test Person 1"), new Place("Test Place 1"))),
+                () -> assertThat(delivery.address()).isEqualTo(new Address(new Person("Test PersonA"), new Place("Test Place 1"))),
                 () -> assertThat(delivery.isReadyToDispatch()).isFalse(),
                 () -> assertThat(delivery.isDispatched()).isFalse()
         );
@@ -65,7 +65,7 @@ class DeliveryTest {
     void delivery_is_prepared(@Autowired JdbcTemplate jdbcTemplate) {
         String randId = UUID.randomUUID().toString();
         new DeliveryJdbc(new DeliveryId(randId), new OrderId(randId),
-                         new Address(new Person("test"), new Place("test")),
+                         new Address(new Person("Test Test"), new Place("test")),
                          false, false, false, false, false,
                          jdbcTemplate, eventPublisher)
                 .prepare();

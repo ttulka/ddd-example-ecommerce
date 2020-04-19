@@ -34,13 +34,13 @@ class PrepareDeliveryTest {
     void delivery_for_order_is_prepared() {
         prepareDelivery.prepare(
                 new OrderId("TEST123"),
-                new Address(new Person("test"), new Place("test")));
+                new Address(new Person("Test Person"), new Place("Test Address 123")));
 
         Delivery delivery = findDeliveries.byOrderId(new OrderId("TEST123"));
 
         assertAll(
                 () -> assertThat(delivery.orderId()).isEqualTo(new OrderId("TEST123")),
-                () -> assertThat(delivery.address()).isEqualTo(new Address(new Person("test"), new Place("test")))
+                () -> assertThat(delivery.address()).isEqualTo(new Address(new Person("Test Person"), new Place("Test Address 123")))
         );
     }
 }

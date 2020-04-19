@@ -18,9 +18,6 @@ public final class Title {
         if (titleVal.isBlank()) {
             throw new IllegalArgumentException("Title cannot be empty!");
         }
-        if (titleVal.length() > 20) {
-            throw new IllegalArgumentException("Title cannot be longer than 20 characters!");
-        }
         this.title = titleVal;
     }
 

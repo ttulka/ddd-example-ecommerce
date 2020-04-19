@@ -96,7 +96,7 @@ class UpdateDeliveryTest {
 
     private OrderId prepareOrder() {
         OrderId orderId = new OrderId(UUID.randomUUID());
-        prepareDelivery.prepare(orderId, new Address(new Person("test"), new Place("test")));
+        prepareDelivery.prepare(orderId, new Address(new Person("Test Test"), new Place("Test Test 123")));
         return orderId;
     }
 }

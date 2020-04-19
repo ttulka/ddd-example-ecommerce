@@ -52,13 +52,13 @@ class DeliveryControllerTest {
     @Test
     void delivery_by_order() throws Exception {
         when(findDeliveries.byOrderId(eq(new OrderId("TEST-ORDER1")))).thenReturn(
-                testDelivery(new DeliveryId("TEST123"), new OrderId("TEST-ORDER1"), "test person", "test place", "test-1", 25));
+                testDelivery(new DeliveryId("TEST123"), new OrderId("TEST-ORDER1"), "Test Person", "Test Place 123", "test-1", 25));
 
         mockMvc.perform(get("/delivery/order/TEST-ORDER1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is("TEST123")))
-                .andExpect(jsonPath("$.address.person", is("test person")))
-                .andExpect(jsonPath("$.address.place", is("test place")))
+                .andExpect(jsonPath("$.address.person", is("Test Person")))
+                .andExpect(jsonPath("$.address.place", is("Test Place 123")))
                 .andExpect(jsonPath("$.dispatched", is(false)));
     }
 
