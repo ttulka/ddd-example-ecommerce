@@ -2,6 +2,8 @@ package com.ttulka.ecommerce.billing;
 
 import java.time.Instant;
 
+import com.ttulka.ecommerce.common.events.DomainEvent;
+
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +15,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @EqualsAndHashCode(of = "referenceId")
 @ToString
-public final class PaymentCollected {
+public final class PaymentCollected implements DomainEvent {
 
     public final @NonNull Instant when;
     public final @NonNull String referenceId;

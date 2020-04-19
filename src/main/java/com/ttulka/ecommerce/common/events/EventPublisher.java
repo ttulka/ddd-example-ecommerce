@@ -12,5 +12,5 @@ public interface EventPublisher {
      *
      * @param event the domain event.
      */
-    void raise(Object event);
+    void raise(DomainEvent event);
 }

@@ -3,6 +3,8 @@ package com.ttulka.ecommerce.sales;
 import java.time.Instant;
 import java.util.List;
 
+import com.ttulka.ecommerce.common.events.DomainEvent;
+
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,7 @@ import lombok.Value;
 @RequiredArgsConstructor
 @EqualsAndHashCode(of = "orderId")
 @ToString
-public final class OrderPlaced {
+public final class OrderPlaced implements DomainEvent {
 
     public final @NonNull Instant when;
     public final @NonNull String orderId;

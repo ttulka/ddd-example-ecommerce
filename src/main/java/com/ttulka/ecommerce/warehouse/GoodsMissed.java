@@ -2,6 +2,8 @@ package com.ttulka.ecommerce.warehouse;
 
 import java.time.Instant;
 
+import com.ttulka.ecommerce.common.events.DomainEvent;
+
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +20,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @EqualsAndHashCode(of = {"productCode", "amount"})
 @ToString
-public final class GoodsMissed {
+public final class GoodsMissed implements DomainEvent {
 
     public final @NonNull Instant when;
     public final @NonNull String productCode;

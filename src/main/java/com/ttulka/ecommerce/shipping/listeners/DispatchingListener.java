@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import com.ttulka.ecommerce.billing.PaymentCollected;
+import com.ttulka.ecommerce.common.events.DomainEvent;
 import com.ttulka.ecommerce.shipping.FindDeliveries;
 import com.ttulka.ecommerce.shipping.UpdateDelivery;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
@@ -52,7 +53,7 @@ class DispatchingListener {
         }
     }
 
-    private void resendWithDelay(Object event) {
+    private void resendWithDelay(DomainEvent event) {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {

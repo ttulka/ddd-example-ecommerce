@@ -1,5 +1,6 @@
 package com.ttulka.ecommerce.shipping.listeners;
 
+import com.ttulka.ecommerce.common.events.DomainEvent;
 import com.ttulka.ecommerce.common.events.EventPublisher;
 
 import org.springframework.transaction.annotation.Propagation;
@@ -22,7 +23,7 @@ class ResendEvent {
      * @param event the event
      */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void resend(Object event) {
+    public void resend(DomainEvent event) {
         eventPublisher.raise(event);
     }
 }
