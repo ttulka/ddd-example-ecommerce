@@ -31,7 +31,7 @@ class OrderWorkFlowTest {
     }
 
     @Test
-    void order_is_delivered() throws Exception {
+    void order_is_shipped() throws Exception {
         CookieFilter cookieFilter = new CookieFilter(); // share cookies among requests
 
         with() // add an cart item
@@ -82,7 +82,7 @@ class OrderWorkFlowTest {
     }
 
     @Test
-    void delivered_items_are_removed_from_stock() {
+    void dispatched_items_are_removed_from_stock() {
         CookieFilter cookieFilter = new CookieFilter(); // share cookies among requests
 
         with() // add an cart item
