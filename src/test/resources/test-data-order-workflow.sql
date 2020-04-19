@@ -1,7 +1,6 @@
 TRUNCATE TABLE products;
 TRUNCATE TABLE products_in_stock;
 TRUNCATE TABLE deliveries;
-TRUNCATE TABLE delivery_items;
 TRUNCATE TABLE payments;
 
 INSERT INTO products VALUES

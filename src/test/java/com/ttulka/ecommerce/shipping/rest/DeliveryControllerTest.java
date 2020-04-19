@@ -1,6 +1,5 @@
 package com.ttulka.ecommerce.shipping.rest;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 import com.ttulka.ecommerce.catalogue.Catalogue;
@@ -10,12 +9,9 @@ import com.ttulka.ecommerce.shipping.delivery.Delivery;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryId;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryInfo;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryInfos;
-import com.ttulka.ecommerce.shipping.delivery.DeliveryItem;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
-import com.ttulka.ecommerce.shipping.delivery.ProductCode;
-import com.ttulka.ecommerce.shipping.delivery.Quantity;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,9 +59,6 @@ class DeliveryControllerTest {
                 .andExpect(jsonPath("$.id", is("TEST123")))
                 .andExpect(jsonPath("$.address.person", is("test person")))
                 .andExpect(jsonPath("$.address.place", is("test place")))
-                .andExpect(jsonPath("$.items", hasSize(1)))
-                .andExpect(jsonPath("$.items[0].code", is("test-1")))
-                .andExpect(jsonPath("$.items[0].quantity", is(25)))
                 .andExpect(jsonPath("$.dispatched", is(false)));
     }
 
@@ -92,17 +85,16 @@ class DeliveryControllerTest {
             }
 
             @Override
-            public List<DeliveryItem> items() {
-                return List.of(new DeliveryItem(new ProductCode(productCode), new Quantity(quantity)));
-            }
-
-            @Override
             public Address address() {
                 return new Address(new Person(person), new Place(place));
             }
 
             @Override
             public void prepare() {
+            }
+
+            @Override
+            public void markAsAccepted() {
             }
 
             @Override

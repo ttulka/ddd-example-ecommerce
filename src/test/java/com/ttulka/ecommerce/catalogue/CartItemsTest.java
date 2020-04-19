@@ -7,6 +7,7 @@ import com.ttulka.ecommerce.catalogue.cart.CartItem;
 import com.ttulka.ecommerce.catalogue.cart.Quantity;
 import com.ttulka.ecommerce.catalogue.cart.cookies.CartCookies;
 import com.ttulka.ecommerce.common.events.EventPublisher;
+import com.ttulka.ecommerce.shipping.PrepareDelivery;
 import com.ttulka.ecommerce.warehouse.Warehouse;
 
 import org.junit.jupiter.api.Test;
@@ -110,6 +111,8 @@ class CartItemsTest {
     @Configuration
     @ComponentScan("com.ttulka.ecommerce.sales")
     static class ServicesTestConfig {
+        @MockBean
+        private PrepareDelivery prepareDelivery;
         @MockBean
         private Warehouse warehouse;
         @MockBean

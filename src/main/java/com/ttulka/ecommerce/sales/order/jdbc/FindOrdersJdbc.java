@@ -10,9 +10,6 @@ import com.ttulka.ecommerce.sales.FindOrders;
 import com.ttulka.ecommerce.sales.order.Order;
 import com.ttulka.ecommerce.sales.order.OrderId;
 import com.ttulka.ecommerce.sales.order.OrderItem;
-import com.ttulka.ecommerce.sales.order.customer.Address;
-import com.ttulka.ecommerce.sales.order.customer.Customer;
-import com.ttulka.ecommerce.sales.order.customer.Name;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -37,7 +34,7 @@ final class FindOrdersJdbc implements FindOrders {
                 id.value());
 
         var order = jdbcTemplate.queryForList(
-                "SELECT id, customer, address FROM orders WHERE id = ?",
+                "SELECT id FROM orders WHERE id = ?",
                 id.value())
                 .stream().findAny();
 
@@ -52,9 +49,6 @@ final class FindOrdersJdbc implements FindOrders {
                 items.stream()
                         .map(this::toOrderItem)
                         .collect(Collectors.toList()),
-                new Customer(
-                        new Name((String) order.get("customer")),
-                        new Address((String) order.get("address"))),
                 jdbcTemplate,
                 eventPublisher);
     }

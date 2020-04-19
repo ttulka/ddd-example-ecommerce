@@ -3,6 +3,7 @@ package com.ttulka.ecommerce.catalogue;
 import com.ttulka.ecommerce.sales.FindCategories;
 import com.ttulka.ecommerce.sales.FindProducts;
 import com.ttulka.ecommerce.sales.PlaceOrder;
+import com.ttulka.ecommerce.shipping.PrepareDelivery;
 import com.ttulka.ecommerce.warehouse.Warehouse;
 
 import org.springframework.context.annotation.Bean;
@@ -27,5 +28,10 @@ class CatalogueConfig {
     @Bean
     PlaceOrderFromCart placeOrderFromCart(PlaceOrder placeOrder, FindProducts findProducts) {
         return new PlaceOrderFromCart(placeOrder, findProducts);
+    }
+
+    @Bean
+    PrepareOrderDelivery prepareOrderDelivery(PrepareDelivery prepareDelivery) {
+        return new PrepareOrderDelivery(prepareDelivery);
     }
 }

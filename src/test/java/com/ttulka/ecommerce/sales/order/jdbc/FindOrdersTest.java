@@ -4,8 +4,6 @@ import com.ttulka.ecommerce.common.events.EventPublisher;
 import com.ttulka.ecommerce.sales.FindOrders;
 import com.ttulka.ecommerce.sales.order.Order;
 import com.ttulka.ecommerce.sales.order.OrderId;
-import com.ttulka.ecommerce.sales.order.customer.Address;
-import com.ttulka.ecommerce.sales.order.customer.Name;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +31,6 @@ class FindOrdersTest {
         Order order = findOrders.byId(new OrderId(1));
         assertAll(
                 () -> assertThat(order.id()).isEqualTo(new OrderId(1)),
-                () -> assertThat(order.customer().name()).isEqualTo(new Name("Test Customer 1")),
-                () -> assertThat(order.customer().address()).isEqualTo(new Address("Test Address 1")),
                 () -> assertThat(order.items()).hasSize(2),
                 () -> assertThat(order.items().get(0).code()).isEqualTo("001"),
                 () -> assertThat(order.items().get(0).title()).isEqualTo("Prod 1"),

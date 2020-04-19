@@ -1,7 +1,5 @@
 package com.ttulka.ecommerce.shipping.delivery;
 
-import java.util.List;
-
 /**
  * Delivery entity.
  */
@@ -11,14 +9,14 @@ public interface Delivery {
 
     OrderId orderId();
 
-    List<DeliveryItem> items();
-
     Address address();
 
     /**
      * @throws {@link DeliveryAlreadyPreparedException} when already prepared.
      */
     void prepare();
+
+    void markAsAccepted();
 
     void markAsFetched();
 

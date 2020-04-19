@@ -21,9 +21,7 @@ CREATE TABLE IF NOT EXISTS products_in_categories (
 );
 
 CREATE TABLE IF NOT EXISTS orders (
-    id VARCHAR(64) NOT NULL PRIMARY KEY,
-    customer VARCHAR(50) NOT NULL,
-    address VARCHAR(100) NOT NULL
+    id VARCHAR(64) NOT NULL PRIMARY KEY
 );
 
 CREATE TABLE IF NOT EXISTS order_items (
@@ -51,14 +49,11 @@ CREATE TABLE IF NOT EXISTS deliveries (
     order_id VARCHAR(64) NOT NULL UNIQUE,
     person VARCHAR(50) NOT NULL,
     place VARCHAR(100) NOT NULL,
-    status VARCHAR(50) NOT NULL DEFAULT 'NEW'
-);
-
-CREATE TABLE IF NOT EXISTS delivery_items (
-    product_code VARCHAR(50) NOT NULL,
-    quantity INT NOT NULL DEFAULT(0),
-    delivery_id VARCHAR(64) NOT NULL,
-    PRIMARY KEY (delivery_id, product_code)
+    prepared BOOLEAN NOT NULL DEFAULT FALSE,
+    accepted BOOLEAN NOT NULL DEFAULT FALSE,
+    fetched BOOLEAN NOT NULL DEFAULT FALSE,
+    paid BOOLEAN NOT NULL DEFAULT FALSE,
+    dispatched BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 -- ------ WAREHOUSE ------

@@ -18,6 +18,21 @@ public class UpdateDelivery {
     private final @NonNull FindDeliveries findDeliveries;
 
     /**
+     * Updates a delivery by the order ID as accepted.
+     *
+     * @param orderId the order ID
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void asAccepted(OrderId orderId) {
+        Delivery delivery = findDeliveries.byOrderId(orderId);
+        delivery.markAsAccepted();
+
+        if (delivery.isReadyToDispatch()) {
+            delivery.dispatch();
+        }
+    }
+
+    /**
      * Updates a delivery by the order ID as fetched.
      *
      * @param orderId the order ID

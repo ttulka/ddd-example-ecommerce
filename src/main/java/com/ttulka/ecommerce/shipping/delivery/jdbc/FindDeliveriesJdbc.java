@@ -1,8 +1,6 @@
 package com.ttulka.ecommerce.shipping.delivery.jdbc;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
 import com.ttulka.ecommerce.shipping.FindDeliveries;
@@ -10,12 +8,9 @@ import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Delivery;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryId;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryInfos;
-import com.ttulka.ecommerce.shipping.delivery.DeliveryItem;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
-import com.ttulka.ecommerce.shipping.delivery.ProductCode;
-import com.ttulka.ecommerce.shipping.delivery.Quantity;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,17 +39,12 @@ class FindDeliveriesJdbc implements FindDeliveries {
     @Override
     public Delivery byOrderId(OrderId orderId) {
         var delivery = jdbcTemplate.queryForList(
-                "SELECT id, order_id orderId, person, place, status FROM deliveries " +
+                "SELECT id, order_id orderId, person, place, prepared, accepted, fetched, paid, dispatched FROM deliveries " +
                 "WHERE order_id = ?", orderId.value())
                 .stream().findAny();
 
         return delivery
-                .map(d -> {
-                    var items = jdbcTemplate.queryForList(
-                            "SELECT product_code productCode, quantity FROM delivery_items " +
-                            "WHERE delivery_id = ?", d.get("id"));
-                    return toDelivery(d, items);
-                })
+                .map(this::toDelivery)
                 .orElseGet(() -> new UnknownDelivery());
     }
 
@@ -65,20 +55,18 @@ class FindDeliveriesJdbc implements FindDeliveries {
                 "WHERE order_id = ?", Integer.class, orderId.value()) > 0;
     }
 
-    private Delivery toDelivery(
-            Map<String, Object> delivery, List<Map<String, Object>> items) {
+    private Delivery toDelivery(Map<String, Object> delivery) {
         return new DeliveryJdbc(
                 new DeliveryId(delivery.get("id")),
                 new OrderId(delivery.get("orderId")),
-                items.stream()
-                        .map(item -> new DeliveryItem(
-                                new ProductCode((String) item.get("productCode")),
-                                new Quantity((Integer) item.get("quantity"))))
-                        .collect(Collectors.toList()),
                 new Address(
                         new Person((String) delivery.get("person")),
                         new Place((String) delivery.get("place"))),
-                Enum.valueOf(DeliveryJdbc.Status.class, (String) delivery.get("status")),
+                (Boolean) delivery.get("prepared"),
+                (Boolean) delivery.get("accepted"),
+                (Boolean) delivery.get("fetched"),
+                (Boolean) delivery.get("paid"),
+                (Boolean) delivery.get("dispatched"),
                 jdbcTemplate, eventPublisher);
     }
 }

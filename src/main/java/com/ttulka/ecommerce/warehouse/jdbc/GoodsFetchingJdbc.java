@@ -60,7 +60,7 @@ class GoodsFetchingJdbc implements FetchGoods, RemoveFetchedGoods {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     @Override
     public void removeForOrder(OrderId orderId) {
         jdbcTemplate.update(

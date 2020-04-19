@@ -40,18 +40,21 @@ class WarehouseListenersTest {
     private RemoveFetchedGoods removeFetchedGoods;
 
     @Test
-    void on_order_placed_fetches_goods() {
+    void on_order_placed_fetches_goods() throws Exception {
         runTx(() -> eventPublisher.raise(
                 new OrderPlaced(Instant.now(), "TEST123",
-                                List.of(new OrderPlaced.OrderItemData("test-1", "Title", 123.5f, 2)),
-                                new OrderPlaced.CustomerData("test name", "test address"))));
+                                List.of(new OrderPlaced.OrderItemData("test-1", "Title", 123.5f, 2)))));
+
+        Thread.sleep(120);
 
         verify(fetchGoods).fetchFromOrder(new OrderId("TEST123"), List.of(new ToFetch(new ProductCode("test-1"), new Amount(2))));
     }
 
     @Test
-    void on_delivery_dispatched_removes_fetched_goods() {
+    void on_delivery_dispatched_removes_fetched_goods() throws Exception {
         runTx(() -> eventPublisher.raise(new DeliveryDispatched(Instant.now(), "TEST123")));
+
+        Thread.sleep(120);
 
         verify(removeFetchedGoods).removeForOrder(new OrderId("TEST123"));
     }

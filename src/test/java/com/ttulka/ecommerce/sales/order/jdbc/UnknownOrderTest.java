@@ -15,8 +15,7 @@ class UnknownOrderTest {
         Order unknownOrder = new UnknownOrder();
         assertAll(
                 () -> assertThat(unknownOrder.id()).isEqualTo(new OrderId(0)),
-                () -> assertThat(unknownOrder.items()).hasSize(0),
-                () -> assertThat(unknownOrder.customer()).isNotNull()
+                () -> assertThat(unknownOrder.items()).hasSize(0)
         );
     }
 }

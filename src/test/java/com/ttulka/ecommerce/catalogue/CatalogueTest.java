@@ -3,6 +3,7 @@ package com.ttulka.ecommerce.catalogue;
 import java.util.List;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
+import com.ttulka.ecommerce.shipping.PrepareDelivery;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -70,6 +71,8 @@ class CatalogueTest {
             "com.ttulka.ecommerce.sales",
             "com.ttulka.ecommerce.warehouse"})
     static class ServicesTestConfig {
+        @MockBean
+        private PrepareDelivery prepareDelivery;
         @MockBean
         private EventPublisher eventPublisher;
     }

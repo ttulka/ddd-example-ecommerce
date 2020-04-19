@@ -1,12 +1,8 @@
 package com.ttulka.ecommerce.shipping.delivery.jdbc;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Delivery;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryId;
-import com.ttulka.ecommerce.shipping.delivery.DeliveryItem;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
@@ -32,11 +28,6 @@ final class UnknownDelivery implements Delivery {
     }
 
     @Override
-    public List<DeliveryItem> items() {
-        return Collections.emptyList();
-    }
-
-    @Override
     public Address address() {
         return new Address(
                 new Person("unknown"),
@@ -45,6 +36,11 @@ final class UnknownDelivery implements Delivery {
 
     @Override
     public void prepare() {
+        // do nothing
+    }
+
+    @Override
+    public void markAsAccepted() {
         // do nothing
     }
 

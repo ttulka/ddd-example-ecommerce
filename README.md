@@ -58,10 +58,11 @@ Later, we can think about more supporting domains (not implemented in this proje
 - **User Reviews**
   - add a product review
   
-- **Customer Support**
+- **Customer Care**
   - resolve a complain
   - answer a question
   - provide help
+  - loyalty program
   
 The e-commerce system is a web application using a **Catalogue** service implementing the [Backends For Frontends (BFF)][bff] pattern.
 

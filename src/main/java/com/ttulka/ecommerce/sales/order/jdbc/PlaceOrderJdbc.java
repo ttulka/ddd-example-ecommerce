@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
 import com.ttulka.ecommerce.sales.PlaceOrder;
+import com.ttulka.ecommerce.sales.order.OrderId;
 import com.ttulka.ecommerce.sales.order.OrderItem;
-import com.ttulka.ecommerce.sales.order.customer.Customer;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,8 +27,8 @@ class PlaceOrderJdbc implements PlaceOrder {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
-    public void place(@NonNull List<OrderItem> items, @NonNull Customer customer) {
-        new OrderJdbc(items, customer, jdbcTemplate, eventPublisher)
+    public void place(@NonNull OrderId orderId, @NonNull List<OrderItem> items) {
+        new OrderJdbc(orderId, items, jdbcTemplate, eventPublisher)
                 .place();
     }
 }

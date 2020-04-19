@@ -1,11 +1,14 @@
 package com.ttulka.ecommerce.catalogue.web;
 
+import java.util.UUID;
+
 import com.ttulka.ecommerce.catalogue.Catalogue;
 import com.ttulka.ecommerce.catalogue.PlaceOrderFromCart;
-import com.ttulka.ecommerce.catalogue.cart.cookies.CartCookies;
-import com.ttulka.ecommerce.sales.order.customer.Address;
-import com.ttulka.ecommerce.sales.order.customer.Customer;
-import com.ttulka.ecommerce.sales.order.customer.Name;
+import com.ttulka.ecommerce.catalogue.PrepareOrderDelivery;
+import com.ttulka.ecommerce.catalogue.cart.Cart;
+import com.ttulka.ecommerce.shipping.delivery.Address;
+import com.ttulka.ecommerce.shipping.delivery.Person;
+import com.ttulka.ecommerce.shipping.delivery.Place;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +16,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -36,6 +39,8 @@ class OrderControllerTest {
 
     @MockBean
     private PlaceOrderFromCart placeOrderFromCart;
+    @MockBean
+    private PrepareOrderDelivery prepareOrderDelivery;
     @MockBean
     private Catalogue catalogue;
 
@@ -61,11 +66,21 @@ class OrderControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/order/success"));
 
-        verify(placeOrderFromCart).placeOrder(
-                new CartCookies(new MockHttpServletRequest(), new MockHttpServletResponse()),
-                new Customer(
-                        new Name("test name"),
-                        new Address("test address")));
+        verify(placeOrderFromCart).placeOrder(any(UUID.class), any(Cart.class));
+    }
+
+    @Test
+    void delivery_is_prepared() throws Exception {
+        mockMvc.perform(
+                post("/order")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                        .param("name", "test name")
+                        .param("address", "test address"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/order/success"));
+
+        verify(prepareOrderDelivery).prepareDelivery(any(),
+                eq(new Address(new Person("test name"), new Place("test address"))));
     }
 
     @Test
@@ -93,7 +108,7 @@ class OrderControllerTest {
     @Test
     void error_is_shown_for_no_items() throws Exception {
         doThrow(mock(PlaceOrderFromCart.NoItemsToOrderException.class))
-                .when(placeOrderFromCart).placeOrder(any(), any());
+                .when(placeOrderFromCart).placeOrder(any(), any(Cart.class));
 
         mockMvc.perform(
                 post("/order")

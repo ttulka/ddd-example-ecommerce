@@ -176,11 +176,10 @@ class CleanModulesArchTest {
     }
 
     @Test
-    void catalogue_service_has_no_dependencies_on_shipping_and_billing() {
+    void catalogue_service_has_no_dependencies_on_billing() {
         JavaClasses importedClasses = new ClassFileImporter().importPackages("com.ttulka.ecommerce.catalogue");
         ArchRule rule = classes()
                 .should().onlyDependOnClassesThat().resideOutsideOfPackages(
-                        "com.ttulka.ecommerce.shipping..",
                         "com.ttulka.ecommerce.billing..");
         rule.check(importedClasses);
     }

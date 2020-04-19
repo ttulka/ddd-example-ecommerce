@@ -1,9 +1,7 @@
 package com.ttulka.ecommerce.shipping;
 
-import java.util.List;
-
 import com.ttulka.ecommerce.shipping.delivery.Address;
-import com.ttulka.ecommerce.shipping.delivery.DeliveryItem;
+import com.ttulka.ecommerce.shipping.delivery.Delivery;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
 
 /**
@@ -15,8 +13,8 @@ public interface PrepareDelivery {
      * Prepares a new delivery.
      *
      * @param orderId the order ID
-     * @param items   the delivery items
      * @param address the delivery address
+     * @throws {@link Delivery.DeliveryAlreadyPreparedException} when already prepared.
      */
-    void prepare(OrderId orderId, List<DeliveryItem> items, Address address);
+    void prepare(OrderId orderId, Address address);
 }

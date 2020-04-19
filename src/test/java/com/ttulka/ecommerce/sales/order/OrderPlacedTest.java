@@ -42,20 +42,9 @@ class OrderPlacedTest {
         );
     }
 
-    @Test
-    void customer_is_set() {
-        OrderPlaced orderPlaced = fakeOrderPlaced();
-        assertAll(
-                () -> assertThat(orderPlaced.customer.name).isEqualTo("test name"),
-                () -> assertThat(orderPlaced.customer.address).isEqualTo("test address")
-        );
-    }
-
     private OrderPlaced fakeOrderPlaced() {
         return new OrderPlaced(Instant.now(), "TEST123",
-                               List.of(
-                                       new OrderPlaced.OrderItemData("test-1", "Test 1", 1.f, 1),
-                                       new OrderPlaced.OrderItemData("test-2", "Test 2", 2.f, 2)),
-                               new OrderPlaced.CustomerData("test name", "test address"));
+                               List.of(new OrderPlaced.OrderItemData("test-1", "Test 1", 1.f, 1),
+                                       new OrderPlaced.OrderItemData("test-2", "Test 2", 2.f, 2)));
     }
 }

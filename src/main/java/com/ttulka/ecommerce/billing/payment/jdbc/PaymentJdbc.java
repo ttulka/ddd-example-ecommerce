@@ -36,7 +36,7 @@ final class PaymentJdbc implements Payment {
     private final @NonNull JdbcTemplate jdbcTemplate;
     private final @NonNull EventPublisher eventPublisher;
 
-    private @NonNull Status status = Status.NEW;
+    private @NonNull Status status;
 
     public PaymentJdbc(@NonNull PaymentId id, @NonNull ReferenceId referenceId, @NonNull Money total, @NonNull Status status,
                        @NonNull JdbcTemplate jdbcTemplate, @NonNull EventPublisher eventPublisher) {

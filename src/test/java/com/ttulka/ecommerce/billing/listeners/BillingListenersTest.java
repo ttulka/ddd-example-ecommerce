@@ -37,11 +37,12 @@ class BillingListenersTest {
     private FindPayments findPayments;
 
     @Test
-    void on_order_placed_collects_a_payment() {
+    void on_order_placed_collects_a_payment() throws Exception {
         runTx(() -> eventPublisher.raise(
                 new OrderPlaced(Instant.now(), "TEST123",
-                                List.of(new OrderPlaced.OrderItemData("test", "Title", 123.5f, 2)),
-                                new OrderPlaced.CustomerData("test name", "test address"))));
+                                List.of(new OrderPlaced.OrderItemData("test", "Title", 123.5f, 2)))));
+
+        Thread.sleep(120);
 
         verify(collectPayment).collect(new ReferenceId("TEST123"), new Money(247.));
     }

@@ -5,10 +5,8 @@ import java.util.List;
 import com.ttulka.ecommerce.common.events.EventPublisher;
 import com.ttulka.ecommerce.sales.OrderPlaced;
 import com.ttulka.ecommerce.sales.PlaceOrder;
+import com.ttulka.ecommerce.sales.order.OrderId;
 import com.ttulka.ecommerce.sales.order.OrderItem;
-import com.ttulka.ecommerce.sales.order.customer.Address;
-import com.ttulka.ecommerce.sales.order.customer.Customer;
-import com.ttulka.ecommerce.sales.order.customer.Name;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +32,8 @@ class PlaceOrderTest {
     @Test
     void order_placed_raises_an_event() {
         placeOrder.place(
-                List.of(new OrderItem("test", "Test", 123.5f, 123)),
-                new Customer(new Name("test name"), new Address("test address")));
+                new OrderId("TEST123"),
+                List.of(new OrderItem("test", "Test", 123.5f, 123)));
 
         verify(eventPublisher).raise(argThat(
                 event -> {
@@ -43,8 +41,6 @@ class PlaceOrderTest {
                     OrderPlaced orderPlaced = (OrderPlaced) event;
                     assertAll(
                             () -> assertThat(orderPlaced.when).isNotNull(),
-                            () -> assertThat(orderPlaced.customer.name).isEqualTo("test name"),
-                            () -> assertThat(orderPlaced.customer.address).isEqualTo("test address"),
                             () -> assertThat(orderPlaced.orderItems).hasSize(1),
                             () -> assertThat(orderPlaced.orderItems.get(0).code).isEqualTo("test"),
                             () -> assertThat(orderPlaced.orderItems.get(0).title).isEqualTo("Test"),

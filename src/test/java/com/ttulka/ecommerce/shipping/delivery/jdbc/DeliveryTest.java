@@ -1,6 +1,5 @@
 package com.ttulka.ecommerce.shipping.delivery.jdbc;
 
-import java.util.List;
 import java.util.UUID;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
@@ -9,12 +8,9 @@ import com.ttulka.ecommerce.shipping.FindDeliveries;
 import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Delivery;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryId;
-import com.ttulka.ecommerce.shipping.delivery.DeliveryItem;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
-import com.ttulka.ecommerce.shipping.delivery.ProductCode;
-import com.ttulka.ecommerce.shipping.delivery.Quantity;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +29,11 @@ import static org.mockito.Mockito.verify;
 @JdbcTest
 @ContextConfiguration(classes = DeliveryJdbcConfig.class)
 @Sql(statements = "INSERT INTO deliveries VALUES " +
-                  "('101', '1001', 'Test Person 1', 'Test Place 1', 'NEW'), " +
-                  "('102', '1002', 'Test Person 2', 'Test Place 2', 'PREPARED'), " +
-                  "('103', '1003', 'Test Person 3', 'Test Place 3', 'FETCHED'), " +
-                  "('104', '1004', 'Test Person 4', 'Test Place 4', 'PAID'), " +
-                  "('105', '1005', 'Test Person 5', 'Test Place 5', 'READY'), " +
-                  "('106', '1006', 'Test Person 6', 'Test Place 6', 'DISPATCHED');")
+                  "('101', '1001', 'Test Person 1', 'Test Place 1', FALSE, FALSE, FALSE, FALSE, FALSE), " +
+                  "('102', '1002', 'Test Person 2', 'Test Place 2', TRUE, FALSE, FALSE, FALSE, FALSE), " +
+                  "('103', '1003', 'Test Person 3', 'Test Place 3', TRUE, TRUE, TRUE, FALSE, FALSE), " +
+                  "('104', '1004', 'Test Person 4', 'Test Place 4', TRUE, TRUE, TRUE, TRUE, FALSE), " +
+                  "('105', '1005', 'Test Person 5', 'Test Place 5', TRUE, TRUE, TRUE, TRUE, TRUE);")
 class DeliveryTest {
 
     @Autowired
@@ -70,9 +65,8 @@ class DeliveryTest {
     void delivery_is_prepared(@Autowired JdbcTemplate jdbcTemplate) {
         String randId = UUID.randomUUID().toString();
         new DeliveryJdbc(new DeliveryId(randId), new OrderId(randId),
-                         List.of(new DeliveryItem(new ProductCode("test"), new Quantity(123))),
                          new Address(new Person("test"), new Place("test")),
-                         DeliveryJdbc.Status.NEW,
+                         false, false, false, false, false,
                          jdbcTemplate, eventPublisher)
                 .prepare();
 
@@ -83,16 +77,23 @@ class DeliveryTest {
 
     @Test
     void delivery_can_be_prepared_only_once() {
-        Delivery delivery = findDeliveries.byOrderId(new OrderId(1006));
+        Delivery delivery = findDeliveries.byOrderId(new OrderId(1005));
 
         assertThrows(Delivery.DeliveryAlreadyPreparedException.class, () -> delivery.prepare());
     }
 
     @Test
     void delivery_is_ready() {
-        Delivery delivery = findDeliveries.byOrderId(new OrderId(1005));
+        Delivery delivery = findDeliveries.byOrderId(new OrderId(1004));
 
         assertThat(delivery.isReadyToDispatch()).isTrue();
+    }
+
+    @Test
+    void dispatched_delivery_is_not_ready() {
+        Delivery delivery = findDeliveries.byOrderId(new OrderId(1005));
+
+        assertThat(delivery.isReadyToDispatch()).isFalse();
     }
 
     @Test
@@ -131,7 +132,7 @@ class DeliveryTest {
 
     @Test
     void delivery_is_dispatched() {
-        Delivery delivery = findDeliveries.byOrderId(new OrderId(1005));
+        Delivery delivery = findDeliveries.byOrderId(new OrderId(1004));
         delivery.dispatch();
 
         assertThat(delivery.isDispatched()).isTrue();
@@ -152,7 +153,7 @@ class DeliveryTest {
 
     @Test
     void delivery_can_be_dispatched_only_once() {
-        Delivery delivery = findDeliveries.byOrderId(new OrderId(1005));
+        Delivery delivery = findDeliveries.byOrderId(new OrderId(1004));
         delivery.dispatch();
 
         assertThrows(Delivery.DeliveryAlreadyDispatchedException.class, () -> delivery.dispatch());
@@ -160,7 +161,7 @@ class DeliveryTest {
 
     @Test
     void dispatching_a_delivery_raises_an_event() {
-        Delivery delivery = findDeliveries.byOrderId(new OrderId(1005));
+        Delivery delivery = findDeliveries.byOrderId(new OrderId(1004));
         delivery.dispatch();
 
         verify(eventPublisher).raise(argThat(

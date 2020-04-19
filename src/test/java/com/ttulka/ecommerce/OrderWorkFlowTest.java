@@ -75,14 +75,11 @@ class OrderWorkFlowTest {
         assertAll(
                 () -> assertThat(deliveryJson.getBoolean("dispatched")).isTrue().as("Delivery is not dispatched."),
                 () -> assertThat(deliveryJson.getMap("address").get("person")).isEqualTo("test name"),
-                () -> assertThat(deliveryJson.getMap("address").get("place")).isEqualTo("test address"),
-                () -> assertThat(deliveryJson.getList("items")).hasSize(1),
-                () -> assertThat(deliveryJson.<Map>getList("items").get(0).get("code")).isEqualTo("OW001"),
-                () -> assertThat(deliveryJson.<Map>getList("items").get(0).get("quantity")).isEqualTo(1));
+                () -> assertThat(deliveryJson.getMap("address").get("place")).isEqualTo("test address"));
     }
 
     @Test
-    void dispatched_items_are_removed_from_stock() {
+    void dispatched_items_are_removed_from_stock() throws Exception {
         CookieFilter cookieFilter = new CookieFilter(); // share cookies among requests
 
         with() // add an cart item
@@ -103,6 +100,8 @@ class OrderWorkFlowTest {
                 .post()
                 .andReturn();
 
+        Thread.sleep(120);  // possible resend delay due to events ordering
+
         // (1000-123) left in stock
         String leftInStock = with()
                 .port(port)
@@ -115,7 +114,7 @@ class OrderWorkFlowTest {
     }
 
     @Test
-    void payment_for_an_order_is_collected() {
+    void payment_for_an_order_is_collected() throws Exception {
         CookieFilter cookieFilter = new CookieFilter(); // share cookies among requests
 
         with() // add an cart item
@@ -135,6 +134,8 @@ class OrderWorkFlowTest {
                 .formParam("address", "test address")
                 .post()
                 .andReturn();
+
+        Thread.sleep(120);  // possible resend delay due to events ordering
 
         // payment is collected
 

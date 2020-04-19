@@ -43,11 +43,6 @@ class DeliveryController {
                 "address", Map.of(
                         "person", delivery.address().person().value(),
                         "place", delivery.address().place().value()),
-                "items", delivery.items().stream()
-                        .map(item -> Map.of(
-                                "code", item.productCode().value(),
-                                "quantity", item.quantity().value()))
-                        .toArray(),
                 "dispatched", delivery.isDispatched());
     }
 }

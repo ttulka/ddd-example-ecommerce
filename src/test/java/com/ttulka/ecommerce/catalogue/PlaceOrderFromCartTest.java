@@ -1,12 +1,12 @@
 package com.ttulka.ecommerce.catalogue;
 
+import java.util.UUID;
+
 import javax.servlet.http.Cookie;
 
 import com.ttulka.ecommerce.catalogue.cart.cookies.CartCookies;
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.sales.order.customer.Address;
-import com.ttulka.ecommerce.sales.order.customer.Customer;
-import com.ttulka.ecommerce.sales.order.customer.Name;
+import com.ttulka.ecommerce.shipping.PrepareDelivery;
 import com.ttulka.ecommerce.warehouse.Warehouse;
 
 import org.junit.jupiter.api.Test;
@@ -35,22 +35,22 @@ class PlaceOrderFromCartTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setCookies(new Cookie("cart", "test-1|Test_1|123"));
 
-        placeOrderFromCart.placeOrder(
-                new CartCookies(request, new MockHttpServletResponse()),
-                new Customer(new Name("test"), new Address("test")));
+        placeOrderFromCart.placeOrder(UUID.randomUUID(),
+                new CartCookies(request, new MockHttpServletResponse()));
     }
 
     @Test
     void empty_cart_throws_an_exception() {
         assertThrows(PlaceOrderFromCart.NoItemsToOrderException.class,
-                     () -> placeOrderFromCart.placeOrder(
-                             new CartCookies(new MockHttpServletRequest(), new MockHttpServletResponse()),
-                             new Customer(new Name("test"), new Address("test"))));
+                     () -> placeOrderFromCart.placeOrder(UUID.randomUUID(),
+                             new CartCookies(new MockHttpServletRequest(), new MockHttpServletResponse())));
     }
 
     @Configuration
     @ComponentScan("com.ttulka.ecommerce.sales")
     static class ServicesTestConfig {
+        @MockBean
+        private PrepareDelivery prepareDelivery;
         @MockBean
         private Warehouse warehouse;
         @MockBean

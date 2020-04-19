@@ -1,6 +1,5 @@
 package com.ttulka.ecommerce.shipping.delivery.jdbc;
 
-import java.util.List;
 import java.util.UUID;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
@@ -9,12 +8,9 @@ import com.ttulka.ecommerce.shipping.PrepareDelivery;
 import com.ttulka.ecommerce.shipping.UpdateDelivery;
 import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Delivery;
-import com.ttulka.ecommerce.shipping.delivery.DeliveryItem;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
-import com.ttulka.ecommerce.shipping.delivery.ProductCode;
-import com.ttulka.ecommerce.shipping.delivery.Quantity;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +41,19 @@ class UpdateDeliveryTest {
     private EventPublisher eventPublisher;
 
     @Test
+    void accepted_delivery_is_not_ready_yet() {
+        OrderId orderId = prepareOrder();
+
+        updateDelivery.asAccepted(orderId);
+
+        Delivery delivery = findDeliveries.byOrderId(orderId);
+        assertAll(
+                () -> assertThat(delivery.isReadyToDispatch()).isFalse(),
+                () -> assertThat(delivery.isDispatched()).isFalse()
+        );
+    }
+
+    @Test
     void fetched_delivery_is_not_ready_yet() {
         OrderId orderId = prepareOrder();
 
@@ -71,9 +80,10 @@ class UpdateDeliveryTest {
     }
 
     @Test
-    void fetched_and_paid_delivery_is_ready_and_dispatched() {
+    void accepted_and_fetched_and_paid_delivery_is_dispatched() {
         OrderId orderId = prepareOrder();
 
+        updateDelivery.asAccepted(orderId);
         updateDelivery.asFetched(orderId);
         updateDelivery.asPaid(orderId);
 
@@ -86,10 +96,7 @@ class UpdateDeliveryTest {
 
     private OrderId prepareOrder() {
         OrderId orderId = new OrderId(UUID.randomUUID());
-        prepareDelivery.prepare(
-                orderId,
-                List.of(new DeliveryItem(new ProductCode("test"), new Quantity(1))),
-                new Address(new Person("test"), new Place("test")));
+        prepareDelivery.prepare(orderId, new Address(new Person("test"), new Place("test")));
         return orderId;
     }
 }

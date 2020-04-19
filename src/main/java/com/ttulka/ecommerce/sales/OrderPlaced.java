@@ -22,7 +22,6 @@ public final class OrderPlaced implements DomainEvent {
     public final @NonNull Instant when;
     public final @NonNull String orderId;
     public final @NonNull List<OrderItemData> orderItems;
-    public final @NonNull CustomerData customer;
 
     @Value
     public static final class OrderItemData {
@@ -31,12 +30,5 @@ public final class OrderPlaced implements DomainEvent {
         public final String title;
         public final Float price;
         public final Integer quantity;
-    }
-
-    @Value
-    public static final class CustomerData {
-
-        public final String name;
-        public final String address;
     }
 }

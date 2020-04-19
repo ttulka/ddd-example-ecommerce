@@ -17,15 +17,15 @@ class UnknownDeliveryTest {
         assertAll(
                 () -> assertThat(unknownDelivery.id()).isEqualTo(new DeliveryId(0)),
                 () -> assertThat(unknownDelivery.orderId()).isNotNull(),
-                () -> assertThat(unknownDelivery.items()).isNotNull(),
                 () -> assertThat(unknownDelivery.address()).isNotNull()
         );
     }
 
     @Test
-    void prepare_and_markAsFetched_and_markAsPaid_noop() {
+    void prepare_and_markAsAccepted_and_markAsFetched_and_markAsPaid_noop() {
         Delivery unknownDelivery = new UnknownDelivery();
         unknownDelivery.prepare();
+        unknownDelivery.markAsAccepted();
         unknownDelivery.markAsFetched();
         unknownDelivery.markAsPaid();
 
