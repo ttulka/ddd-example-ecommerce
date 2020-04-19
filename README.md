@@ -123,7 +123,6 @@ The architecture "screams" its intentions just by looking at the code structure:
     sales
         category
         order
-            customer
         product
     shipping
         delivery
