@@ -27,6 +27,17 @@ class CollectPaymentJdbc implements CollectPayment {
     public void collect(ReferenceId referenceId, Money total) {
         Payment payment = new PaymentJdbc(referenceId, total, jdbcTemplate, eventPublisher);
         payment.request();
+
+        // here an external service like PayPal or Visa is called...
+        processPayment();
+
         payment.collect();
+    }
+
+    private void processPayment() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignore) {
+        }
     }
 }
