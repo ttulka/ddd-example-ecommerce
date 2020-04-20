@@ -34,7 +34,6 @@ class ShippingListener {
     public void on(OrderPlaced event) {
         var orderId = new OrderId(event.orderId);
         if (findDeliveries.isPrepared(orderId)) {
-            // when needed, here could be set delivery items from the order etc...
             updateDelivery.asAccepted(orderId);
         } else {
             resendWithDelay(event);   // event came in wrong order
