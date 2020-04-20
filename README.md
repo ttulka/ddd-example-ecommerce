@@ -76,12 +76,13 @@ The communication among services is implemented via events:
 
 When the customer places an order the following process starts up (the happy path):
 
+1. Shipping service prepares a new delivery.
 1. Sales service creates a new order and publishes the `OrderPlaced` event.
-2. Billing service collects payment for the order and publishes the `PaymentCollected` event.
-2. Shipping service prepares a delivery.
-2. Warehouse service fetches goods from the stock and publishes the `GoodsFetched` event.
-3. Shipping service dispatches the delivery and publishes the `DeliveryDispatched` event.
-4. Warehouse service updates the stock.
+1. Shipping service accepts the delivery.
+1. Billing service collects payment for the order and publishes the `PaymentCollected` event.
+1. Warehouse service fetches goods from the stock and publishes the `GoodsFetched` event.
+1. Shipping service dispatches the delivery and publishes the `DeliveryDispatched` event.
+1. Warehouse service updates the stock.
 
 There is only the basic "happy path" workflow implemented with a big room for improvement, for example when Shipping doesn't get bot Events within a time period, the delivery process should be cancelled etc.. 
 
