@@ -1,7 +1,7 @@
 package com.ttulka.ecommerce.sales.order;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Map;
 
 import com.ttulka.ecommerce.sales.OrderPlaced;
 
@@ -30,21 +30,16 @@ class OrderPlacedTest {
     void order_items_are_set() {
         OrderPlaced orderPlaced = fakeOrderPlaced();
         assertAll(
-                () -> assertThat(orderPlaced.orderItems).hasSize(2),
-                () -> assertThat(orderPlaced.orderItems.get(0).code).isEqualTo("test-1"),
-                () -> assertThat(orderPlaced.orderItems.get(0).title).isEqualTo("Test 1"),
-                () -> assertThat(orderPlaced.orderItems.get(0).price).isEqualTo(1.f),
-                () -> assertThat(orderPlaced.orderItems.get(0).quantity).isEqualTo(1),
-                () -> assertThat(orderPlaced.orderItems.get(1).code).isEqualTo("test-2"),
-                () -> assertThat(orderPlaced.orderItems.get(1).title).isEqualTo("Test 2"),
-                () -> assertThat(orderPlaced.orderItems.get(1).price).isEqualTo(2.f),
-                () -> assertThat(orderPlaced.orderItems.get(1).quantity).isEqualTo(2)
+                () -> assertThat(orderPlaced.items).hasSize(2),
+                () -> assertThat(orderPlaced.items.get("test-1")).isEqualTo(1),
+                () -> assertThat(orderPlaced.items.get("test-2")).isEqualTo(2)
         );
     }
 
     private OrderPlaced fakeOrderPlaced() {
-        return new OrderPlaced(Instant.now(), "TEST123",
-                               List.of(new OrderPlaced.OrderItemData("test-1", "Test 1", 1.f, 1),
-                                       new OrderPlaced.OrderItemData("test-2", "Test 2", 2.f, 2)));
+        return new OrderPlaced(
+                Instant.now(),
+                "TEST123",
+                Map.of("test-1", 1, "test-2", 2), 5.f);
     }
 }

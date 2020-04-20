@@ -24,8 +24,6 @@ class OrderPlacedListener {
     public void on(OrderPlaced event) {
         collectPayment.collect(
                 new ReferenceId(event.orderId),
-                new Money(event.orderItems.stream()
-                                  .mapToDouble(item -> item.price * item.quantity)
-                                  .sum()));
+                new Money(event.total));
     }
 }

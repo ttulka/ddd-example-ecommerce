@@ -2,6 +2,7 @@ package com.ttulka.ecommerce.warehouse.listeners;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
 import com.ttulka.ecommerce.sales.OrderPlaced;
@@ -42,8 +43,7 @@ class WarehouseListenersTest {
     @Test
     void on_order_placed_fetches_goods() throws Exception {
         runTx(() -> eventPublisher.raise(
-                new OrderPlaced(Instant.now(), "TEST123",
-                                List.of(new OrderPlaced.OrderItemData("test-1", "Title", 123.5f, 2)))));
+                new OrderPlaced(Instant.now(), "TEST123", Map.of("test-1", 2), 246.f)));
 
         Thread.sleep(1200);
 

@@ -1,7 +1,7 @@
 package com.ttulka.ecommerce.shipping.listeners;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.ttulka.ecommerce.billing.PaymentCollected;
@@ -47,8 +47,7 @@ class ShippingListenerTest {
         when(findDeliveries.isPrepared(eq(new OrderId(orderId)))).thenReturn(true);
 
         runTx(() -> eventPublisher.raise(
-                new OrderPlaced(Instant.now(), orderId,
-                                List.of(new OrderPlaced.OrderItemData("test-code", "Title", 123.5f, 2)))));
+                new OrderPlaced(Instant.now(), orderId, Map.of("test-code", 1), 123.5f)));
 
         Thread.sleep(120);
 
@@ -61,8 +60,7 @@ class ShippingListenerTest {
         when(findDeliveries.isPrepared(eq(new OrderId(orderId)))).thenReturn(false);
 
         runTx(() -> eventPublisher.raise(
-                new OrderPlaced(Instant.now(), orderId,
-                                List.of(new OrderPlaced.OrderItemData("test-code", "Title", 123.5f, 2)))));
+                new OrderPlaced(Instant.now(), orderId, Map.of("test-code", 1), 123.5f)));
 
         verifyNoInteractions(updateDelivery);
 

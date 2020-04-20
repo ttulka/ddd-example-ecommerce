@@ -1,7 +1,7 @@
 package com.ttulka.ecommerce.billing.listeners;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Map;
 
 import com.ttulka.ecommerce.billing.CollectPayment;
 import com.ttulka.ecommerce.billing.FindPayments;
@@ -39,12 +39,11 @@ class BillingListenersTest {
     @Test
     void on_order_placed_collects_a_payment() throws Exception {
         runTx(() -> eventPublisher.raise(
-                new OrderPlaced(Instant.now(), "TEST123",
-                                List.of(new OrderPlaced.OrderItemData("test", "Title", 123.5f, 2)))));
+                new OrderPlaced(Instant.now(), "TEST123", Map.of("test", 2), 123.5f)));
 
         Thread.sleep(1200);
 
-        verify(collectPayment).collect(new ReferenceId("TEST123"), new Money(247.));
+        verify(collectPayment).collect(new ReferenceId("TEST123"), new Money(123.5));
     }
 
     private void runTx(Runnable runnable) {

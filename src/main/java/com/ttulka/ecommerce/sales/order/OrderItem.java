@@ -50,4 +50,8 @@ public final class OrderItem {
     public Integer quantity() {
         return quantity;
     }
+
+    public Float total() {
+        return price * quantity;
+    }
 }

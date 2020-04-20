@@ -10,8 +10,14 @@ class OrderItemTest {
 
     @Test
     void order_item_is_created() {
-        OrderItem orderItem = new OrderItem("test-1", "Test 1", 1.f, 1);
-        assertThat(orderItem).isNotNull();
+        OrderItem orderItem = new OrderItem("test-1", "Test 1", 1.5f, 2);
+        assertAll(
+                () -> assertThat(orderItem.code()).isEqualTo("test-1"),
+                () -> assertThat(orderItem.title()).isEqualTo("Test 1"),
+                () -> assertThat(orderItem.price()).isEqualTo(1.5f),
+                () -> assertThat(orderItem.quantity()).isEqualTo(2),
+                () -> assertThat(orderItem.total()).isEqualTo(1.5f * 2)
+        );
     }
 
     @Test

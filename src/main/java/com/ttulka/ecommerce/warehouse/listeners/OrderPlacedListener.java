@@ -28,8 +28,8 @@ class OrderPlacedListener {
     public void on(OrderPlaced event) {
         fetchGoods.fetchFromOrder(
                 new OrderId(event.orderId),
-                event.orderItems.stream()
-                        .map(item -> new ToFetch(new ProductCode(item.code), new Amount(item.quantity)))
+                event.items.entrySet().stream()
+                        .map(item -> new ToFetch(new ProductCode(item.getKey()), new Amount(item.getValue())))
                         .collect(Collectors.toList()));
     }
 }

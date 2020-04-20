@@ -15,6 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.offset;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
@@ -33,7 +34,7 @@ class PlaceOrderTest {
     void order_placed_raises_an_event() {
         placeOrder.place(
                 new OrderId("TEST123"),
-                List.of(new OrderItem("test", "Test", 123.5f, 123)));
+                List.of(new OrderItem("test-code", "Test", 123.5f, 123)));
 
         verify(eventPublisher).raise(argThat(
                 event -> {
@@ -41,11 +42,9 @@ class PlaceOrderTest {
                     OrderPlaced orderPlaced = (OrderPlaced) event;
                     assertAll(
                             () -> assertThat(orderPlaced.when).isNotNull(),
-                            () -> assertThat(orderPlaced.orderItems).hasSize(1),
-                            () -> assertThat(orderPlaced.orderItems.get(0).code).isEqualTo("test"),
-                            () -> assertThat(orderPlaced.orderItems.get(0).title).isEqualTo("Test"),
-                            () -> assertThat(orderPlaced.orderItems.get(0).price).isEqualTo(123.5f),
-                            () -> assertThat(orderPlaced.orderItems.get(0).quantity).isEqualTo(123)
+                            () -> assertThat(orderPlaced.items).hasSize(1),
+                            () -> assertThat(orderPlaced.items.get("test-code")).isEqualTo(123),
+                            () -> assertThat(orderPlaced.total).isCloseTo(123.5f * 123, offset(0.01f))
                     );
                     return true;
                 }));

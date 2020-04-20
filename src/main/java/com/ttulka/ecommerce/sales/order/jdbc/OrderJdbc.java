@@ -3,7 +3,6 @@ package com.ttulka.ecommerce.sales.order.jdbc;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
 import com.ttulka.ecommerce.sales.OrderPlaced;
@@ -17,6 +16,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summingInt;
 
 /**
  * JDBC implementation for Order entity.
@@ -70,9 +72,10 @@ final class OrderJdbc implements PlaceableOrder {
                 Instant.now(),
                 id.value(),
                 items.stream()
-                        .map(item -> new OrderPlaced.OrderItemData(
-                                item.code(), item.title(), item.price(), item.quantity()))
-                        .collect(Collectors.toList())));
+                        .collect(groupingBy(OrderItem::code, summingInt(OrderItem::quantity))),
+                (float) items.stream()
+                        .mapToDouble(OrderItem::total)
+                        .sum()));
         log.info("Order placed: {}", this);
     }
 }
