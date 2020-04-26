@@ -1,10 +1,10 @@
 package com.ttulka.ecommerce.billing.payment.jdbc;
 
 import com.ttulka.ecommerce.billing.PaymentCollected;
-import com.ttulka.ecommerce.billing.payment.Money;
 import com.ttulka.ecommerce.billing.payment.Payment;
 import com.ttulka.ecommerce.billing.payment.ReferenceId;
 import com.ttulka.ecommerce.common.events.EventPublisher;
+import com.ttulka.ecommerce.common.money.Money;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,18 +30,18 @@ class PaymentTest {
     @Test
     void payment_values() {
         Payment payment = new PaymentJdbc(
-                new ReferenceId(123), new Money(123.5), jdbcTemplate, eventPublisher);
+                new ReferenceId(123), new Money(123.5f), jdbcTemplate, eventPublisher);
         assertAll(
                 () -> assertThat(payment.id()).isNotNull(),
                 () -> assertThat(payment.referenceId()).isEqualTo(new ReferenceId(123)),
-                () -> assertThat(payment.total()).isEqualTo(new Money(123.5))
+                () -> assertThat(payment.total()).isEqualTo(new Money(123.5f))
         );
     }
 
     @Test
     void payment_is_requested() {
         Payment payment = new PaymentJdbc(
-                new ReferenceId(123), new Money(123.5), jdbcTemplate, eventPublisher);
+                new ReferenceId(123), new Money(123.5f), jdbcTemplate, eventPublisher);
         payment.request();
 
         assertThat(payment.isRequested()).isTrue();
@@ -51,7 +51,7 @@ class PaymentTest {
     @Test
     void payment_is_collected() {
         Payment payment = new PaymentJdbc(
-                new ReferenceId(123), new Money(123.5), jdbcTemplate, eventPublisher);
+                new ReferenceId(123), new Money(123.5f), jdbcTemplate, eventPublisher);
         payment.request();
         payment.collect();
 
@@ -62,7 +62,7 @@ class PaymentTest {
     @Test
     void collected_payment_raises_an_event() {
         Payment payment = new PaymentJdbc(
-                new ReferenceId("TEST123"), new Money(123.5), jdbcTemplate, eventPublisher);
+                new ReferenceId("TEST123"), new Money(123.5f), jdbcTemplate, eventPublisher);
         payment.request();
         payment.collect();
 
@@ -81,7 +81,7 @@ class PaymentTest {
     @Test
     void cannot_request_already_requested_payment() {
         Payment payment = new PaymentJdbc(
-                new ReferenceId(123), new Money(123.5), jdbcTemplate, eventPublisher);
+                new ReferenceId(123), new Money(123.5f), jdbcTemplate, eventPublisher);
         payment.request();
 
         assertThrows(Payment.PaymentAlreadyRequestedException.class, () -> payment.request());
@@ -90,7 +90,7 @@ class PaymentTest {
     @Test
     void cannot_request_already_collected_payment() {
         Payment payment = new PaymentJdbc(
-                new ReferenceId(123), new Money(123.5), jdbcTemplate, eventPublisher);
+                new ReferenceId(123), new Money(123.5f), jdbcTemplate, eventPublisher);
         payment.request();
         payment.collect();
 
@@ -100,7 +100,7 @@ class PaymentTest {
     @Test
     void cannot_collect_unrequested_payment() {
         Payment payment = new PaymentJdbc(
-                new ReferenceId(123), new Money(123.5), jdbcTemplate, eventPublisher);
+                new ReferenceId(123), new Money(123.5f), jdbcTemplate, eventPublisher);
 
         assertThrows(Payment.PaymentNotRequestedYetException.class, () -> payment.collect());
     }
@@ -108,7 +108,7 @@ class PaymentTest {
     @Test
     void cannot_collect_already_collected_payment() {
         Payment payment = new PaymentJdbc(
-                new ReferenceId(123), new Money(123.5), jdbcTemplate, eventPublisher);
+                new ReferenceId(123), new Money(123.5f), jdbcTemplate, eventPublisher);
         payment.request();
         payment.collect();
 

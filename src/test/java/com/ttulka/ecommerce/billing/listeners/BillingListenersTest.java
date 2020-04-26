@@ -5,9 +5,9 @@ import java.util.Map;
 
 import com.ttulka.ecommerce.billing.CollectPayment;
 import com.ttulka.ecommerce.billing.FindPayments;
-import com.ttulka.ecommerce.billing.payment.Money;
 import com.ttulka.ecommerce.billing.payment.ReferenceId;
 import com.ttulka.ecommerce.common.events.EventPublisher;
+import com.ttulka.ecommerce.common.money.Money;
 import com.ttulka.ecommerce.sales.OrderPlaced;
 
 import org.junit.jupiter.api.Test;
@@ -43,7 +43,7 @@ class BillingListenersTest {
 
         Thread.sleep(1200);
 
-        verify(collectPayment).collect(new ReferenceId("TEST123"), new Money(123.5));
+        verify(collectPayment).collect(new ReferenceId("TEST123"), new Money(123.5f));
     }
 
     private void runTx(Runnable runnable) {

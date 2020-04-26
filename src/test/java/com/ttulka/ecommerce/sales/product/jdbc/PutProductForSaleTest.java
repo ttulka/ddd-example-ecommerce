@@ -2,10 +2,10 @@ package com.ttulka.ecommerce.sales.product.jdbc;
 
 import java.util.UUID;
 
+import com.ttulka.ecommerce.common.money.Money;
 import com.ttulka.ecommerce.sales.FindProducts;
 import com.ttulka.ecommerce.sales.product.Code;
 import com.ttulka.ecommerce.sales.product.Description;
-import com.ttulka.ecommerce.sales.product.Price;
 import com.ttulka.ecommerce.sales.product.Product;
 import com.ttulka.ecommerce.sales.product.ProductId;
 import com.ttulka.ecommerce.sales.product.Title;
@@ -35,7 +35,7 @@ class PutProductForSaleTest {
                 new Code(code),
                 new Title("test"),
                 new Description("test"),
-                new Price(1.f),
+                new Money(1.f),
                 jdbcTemplate
         );
         product.putForSale();

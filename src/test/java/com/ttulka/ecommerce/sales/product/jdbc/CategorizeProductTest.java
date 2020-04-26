@@ -3,12 +3,12 @@ package com.ttulka.ecommerce.sales.product.jdbc;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ttulka.ecommerce.common.money.Money;
 import com.ttulka.ecommerce.sales.FindProducts;
 import com.ttulka.ecommerce.sales.category.CategoryId;
 import com.ttulka.ecommerce.sales.category.Uri;
 import com.ttulka.ecommerce.sales.product.Code;
 import com.ttulka.ecommerce.sales.product.Description;
-import com.ttulka.ecommerce.sales.product.Price;
 import com.ttulka.ecommerce.sales.product.Product;
 import com.ttulka.ecommerce.sales.product.ProductId;
 import com.ttulka.ecommerce.sales.product.Title;
@@ -40,7 +40,7 @@ class CategorizeProductTest {
                 new Code("test"),
                 new Title("test"),
                 new Description("test"),
-                new Price(1.f),
+                new Money(1.f),
                 jdbcTemplate
         );
         product.putForSale();

@@ -1,7 +1,7 @@
 package com.ttulka.ecommerce.billing;
 
-import com.ttulka.ecommerce.billing.payment.Money;
 import com.ttulka.ecommerce.billing.payment.ReferenceId;
+import com.ttulka.ecommerce.common.money.Money;
 
 /**
  * Collect Payment use-case.

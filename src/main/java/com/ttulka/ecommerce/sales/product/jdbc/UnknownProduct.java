@@ -1,9 +1,9 @@
 package com.ttulka.ecommerce.sales.product.jdbc;
 
+import com.ttulka.ecommerce.common.money.Money;
 import com.ttulka.ecommerce.sales.category.CategoryId;
 import com.ttulka.ecommerce.sales.product.Code;
 import com.ttulka.ecommerce.sales.product.Description;
-import com.ttulka.ecommerce.sales.product.Price;
 import com.ttulka.ecommerce.sales.product.Product;
 import com.ttulka.ecommerce.sales.product.ProductId;
 import com.ttulka.ecommerce.sales.product.Title;
@@ -37,8 +37,8 @@ final class UnknownProduct implements Product {
     }
 
     @Override
-    public Price price() {
-        return new Price(0.0F);
+    public Money price() {
+        return new Money(0.0f);
     }
 
     @Override
@@ -52,7 +52,7 @@ final class UnknownProduct implements Product {
     }
 
     @Override
-    public void changePrice(Price price) {
+    public void changePrice(Money price) {
         // do nothing
     }
 

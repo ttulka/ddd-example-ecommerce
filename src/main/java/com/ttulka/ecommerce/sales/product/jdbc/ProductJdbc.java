@@ -1,9 +1,9 @@
 package com.ttulka.ecommerce.sales.product.jdbc;
 
+import com.ttulka.ecommerce.common.money.Money;
 import com.ttulka.ecommerce.sales.category.CategoryId;
 import com.ttulka.ecommerce.sales.product.Code;
 import com.ttulka.ecommerce.sales.product.Description;
-import com.ttulka.ecommerce.sales.product.Price;
 import com.ttulka.ecommerce.sales.product.Product;
 import com.ttulka.ecommerce.sales.product.ProductId;
 import com.ttulka.ecommerce.sales.product.Title;
@@ -28,7 +28,7 @@ final class ProductJdbc implements Product {
 
     private @NonNull Title title;
     private @NonNull Description description;
-    private @NonNull Price price;
+    private @NonNull Money price;
 
     private final @NonNull JdbcTemplate jdbcTemplate;
 
@@ -53,7 +53,7 @@ final class ProductJdbc implements Product {
     }
 
     @Override
-    public Price price() {
+    public Money price() {
         return price;
     }
 
@@ -72,7 +72,7 @@ final class ProductJdbc implements Product {
     }
 
     @Override
-    public void changePrice(Price price) {
+    public void changePrice(Money price) {
         this.price = price;
         jdbcTemplate.update("UPDATE products SET price = ? WHERE id = ?",
                             price.value(), id.value());

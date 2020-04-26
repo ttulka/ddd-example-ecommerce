@@ -1,4 +1,4 @@
-package com.ttulka.ecommerce.billing.payment;
+package com.ttulka.ecommerce.common.money;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -10,16 +10,21 @@ import lombok.ToString;
 @ToString
 public final class Money {
 
-    private final double money;
+    private static float MAX_VALUE = 1_000_000.f;
 
-    public Money(double money) {
+    private final float money;
+
+    public Money(float money) {
         if (money < 0) {
             throw new IllegalArgumentException("Money cannot be less than zero.");
+        }
+        if (money > MAX_VALUE) {
+            throw new IllegalArgumentException("Money cannot be greater than " + MAX_VALUE + ".");
         }
         this.money = money;
     }
 
-    public double value() {
+    public float value() {
         return money;
     }
 }

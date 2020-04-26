@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ttulka.ecommerce.billing.FindPayments;
-import com.ttulka.ecommerce.billing.payment.Money;
 import com.ttulka.ecommerce.billing.payment.Payment;
 import com.ttulka.ecommerce.billing.payment.PaymentId;
 import com.ttulka.ecommerce.billing.payment.ReferenceId;
 import com.ttulka.ecommerce.common.events.EventPublisher;
+import com.ttulka.ecommerce.common.money.Money;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +38,12 @@ class FindPaymentsTest {
                 () -> assertThat(payments).hasSize(2),
                 () -> assertThat(payments.get(0).id()).isEqualTo(new PaymentId(101)),
                 () -> assertThat(payments.get(0).referenceId()).isEqualTo(new ReferenceId(1001)),
-                () -> assertThat(payments.get(0).total()).isEqualTo(new Money(100.5)),
+                () -> assertThat(payments.get(0).total()).isEqualTo(new Money(100.5f)),
                 () -> assertThat(payments.get(0).isRequested()).isTrue(),
                 () -> assertThat(payments.get(0).isCollected()).isFalse(),
                 () -> assertThat(payments.get(1).id()).isEqualTo(new PaymentId(102)),
                 () -> assertThat(payments.get(1).referenceId()).isEqualTo(new ReferenceId(1002)),
-                () -> assertThat(payments.get(1).total()).isEqualTo(new Money(200.5)),
+                () -> assertThat(payments.get(1).total()).isEqualTo(new Money(200.5f)),
                 () -> assertThat(payments.get(1).isRequested()).isTrue(),
                 () -> assertThat(payments.get(1).isCollected()).isTrue()
         );

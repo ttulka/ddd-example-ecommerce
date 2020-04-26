@@ -3,11 +3,11 @@ package com.ttulka.ecommerce.sales.product.jdbc;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.ttulka.ecommerce.common.money.Money;
 import com.ttulka.ecommerce.sales.FindProducts;
 import com.ttulka.ecommerce.sales.category.Uri;
 import com.ttulka.ecommerce.sales.product.Code;
 import com.ttulka.ecommerce.sales.product.Description;
-import com.ttulka.ecommerce.sales.product.Price;
 import com.ttulka.ecommerce.sales.product.Product;
 import com.ttulka.ecommerce.sales.product.ProductId;
 import com.ttulka.ecommerce.sales.product.Title;
@@ -57,7 +57,7 @@ class FindProductsTest {
                 () -> assertThat(product.code()).isEqualTo(new Code("001")),
                 () -> assertThat(product.title()).isEqualTo(new Title("Prod 1")),
                 () -> assertThat(product.description()).isEqualTo(new Description("Prod 1 Desc")),
-                () -> assertThat(product.price()).isEqualTo(new Price(1.f))
+                () -> assertThat(product.price()).isEqualTo(new Money(1.f))
         );
     }
 

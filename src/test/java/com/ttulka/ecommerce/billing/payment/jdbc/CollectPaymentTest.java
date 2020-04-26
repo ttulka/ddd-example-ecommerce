@@ -2,9 +2,9 @@ package com.ttulka.ecommerce.billing.payment.jdbc;
 
 import com.ttulka.ecommerce.billing.CollectPayment;
 import com.ttulka.ecommerce.billing.PaymentCollected;
-import com.ttulka.ecommerce.billing.payment.Money;
 import com.ttulka.ecommerce.billing.payment.ReferenceId;
 import com.ttulka.ecommerce.common.events.EventPublisher;
+import com.ttulka.ecommerce.common.money.Money;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ class CollectPaymentTest {
 
     @Test
     void payment_confirmation_raises_an_event() {
-        collectPayment.collect(new ReferenceId("TEST123"), new Money(123.5));
+        collectPayment.collect(new ReferenceId("TEST123"), new Money(123.5f));
 
         verify(eventPublisher).raise(argThat(
                 event -> {

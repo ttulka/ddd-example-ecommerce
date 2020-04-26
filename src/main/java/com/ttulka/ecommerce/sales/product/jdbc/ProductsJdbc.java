@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import com.ttulka.ecommerce.common.money.Money;
 import com.ttulka.ecommerce.sales.product.Code;
 import com.ttulka.ecommerce.sales.product.Description;
-import com.ttulka.ecommerce.sales.product.Price;
 import com.ttulka.ecommerce.sales.product.Product;
 import com.ttulka.ecommerce.sales.product.ProductId;
 import com.ttulka.ecommerce.sales.product.Products;
@@ -75,7 +75,7 @@ final class ProductsJdbc implements Products {
                 new Code((String) entry.get("code")),
                 new Title((String) entry.get("title")),
                 new Description((String) entry.get("description")),
-                new Price(((BigDecimal) entry.get("price")).floatValue()),
+                new Money(((BigDecimal) entry.get("price")).floatValue()),
                 jdbcTemplate);
     }
 }

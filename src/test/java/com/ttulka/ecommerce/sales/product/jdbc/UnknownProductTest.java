@@ -1,8 +1,8 @@
 package com.ttulka.ecommerce.sales.product.jdbc;
 
+import com.ttulka.ecommerce.common.money.Money;
 import com.ttulka.ecommerce.sales.category.CategoryId;
 import com.ttulka.ecommerce.sales.product.Description;
-import com.ttulka.ecommerce.sales.product.Price;
 import com.ttulka.ecommerce.sales.product.Product;
 import com.ttulka.ecommerce.sales.product.ProductId;
 import com.ttulka.ecommerce.sales.product.Title;
@@ -29,7 +29,7 @@ class UnknownProductTest {
     @Test
     void unknown_product_has_a_zero_price() {
         Product unknownProduct = new UnknownProduct();
-        assertThat(unknownProduct.price()).isEqualTo(new Price(0.f));
+        assertThat(unknownProduct.price()).isEqualTo(new Money(0.f));
     }
 
     @Test
@@ -53,10 +53,10 @@ class UnknownProductTest {
     @Test
     void change_price_noop() {
         Product unknownProduct = new UnknownProduct();
-        Price unknownPrice = unknownProduct.price();
-        unknownProduct.changePrice(new Price(1.f));
+        Money unknownMoney = unknownProduct.price();
+        unknownProduct.changePrice(new Money(1.f));
 
-        assertThat(unknownProduct.price()).isEqualTo(unknownPrice);
+        assertThat(unknownProduct.price()).isEqualTo(unknownMoney);
     }
 
     @Test

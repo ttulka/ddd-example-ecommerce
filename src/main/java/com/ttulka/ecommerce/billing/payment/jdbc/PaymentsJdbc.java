@@ -6,12 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import com.ttulka.ecommerce.billing.payment.Money;
 import com.ttulka.ecommerce.billing.payment.Payment;
 import com.ttulka.ecommerce.billing.payment.PaymentId;
 import com.ttulka.ecommerce.billing.payment.Payments;
 import com.ttulka.ecommerce.billing.payment.ReferenceId;
 import com.ttulka.ecommerce.common.events.EventPublisher;
+import com.ttulka.ecommerce.common.money.Money;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -70,7 +70,7 @@ final class PaymentsJdbc implements Payments {
         return new PaymentJdbc(
                 new PaymentId(entry.get("id")),
                 new ReferenceId(entry.get("referenceId")),
-                new Money(((BigDecimal) entry.get("total")).doubleValue()),
+                new Money(((BigDecimal) entry.get("total")).floatValue()),
                 Enum.valueOf(PaymentJdbc.Status.class, (String) entry.get("status")),
                 jdbcTemplate, eventPublisher);
     }

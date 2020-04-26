@@ -1,8 +1,8 @@
 package com.ttulka.ecommerce.billing.listeners;
 
 import com.ttulka.ecommerce.billing.CollectPayment;
-import com.ttulka.ecommerce.billing.payment.Money;
 import com.ttulka.ecommerce.billing.payment.ReferenceId;
+import com.ttulka.ecommerce.common.money.Money;
 import com.ttulka.ecommerce.sales.OrderPlaced;
 
 import org.springframework.scheduling.annotation.Async;

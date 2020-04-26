@@ -1,9 +1,9 @@
 package com.ttulka.ecommerce.sales.product.jdbc;
 
+import com.ttulka.ecommerce.common.money.Money;
 import com.ttulka.ecommerce.sales.FindProducts;
 import com.ttulka.ecommerce.sales.product.Code;
 import com.ttulka.ecommerce.sales.product.Description;
-import com.ttulka.ecommerce.sales.product.Price;
 import com.ttulka.ecommerce.sales.product.Product;
 import com.ttulka.ecommerce.sales.product.Title;
 
@@ -46,10 +46,10 @@ class ChangeProductTest {
     @Test
     void product_price_is_changed() {
         Product product = findProducts.byCode(new Code("test-1"));
-        product.changePrice(new Price(100.5f));
+        product.changePrice(new Money(100.5f));
 
         Product productUpdated = findProducts.byCode(new Code("test-1"));
 
-        assertThat(productUpdated.price()).isEqualTo(new Price(100.5f));
+        assertThat(productUpdated.price()).isEqualTo(new Money(100.5f));
     }
 }
