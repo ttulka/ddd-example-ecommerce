@@ -1,8 +1,7 @@
 package com.ttulka.ecommerce.warehouse.rest;
 
-import com.ttulka.ecommerce.catalogue.Catalogue;
 import com.ttulka.ecommerce.warehouse.InStock;
-import com.ttulka.ecommerce.warehouse.ProductCode;
+import com.ttulka.ecommerce.warehouse.ProductId;
 import com.ttulka.ecommerce.warehouse.Warehouse;
 
 import org.junit.jupiter.api.Test;
@@ -25,12 +24,10 @@ class WarehouseControllerTest {
 
     @MockBean
     private Warehouse warehouse;
-    @MockBean
-    private Catalogue catalogue;
 
     @Test
     void left_in_stock() throws Exception {
-        when(warehouse.leftInStock(eq(new ProductCode("test-123")))).thenReturn(new InStock(456));
+        when(warehouse.leftInStock(eq(new ProductId("test-123")))).thenReturn(new InStock(456));
 
         mockMvc.perform(get("/warehouse/stock/test-123"))
                 .andExpect(status().isOk())

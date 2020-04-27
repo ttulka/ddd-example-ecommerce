@@ -3,15 +3,15 @@ TRUNCATE TABLE products;
 TRUNCATE TABLE products_in_categories;
 
 INSERT INTO categories VALUES
-    ('1', 'cat1', 'Cat 1'),
-    ('2', 'cat2', 'Cat 2');
+    ('c-1', 'cat1', 'Cat 1'),
+    ('c-2', 'cat2', 'Cat 2');
 
 INSERT INTO products VALUES
-    ('1', '001', 'Prod 1', 'Prod 1 Desc', 1.00),
-    ('2', '002', 'Prod 2', 'Prod 2 Desc', 2.00),
-    ('3', '003', 'Prod 3', 'Prod 3 Desc', 3.50);
+    ('p-1', 'Prod 1', 'Prod 1 Desc', 1.00),
+    ('p-2', 'Prod 2', 'Prod 2 Desc', 2.00),
+    ('p-3', 'Prod 3', 'Prod 3 Desc', 3.50);
 
 INSERT INTO products_in_categories VALUES
-    ('1', '1'),
-    ('2', '1'),
-    ('3', '2');
+    ('p-1', 'c-1'),
+    ('p-2', 'c-1'),
+    ('p-3', 'c-2');

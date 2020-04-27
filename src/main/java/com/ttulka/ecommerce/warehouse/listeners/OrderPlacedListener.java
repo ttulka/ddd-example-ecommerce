@@ -2,11 +2,11 @@ package com.ttulka.ecommerce.warehouse.listeners;
 
 import java.util.stream.Collectors;
 
-import com.ttulka.ecommerce.sales.OrderPlaced;
+import com.ttulka.ecommerce.sales.order.OrderPlaced;
 import com.ttulka.ecommerce.warehouse.Amount;
 import com.ttulka.ecommerce.warehouse.FetchGoods;
 import com.ttulka.ecommerce.warehouse.OrderId;
-import com.ttulka.ecommerce.warehouse.ProductCode;
+import com.ttulka.ecommerce.warehouse.ProductId;
 import com.ttulka.ecommerce.warehouse.ToFetch;
 
 import org.springframework.scheduling.annotation.Async;
@@ -29,7 +29,7 @@ class OrderPlacedListener {
         fetchGoods.fetchFromOrder(
                 new OrderId(event.orderId),
                 event.items.entrySet().stream()
-                        .map(item -> new ToFetch(new ProductCode(item.getKey()), new Amount(item.getValue())))
+                        .map(item -> new ToFetch(new ProductId(item.getKey()), new Amount(item.getValue())))
                         .collect(Collectors.toList()));
     }
 }

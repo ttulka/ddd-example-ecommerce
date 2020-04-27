@@ -3,7 +3,7 @@ package com.ttulka.ecommerce.billing.payment.jdbc;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ttulka.ecommerce.billing.FindPayments;
+import com.ttulka.ecommerce.billing.payment.FindPayments;
 import com.ttulka.ecommerce.billing.payment.Payment;
 import com.ttulka.ecommerce.billing.payment.PaymentId;
 import com.ttulka.ecommerce.billing.payment.Payments;

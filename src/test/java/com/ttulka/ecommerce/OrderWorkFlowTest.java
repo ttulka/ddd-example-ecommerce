@@ -38,7 +38,9 @@ class OrderWorkFlowTest {
                 .filter(cookieFilter)
                 .port(port)
                 .basePath("/cart")
-                .param("productCode", "OW001")
+                .param("productId", "p-1")
+                .param("title", "Prod 1")
+                .param("price", 1.f)
                 .param("quantity", 1)
                 .post()
                 .andReturn();
@@ -86,7 +88,9 @@ class OrderWorkFlowTest {
                 .filter(cookieFilter)
                 .port(port)
                 .basePath("/cart")
-                .param("productCode", "OW002")
+                .param("productId", "p-2")
+                .param("title", "Prod 2")
+                .param("price", 2.f)
                 .param("quantity", 123)
                 .post()
                 .andReturn();
@@ -106,7 +110,7 @@ class OrderWorkFlowTest {
         String leftInStock = with()
                 .port(port)
                 .basePath("/warehouse/stock")
-                .get("OW002")
+                .get("p-2")
                 .andReturn()
                 .body().print();
 
@@ -121,7 +125,9 @@ class OrderWorkFlowTest {
                 .filter(cookieFilter)
                 .port(port)
                 .basePath("/cart")
-                .param("productCode", "OW003")
+                .param("productId", "p-3")
+                .param("title", "Prod 3")
+                .param("price", 3.50f)
                 .param("quantity", 3)
                 .post()
                 .andReturn();

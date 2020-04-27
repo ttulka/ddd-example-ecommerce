@@ -1,10 +1,10 @@
 package com.ttulka.ecommerce.billing.payment.jdbc;
 
-import com.ttulka.ecommerce.billing.CollectPayment;
-import com.ttulka.ecommerce.billing.PaymentCollected;
+import com.ttulka.ecommerce.billing.payment.CollectPayment;
+import com.ttulka.ecommerce.billing.payment.PaymentCollected;
 import com.ttulka.ecommerce.billing.payment.ReferenceId;
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.common.money.Money;
+import com.ttulka.ecommerce.common.primitives.Money;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

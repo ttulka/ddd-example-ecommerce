@@ -1,7 +1,9 @@
 package com.ttulka.ecommerce.sales.order.jdbc;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.sales.FindOrders;
+import com.ttulka.ecommerce.common.primitives.Money;
+import com.ttulka.ecommerce.common.primitives.Quantity;
+import com.ttulka.ecommerce.sales.order.FindOrders;
 import com.ttulka.ecommerce.sales.order.Order;
 import com.ttulka.ecommerce.sales.order.OrderId;
 
@@ -31,20 +33,17 @@ class FindOrdersTest {
         Order order = findOrders.byId(new OrderId(1));
         assertAll(
                 () -> assertThat(order.id()).isEqualTo(new OrderId(1)),
+                () -> assertThat(order.total()).isEqualTo(new Money(1000.f)),
                 () -> assertThat(order.items()).hasSize(2),
-                () -> assertThat(order.items().get(0).code()).isEqualTo("001"),
-                () -> assertThat(order.items().get(0).title()).isEqualTo("Prod 1"),
-                () -> assertThat(order.items().get(0).price()).isEqualTo(123.5f),
-                () -> assertThat(order.items().get(0).quantity()).isEqualTo(1),
-                () -> assertThat(order.items().get(1).code()).isEqualTo("002"),
-                () -> assertThat(order.items().get(1).title()).isEqualTo("Prod 2"),
-                () -> assertThat(order.items().get(1).price()).isEqualTo(321.5f),
-                () -> assertThat(order.items().get(1).quantity()).isEqualTo(2)
+                () -> assertThat(order.items().get(0).unitPrice()).isEqualTo(new Money(123.5f)),
+                () -> assertThat(order.items().get(0).quantity()).isEqualTo(new Quantity(1)),
+                () -> assertThat(order.items().get(1).unitPrice()).isEqualTo(new Money(321.5f)),
+                () -> assertThat(order.items().get(1).quantity()).isEqualTo(new Quantity(2))
         );
     }
 
     @Test
-    void unknown_product_found_for_an_unknown_code() {
+    void unknown_product_found_for_an_unknown_id() {
         Order order = findOrders.byId(new OrderId(123));
 
         assertThat(order.id()).isEqualTo(new OrderId(0));

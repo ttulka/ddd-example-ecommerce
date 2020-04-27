@@ -7,18 +7,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- * Configuration for JDBC implementation for Payment domain.
+ * Configuration for JDBC implementation for Payment service.
  */
 @Configuration
 class PaymentJdbcConfig {
 
     @Bean
-    FindPaymentsJdbc findPayments(JdbcTemplate jdbcTemplate, EventPublisher eventPublisher) {
+    FindPaymentsJdbc findPaymentsJdbc(JdbcTemplate jdbcTemplate, EventPublisher eventPublisher) {
         return new FindPaymentsJdbc(jdbcTemplate, eventPublisher);
     }
 
     @Bean
-    CollectPaymentJdbc collectPayment(JdbcTemplate jdbcTemplate, EventPublisher eventPublisher) {
+    CollectPaymentJdbc collectPaymentJdbc(JdbcTemplate jdbcTemplate, EventPublisher eventPublisher) {
         return new CollectPaymentJdbc(jdbcTemplate, eventPublisher);
     }
 }

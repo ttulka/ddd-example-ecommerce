@@ -1,4 +1,4 @@
--- ------ SALES ------
+-- ------ CATALOG ------
 
 CREATE TABLE IF NOT EXISTS categories (
     id VARCHAR(64) NOT NULL PRIMARY KEY,
@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS categories (
 
 CREATE TABLE IF NOT EXISTS products (
     id VARCHAR(64) NOT NULL PRIMARY KEY,
-    code VARCHAR(50) NOT NULL UNIQUE,
     title VARCHAR(20) NOT NULL,
     description VARCHAR(50) NOT NULL DEFAULT(''),
     price DECIMAL(10,2)
@@ -20,20 +19,33 @@ CREATE TABLE IF NOT EXISTS products_in_categories (
     PRIMARY KEY (product_id, category_id)
 );
 
-CREATE TABLE IF NOT EXISTS orders (
-    id VARCHAR(64) NOT NULL PRIMARY KEY
-);
+-- ------ CART ------
 
-CREATE TABLE IF NOT EXISTS order_items (
-    product_code VARCHAR(50) NOT NULL,
+CREATE TABLE IF NOT EXISTS cart_items (
+    product_id VARCHAR(64) NOT NULL,
     title VARCHAR(20) NOT NULL,
     price DECIMAL(10,2),
     quantity INT NOT NULL DEFAULT(0),
-    order_id VARCHAR(64) NOT NULL,
-    PRIMARY KEY (order_id, product_code)
+    cart_id VARCHAR(64) NOT NULL,
+    PRIMARY KEY (cart_id, product_id, title, price)
 );
 
--- ------ BILLING ------
+-- ------ ORDER ------
+
+CREATE TABLE IF NOT EXISTS orders (
+    id VARCHAR(64) NOT NULL PRIMARY KEY,
+    total DECIMAL(10,2)
+);
+
+CREATE TABLE IF NOT EXISTS order_items (
+    product_id VARCHAR(50) NOT NULL,
+    price DECIMAL(10,2),
+    quantity INT NOT NULL DEFAULT(0),
+    order_id VARCHAR(64) NOT NULL,
+    PRIMARY KEY (order_id, product_id, price)
+);
+
+-- ------ PAYMENT ------
 
 CREATE TABLE IF NOT EXISTS payments (
     id VARCHAR(64) NOT NULL PRIMARY KEY,
@@ -42,7 +54,7 @@ CREATE TABLE IF NOT EXISTS payments (
     status VARCHAR(50) NOT NULL DEFAULT 'NEW'
 );
 
--- ------ SHIPPING ------
+-- ------ DELIVERY ------
 
 CREATE TABLE IF NOT EXISTS deliveries (
     id VARCHAR(64) NOT NULL PRIMARY KEY,
@@ -59,13 +71,13 @@ CREATE TABLE IF NOT EXISTS deliveries (
 -- ------ WAREHOUSE ------
 
 CREATE TABLE IF NOT EXISTS products_in_stock (
-    product_code VARCHAR(50) NOT NULL PRIMARY KEY,
+    product_id VARCHAR(64) NOT NULL PRIMARY KEY,
     amount INT NOT NULL DEFAULT(0)
 );
 
 CREATE TABLE IF NOT EXISTS fetched_products (
-    product_code VARCHAR(50) NOT NULL,
+    product_id VARCHAR(64) NOT NULL,
     amount INT NOT NULL DEFAULT(0),
     order_id VARCHAR(64) NOT NULL,
-    PRIMARY KEY (order_id, product_code)
+    PRIMARY KEY (order_id, product_id)
 );

@@ -1,10 +1,10 @@
 package com.ttulka.ecommerce.billing.payment.jdbc;
 
-import com.ttulka.ecommerce.billing.CollectPayment;
+import com.ttulka.ecommerce.billing.payment.CollectPayment;
 import com.ttulka.ecommerce.billing.payment.Payment;
 import com.ttulka.ecommerce.billing.payment.ReferenceId;
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.common.money.Money;
+import com.ttulka.ecommerce.common.primitives.Money;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Propagation;

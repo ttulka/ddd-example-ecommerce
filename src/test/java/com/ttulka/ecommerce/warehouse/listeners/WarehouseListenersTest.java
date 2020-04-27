@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.sales.OrderPlaced;
-import com.ttulka.ecommerce.shipping.DeliveryDispatched;
+import com.ttulka.ecommerce.sales.order.OrderPlaced;
+import com.ttulka.ecommerce.shipping.delivery.DeliveryDispatched;
 import com.ttulka.ecommerce.warehouse.Amount;
 import com.ttulka.ecommerce.warehouse.FetchGoods;
 import com.ttulka.ecommerce.warehouse.OrderId;
-import com.ttulka.ecommerce.warehouse.ProductCode;
+import com.ttulka.ecommerce.warehouse.ProductId;
 import com.ttulka.ecommerce.warehouse.RemoveFetchedGoods;
 import com.ttulka.ecommerce.warehouse.ToFetch;
 
@@ -47,7 +47,7 @@ class WarehouseListenersTest {
 
         Thread.sleep(1200);
 
-        verify(fetchGoods).fetchFromOrder(new OrderId("TEST123"), List.of(new ToFetch(new ProductCode("test-1"), new Amount(2))));
+        verify(fetchGoods).fetchFromOrder(new OrderId("TEST123"), List.of(new ToFetch(new ProductId("test-1"), new Amount(2))));
     }
 
     @Test

@@ -4,9 +4,9 @@ import java.time.Instant;
 import java.util.UUID;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.shipping.DeliveryDispatched;
 import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Delivery;
+import com.ttulka.ecommerce.shipping.delivery.DeliveryDispatched;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryId;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
 

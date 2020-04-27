@@ -6,10 +6,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.sales.FindOrders;
+import com.ttulka.ecommerce.common.primitives.Money;
+import com.ttulka.ecommerce.common.primitives.Quantity;
+import com.ttulka.ecommerce.sales.order.FindOrders;
 import com.ttulka.ecommerce.sales.order.Order;
 import com.ttulka.ecommerce.sales.order.OrderId;
-import com.ttulka.ecommerce.sales.order.OrderItem;
+import com.ttulka.ecommerce.sales.order.item.OrderItem;
+import com.ttulka.ecommerce.sales.order.item.ProductId;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -30,34 +33,34 @@ final class FindOrdersJdbc implements FindOrders {
     @Override
     public Order byId(OrderId id) {
         var items = jdbcTemplate.queryForList(
-                "SELECT product_code code, title, price, quantity FROM order_items WHERE order_id = ?",
+                "SELECT product_id, price, quantity FROM order_items WHERE order_id = ?",
                 id.value());
 
         var order = jdbcTemplate.queryForList(
-                "SELECT id FROM orders WHERE id = ?",
+                "SELECT id, total FROM orders WHERE id = ?",
                 id.value())
                 .stream().findAny();
 
         return order
-                .map(o -> toOrder(o, items))
+                .map(o -> toOrder(o, items.stream()
+                        .map(this::toOrderItem)
+                        .collect(Collectors.toList())))
                 .orElseGet(() -> new UnknownOrder());
     }
 
-    private Order toOrder(Map<String, Object> order, List<Map<String, Object>> items) {
+    private Order toOrder(Map<String, Object> order, List<OrderItem> items) {
         return new OrderJdbc(
                 new OrderId(order.get("id")),
-                items.stream()
-                        .map(this::toOrderItem)
-                        .collect(Collectors.toList()),
+                items,
+                new Money(((BigDecimal) order.get("total")).floatValue()),
                 jdbcTemplate,
                 eventPublisher);
     }
 
     private OrderItem toOrderItem(Map<String, Object> item) {
         return new OrderItem(
-                (String) item.get("code"),
-                (String) item.get("title"),
-                ((BigDecimal) item.get("price")).floatValue(),
-                (Integer) item.get("quantity"));
+                new ProductId(item.get("product_id")),
+                new Money(((BigDecimal) item.get("price")).floatValue()),
+                new Quantity((Integer) item.get("quantity")));
     }
 }

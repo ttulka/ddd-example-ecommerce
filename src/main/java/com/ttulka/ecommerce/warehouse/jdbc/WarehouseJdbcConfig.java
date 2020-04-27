@@ -8,18 +8,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
- * Configuration for JDBC implementation for Warehouse domain.
+ * Configuration for JDBC implementation for Warehouse service.
  */
 @Configuration
 class WarehouseJdbcConfig {
 
     @Bean
-    WarehouseJdbc warehouse(JdbcTemplate jdbcTemplate) {
+    WarehouseJdbc warehouseJdbc(JdbcTemplate jdbcTemplate) {
         return new WarehouseJdbc(jdbcTemplate);
     }
 
     @Bean
-    GoodsFetchingJdbc goodsFetching(Warehouse warehouse, JdbcTemplate jdbcTemplate, EventPublisher eventPublisher) {
+    GoodsFetchingJdbc goodsFetchingJdbc(Warehouse warehouse, JdbcTemplate jdbcTemplate, EventPublisher eventPublisher) {
         return new GoodsFetchingJdbc(warehouse, jdbcTemplate, eventPublisher);
     }
 }

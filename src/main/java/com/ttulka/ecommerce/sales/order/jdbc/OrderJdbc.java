@@ -1,14 +1,17 @@
 package com.ttulka.ecommerce.sales.order.jdbc;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.sales.OrderPlaced;
+import com.ttulka.ecommerce.common.primitives.Money;
 import com.ttulka.ecommerce.sales.order.OrderId;
-import com.ttulka.ecommerce.sales.order.OrderItem;
+import com.ttulka.ecommerce.sales.order.OrderPlaced;
 import com.ttulka.ecommerce.sales.order.PlaceableOrder;
+import com.ttulka.ecommerce.sales.order.item.OrderItem;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -29,20 +32,22 @@ import static java.util.stream.Collectors.summingInt;
 final class OrderJdbc implements PlaceableOrder {
 
     private final @NonNull OrderId id;
-    private final @NonNull List<OrderItem> items;
+    private final @NonNull Collection<OrderItem> items;
+    private final @NonNull Money total;
 
     private final @NonNull JdbcTemplate jdbcTemplate;
     private final @NonNull EventPublisher eventPublisher;
 
     private boolean placed = false;
 
-    public OrderJdbc(@NonNull OrderId id, @NonNull List<OrderItem> items,
+    public OrderJdbc(@NonNull OrderId id, @NonNull Collection<OrderItem> items, @NonNull Money total,
                      @NonNull JdbcTemplate jdbcTemplate, @NonNull EventPublisher eventPublisher) {
         if (items.isEmpty()) {
             throw new OrderHasNoItemsException();
         }
         this.id = id;
         this.items = items;
+        this.total = total;
         this.jdbcTemplate = jdbcTemplate;
         this.eventPublisher = eventPublisher;
     }
@@ -54,7 +59,12 @@ final class OrderJdbc implements PlaceableOrder {
 
     @Override
     public List<OrderItem> items() {
-        return Collections.unmodifiableList(items);
+        return Collections.unmodifiableList(new ArrayList<>(items));
+    }
+
+    @Override
+    public Money total() {
+        return total;
     }
 
     @Override
@@ -62,20 +72,24 @@ final class OrderJdbc implements PlaceableOrder {
         if (placed) {
             throw new OrderAlreadyPlacedException();
         }
-        jdbcTemplate.update("INSERT INTO orders VALUES (?)", id.value());
+        jdbcTemplate.update("INSERT INTO orders VALUES (?, ?)", id.value(), total.value());
 
-        items.forEach(item -> jdbcTemplate.update("INSERT INTO order_items VALUES (?, ?, ?, ?, ?)",
-                                                  item.code(), item.title(), item.price(), item.quantity(), id.value()));
+        items.forEach(item -> jdbcTemplate.update(
+                "INSERT INTO order_items VALUES (?, ?, ?, ?)",
+                item.productId().value(), item.unitPrice().value(), item.quantity().value(), id.value()));
         placed = true;
 
-        eventPublisher.raise(new OrderPlaced(
+        eventPublisher.raise(toOrderPlaced());
+        log.info("Order placed: {}", this);
+    }
+
+    private OrderPlaced toOrderPlaced() {
+        return new OrderPlaced(
                 Instant.now(),
                 id.value(),
-                items.stream()
-                        .collect(groupingBy(OrderItem::code, summingInt(OrderItem::quantity))),
-                (float) items.stream()
-                        .mapToDouble(OrderItem::total)
-                        .sum()));
-        log.info("Order placed: {}", this);
+                items.stream().collect(groupingBy(
+                        item -> item.productId().value(),
+                        summingInt(item -> item.quantity().value()))),
+                total.value());
     }
 }

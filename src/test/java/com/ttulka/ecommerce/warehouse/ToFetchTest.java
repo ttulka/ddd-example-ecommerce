@@ -9,9 +9,9 @@ class ToFetchTest {
 
     @Test
     void to_fetch_values() {
-        ToFetch toFetch = new ToFetch(new ProductCode("test"), new Amount(123));
+        ToFetch toFetch = new ToFetch(new ProductId("test"), new Amount(123));
         assertAll(
-                () -> assertThat(toFetch.productCode()).isEqualTo(new ProductCode("test")),
+                () -> assertThat(toFetch.productId()).isEqualTo(new ProductId("test")),
                 () -> assertThat(toFetch.amount()).isEqualTo(new Amount(123))
         );
     }

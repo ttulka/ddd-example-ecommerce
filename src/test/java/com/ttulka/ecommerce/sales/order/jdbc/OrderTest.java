@@ -4,11 +4,14 @@ import java.util.Collections;
 import java.util.List;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.sales.OrderPlaced;
+import com.ttulka.ecommerce.common.primitives.Money;
+import com.ttulka.ecommerce.common.primitives.Quantity;
 import com.ttulka.ecommerce.sales.order.Order;
 import com.ttulka.ecommerce.sales.order.OrderId;
-import com.ttulka.ecommerce.sales.order.OrderItem;
+import com.ttulka.ecommerce.sales.order.OrderPlaced;
 import com.ttulka.ecommerce.sales.order.PlaceableOrder;
+import com.ttulka.ecommerce.sales.order.item.OrderItem;
+import com.ttulka.ecommerce.sales.order.item.ProductId;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,38 +39,32 @@ class OrderTest {
 
     @Test
     void items_are_returned() {
-        Order order = new OrderJdbc(
-                new OrderId("TEST123"),
-                List.of(new OrderItem("test-1", "Test 1", 1.f, 1),
-                        new OrderItem("test-2", "Test 2", 2.f, 2)),
+        Order order = new OrderJdbc(new OrderId("TEST123"), List.of(
+                new OrderItem(new ProductId("test-1"), new Money(1.f), new Quantity(1)),
+                new OrderItem(new ProductId("test-2"), new Money(2.f), new Quantity(2))),
+                new Money(3.f),
                 jdbcTemplate, eventPublisher);
         assertAll(
                 () -> assertThat(order.items()).hasSize(2),
-                () -> assertThat(order.items().get(0).code()).isEqualTo("test-1"),
-                () -> assertThat(order.items().get(0).title()).isEqualTo("Test 1"),
-                () -> assertThat(order.items().get(0).price()).isEqualTo(1.f),
-                () -> assertThat(order.items().get(0).quantity()).isEqualTo(1),
-                () -> assertThat(order.items().get(1).code()).isEqualTo("test-2"),
-                () -> assertThat(order.items().get(1).title()).isEqualTo("Test 2"),
-                () -> assertThat(order.items().get(1).price()).isEqualTo(2.f),
-                () -> assertThat(order.items().get(1).quantity()).isEqualTo(2)
+                () -> assertThat(order.items().get(0).unitPrice()).isEqualTo(new Money(1.f)),
+                () -> assertThat(order.items().get(0).quantity()).isEqualTo(new Quantity(1)),
+                () -> assertThat(order.items().get(1).unitPrice()).isEqualTo(new Money(2.f)),
+                () -> assertThat(order.items().get(1).quantity()).isEqualTo(new Quantity(2))
         );
     }
 
     @Test
     void order_contains_at_least_one_item() {
         assertThrows(Order.OrderHasNoItemsException.class,
-                     () -> new OrderJdbc(
-                             new OrderId("TEST123"),
-                             Collections.emptyList(),
-                             jdbcTemplate, eventPublisher));
+                     () -> new OrderJdbc(new OrderId("TEST123"), Collections.emptyList(), Money.ZERO,
+                                         jdbcTemplate, eventPublisher));
     }
 
     @Test
     void placed_order_raises_an_event() {
-        PlaceableOrder order = new OrderJdbc(
-                new OrderId("TEST123"),
-                List.of(new OrderItem("test-code", "Test", 123.5f, 456)),
+        PlaceableOrder order = new OrderJdbc(new OrderId("TEST123"), List.of(
+                new OrderItem(new ProductId("test-1"), new Money(12.34f), new Quantity(123))),
+                new Money(12.34f * 123),
                 jdbcTemplate, eventPublisher);
         order.place();
 
@@ -79,8 +76,8 @@ class OrderTest {
                             () -> assertThat(orderPlaced.when).isNotNull(),
                             () -> assertThat(orderPlaced.orderId).isNotNull(),
                             () -> assertThat(orderPlaced.items).hasSize(1),
-                            () -> assertThat(orderPlaced.items.get("test-code")).isEqualTo(456),
-                            () -> assertThat(orderPlaced.total).isCloseTo(123.5f * 456, offset(0.01f))
+                            () -> assertThat(orderPlaced.items.get("test-1")).isEqualTo(123),
+                            () -> assertThat(orderPlaced.total).isCloseTo(12.34f * 123, offset(0.01f))
                     );
                     return true;
                 }));
@@ -90,7 +87,8 @@ class OrderTest {
     void order_can_be_placed_only_once() {
         PlaceableOrder order = new OrderJdbc(
                 new OrderId("TEST123"),
-                List.of(new OrderItem("test", "Test", 1.f, 1)),
+                List.of(new OrderItem(new ProductId("test-1"), new Money(12.34f), new Quantity(123))),
+                new Money(12.34f),
                 jdbcTemplate, eventPublisher);
         order.place();
 

@@ -10,10 +10,10 @@ mvn spring-boot:run
 
 ## Table of Contents
 
-- [Domain Services](#domain-services)
+- [Domains](#domains)
   + [Core Domain](#core-domain)
   + [Supporting Subdomains](#supporting-subdomains)
-  + [Services Event Workflow](#services-event-workflow)
+  + [Event Workflow](#event-workflow)
   + [Services Dependencies](#services-dependencies)
 - [Architectural Overview](#architectural-overview)
   + [Screaming Architecture](#screaming-architecture)
@@ -21,7 +21,7 @@ mvn spring-boot:run
   + [Assembling](#assembling)
   + [Anatomy of a Service](#anatomy-of-a-service)
 
-## Domain Services
+## Domains
 
 Several [Business Capabilities][vcha] have been identified:
 
@@ -64,25 +64,25 @@ Later, we can think about more supporting domains (not implemented in this proje
   - provide help
   - loyalty program
   
-The e-commerce system is a web application using a **Catalogue** service implementing the [Backends For Frontends (BFF)][bff] pattern.
+The e-commerce system is a web application using a **Portal** component implementing the [Backends For Frontends (BFF)][bff] pattern.
 
 [bff]: https://samnewman.io/patterns/architectural/bff/
 
-### Services Event Workflow
+### Event Workflow
 
-The communication among services is implemented via events:
+The communication among domains is implemented via events:
 
-![Service Event Workflow](doc/services-event-workflow.png)
+![Event Workflow](doc/event-workflow.png)
 
 When the customer places an order the following process starts up (the happy path):
 
-1. Shipping service prepares a new delivery.
-1. Sales service creates a new order and publishes the `OrderPlaced` event.
-1. Shipping service accepts the delivery.
-1. Billing service collects payment for the order and publishes the `PaymentCollected` event.
-1. Warehouse service fetches goods from the stock and publishes the `GoodsFetched` event.
-1. Shipping service dispatches the delivery and publishes the `DeliveryDispatched` event.
-1. Warehouse service updates the stock.
+1. Shipping prepares a new delivery.
+1. Sales creates a new order and publishes the `OrderPlaced` event.
+1. Shipping accepts the delivery.
+1. Billing collects payment for the order and publishes the `PaymentCollected` event.
+1. Warehouse fetches goods from the stock and publishes the `GoodsFetched` event.
+1. Shipping dispatches the delivery and publishes the `DeliveryDispatched` event.
+1. Warehouse updates the stock.
 
 There is only the basic "happy path" workflow implemented with a big room for improvement, for example when Shipping doesn't get bot Events within a time period, the delivery process should be cancelled etc.. 
 
@@ -96,7 +96,7 @@ The actual dependencies come only from Listeners which fulfill the role of the A
 
 Events contain no Domain Objects. 
 
-For communication across Services an Event Publisher abstraction is used, located in the package `..ecommerce.common`. The interface is an Output Port (in the Hexagonal Architecture) and as a cross-cutting concern is its implementation injected by the Application.  
+For communication across Services an Event Publisher abstraction is used, located in the package `..ecommerce.common.events`. The interface is an Output Port (in the Hexagonal Architecture) and as a cross-cutting concern is its implementation injected by the Application.  
 
 ## Architectural Overview
 
@@ -146,7 +146,7 @@ As shown in the previous section, the code is structured by the domain together 
 
 Such a packaging style is the first step for a further modularization. 
 
-The semantic of a package is following: `company.product.domain.aggregate.impl`, where `aggregate` and `impl` are optional. Full example: `com.ttulka.ecommerce.billing.payment.jdbc`. 
+The semantic of a package is following: `company.product.domain.service.[entity|impl]`, where `entity` and `impl` are optional. Full example: `com.ttulka.ecommerce.billing.payment.jdbc`. 
 
 ### Assembling
 
@@ -155,62 +155,66 @@ To show that the Monolith architectural pattern is not equal to the Big Ball Of 
 The services can be further cut into separate modules (eg. Maven artifacts) by feature:
 ```
 com.ttulka.ecommerce:ecommerce-application
-com.ttulka.ecommerce:billing-service
-com.ttulka.ecommerce:sales-service
-com.ttulka.ecommerce:shipping-service
-com.ttulka.ecommerce:warehouse-service
+com.ttulka.ecommerce.sales:catalog-service
+com.ttulka.ecommerce.sales:cart-service
+com.ttulka.ecommerce.sales:order-service
+com.ttulka.ecommerce.billing:payment-service
+com.ttulka.ecommerce.shipping:delivery-service
+com.ttulka.ecommerce.warehouse:warehouse-service
 ```
 
 Or by [component](https://blog.ttulka.com/package-by-component-with-clean-modules-in-java):
 ```
-com.ttulka.ecommerce:billing-domain
-com.ttulka.ecommerce:billing-jdbc
-com.ttulka.ecommerce:billing-rest
-com.ttulka.ecommerce:billing-events
-com.ttulka.ecommerce:billing-listeners
+com.ttulka.ecommerce.billing:payment-domain
+com.ttulka.ecommerce.billing:payment-jdbc
+com.ttulka.ecommerce.billing:payment-rest
+com.ttulka.ecommerce.billing:payment-events
+com.ttulka.ecommerce.billing:payment-listeners
 ```
 
 In detail:
 ```
-com.ttulka.ecommerce:billing-domain
+com.ttulka.ecommerce.billing:payment-domain
     ..billing
         payment
             Payment
             PaymentId
-            ReferenceId
-            Money
-        CollectPayment
-        FindPayments
-com.ttulka.ecommerce:billing-jdbc
+            CollectPayment
+            FindPayments
+com.ttulka.ecommerce.billing:payment-jdbc
     ..billing.payment.jdbc
         PaymentJdbc
-        PaymentsJdbc        
-com.ttulka.ecommerce:billing-rest
-    ..billing.rest
+        CollectPaymentJdbc   
+        FindPaymentsJdbc     
+com.ttulka.ecommerce.billing:payment-rest
+    ..billing.payment.rest
         PaymentController
-com.ttulka.ecommerce:billing-events
-    ..billing
+com.ttulka.ecommerce.billing:payment-events
+    ..billing.payment
         PaymentCollected
-com.ttulka.ecommerce:billing-listeners
-    ..billing.listeners
-        OrderPlacedListener        
+com.ttulka.ecommerce.billing:payment-listeners
+    ..billing.payment.listeners
+        OrderPlacedListener
 ```
 
 Which can be brought together with a Spring Boot Starter, containing only Configuration classes and dependencies on other modules:
 ```
-com.ttulka.ecommerce:billing-spring-boot-starter
-    ..billing
-        payment.jdbc
+com.ttulka.ecommerce.billing:payment-spring-boot-starter
+    ..billing.payment
+        jdbc
             PaymentJdbcConfig
         listeners
-            BillingListenersConfig
+            PaymentListenersConfig
     META-INF
         spring.factories
 ```
 
-Note: Events are actually part of the domain, that's why they are in the package `..ecommerce.billing` and not in `..ecommerce.billing.events`. They are in a separate module to break the build cyclic dependencies: a dependent module (Listener) needs to know only Events and not the entire Domain. 
+Note: Events are actually part of the domain, that's why they are in the package `..ecommerce.billing.payment` and not in `..ecommerce.billing.payment.events`. They are in a separate module to break the build cyclic dependencies: a dependent module (Listener) needs to know only Events and not the entire Domain. 
 
 ### Anatomy of a Service 
+
+**[Service](http://udidahan.com/2010/11/15/the-known-unknowns-of-soa/)** is the technical authority for a specific business capability.
+- Single domain can contain multiple services (for example, Sales domain contains Catalog, Cart and Order services).
 
 **Application** is a deployment unit. A monolithic Application can have more Services.
 - Bootstrap (application container etc.). 

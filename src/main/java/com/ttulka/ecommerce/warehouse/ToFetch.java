@@ -13,11 +13,11 @@ import lombok.ToString;
 @ToString
 public final class ToFetch {
 
-    private final @NonNull ProductCode productCode;
+    private final @NonNull ProductId productId;
     private final @NonNull Amount amount;
 
-    public ProductCode productCode() {
-        return productCode;
+    public ProductId productId() {
+        return productId;
     }
 
     public Amount amount() {

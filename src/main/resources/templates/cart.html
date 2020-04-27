@@ -11,9 +11,10 @@
             <table cellpadding="10" cellspacing="0" border="0">
                 <tr th:each="item: ${items}" class="item">
                     <td th:text="${item.title}" class="title" />
+                    <td th:text="'$' + ${#numbers.formatDecimal(item.price, 1, 2)}" class="price" />
                     <td th:text="${item.quantity}" class="quantity" />
                     <td class="remove">
-                        <a th:href="@{/cart/remove?productCode=__${item.code}__}">&#x2718;</a>
+                        <a th:href="@{/cart/remove?productId=__${item.id}__}">&#x2718;</a>
                     </td>
                 </tr>
             </table>

@@ -1,6 +1,6 @@
 package com.ttulka.ecommerce.billing.payment.jdbc;
 
-import com.ttulka.ecommerce.billing.FindPayments;
+import com.ttulka.ecommerce.billing.payment.FindPayments;
 import com.ttulka.ecommerce.billing.payment.Payments;
 import com.ttulka.ecommerce.common.events.EventPublisher;
 

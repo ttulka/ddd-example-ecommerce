@@ -1,6 +1,6 @@
 package com.ttulka.ecommerce.warehouse.rest;
 
-import com.ttulka.ecommerce.warehouse.ProductCode;
+import com.ttulka.ecommerce.warehouse.ProductId;
 import com.ttulka.ecommerce.warehouse.Warehouse;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +23,6 @@ class WarehouseController {
 
     @GetMapping("/stock/{productCode}")
     public Integer productsInStock(@PathVariable @NonNull String productCode) {
-        return warehouse.leftInStock(new ProductCode(productCode)).amount();
+        return warehouse.leftInStock(new ProductId(productCode)).amount();
     }
 }

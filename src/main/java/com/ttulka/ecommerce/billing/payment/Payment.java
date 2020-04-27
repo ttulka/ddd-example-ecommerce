@@ -1,6 +1,6 @@
 package com.ttulka.ecommerce.billing.payment;
 
-import com.ttulka.ecommerce.common.money.Money;
+import com.ttulka.ecommerce.common.primitives.Money;
 
 /**
  * Payment entity.

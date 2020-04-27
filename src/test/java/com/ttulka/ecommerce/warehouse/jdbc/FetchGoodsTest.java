@@ -11,7 +11,7 @@ import com.ttulka.ecommerce.warehouse.GoodsFetched;
 import com.ttulka.ecommerce.warehouse.GoodsMissed;
 import com.ttulka.ecommerce.warehouse.InStock;
 import com.ttulka.ecommerce.warehouse.OrderId;
-import com.ttulka.ecommerce.warehouse.ProductCode;
+import com.ttulka.ecommerce.warehouse.ProductId;
 import com.ttulka.ecommerce.warehouse.ToFetch;
 import com.ttulka.ecommerce.warehouse.Warehouse;
 
@@ -50,7 +50,7 @@ class FetchGoodsTest {
     void fetched_goods_raises_an_event() {
         String productCode = productCodeInStock(1);
         fetchGoods.fetchFromOrder(new OrderId("TEST123"), List.of(
-                new ToFetch(new ProductCode(productCode), new Amount(1))));
+                new ToFetch(new ProductId(productCode), new Amount(1))));
 
         verify(eventPublisher).raise(argThat(
                 event -> {
@@ -68,25 +68,25 @@ class FetchGoodsTest {
     void fetching_decrease_amount_in_the_stock() {
         String productCode = productCodeInStock(2);
         fetchGoods.fetchFromOrder(new OrderId(123), List.of(
-                new ToFetch(new ProductCode(productCode), new Amount(1))));
+                new ToFetch(new ProductId(productCode), new Amount(1))));
 
-        assertThat(warehouse.leftInStock(new ProductCode(productCode))).isEqualTo(new InStock(1));
+        assertThat(warehouse.leftInStock(new ProductId(productCode))).isEqualTo(new InStock(1));
     }
 
     @Test
     void cannot_decrease_amount_under_zero() {
         String productCode = productCodeInStock(1);
         fetchGoods.fetchFromOrder(new OrderId(123), List.of(
-                new ToFetch(new ProductCode(productCode), new Amount(2))));
+                new ToFetch(new ProductId(productCode), new Amount(2))));
 
-        assertThat(warehouse.leftInStock(new ProductCode(productCode))).isEqualTo(new InStock(0));
+        assertThat(warehouse.leftInStock(new ProductId(productCode))).isEqualTo(new InStock(0));
     }
 
     @Test
     void missed_goods_raises_an_event() {
         String productCode = productCodeInStock(1);
         fetchGoods.fetchFromOrder(new OrderId(123), List.of(
-                new ToFetch(new ProductCode(productCode), new Amount(99))));
+                new ToFetch(new ProductId(productCode), new Amount(99))));
 
         verify(eventPublisher, atLeastOnce()).raise(eq(
                 new GoodsMissed(Instant.now(), productCode, 98)));
@@ -94,7 +94,7 @@ class FetchGoodsTest {
 
     String productCodeInStock(int amount) {
         String productCode = UUID.randomUUID().toString();
-        warehouse.putIntoStock(new ProductCode(productCode), new Amount(amount));
+        warehouse.putIntoStock(new ProductId(productCode), new Amount(amount));
         return productCode;
     }
 }

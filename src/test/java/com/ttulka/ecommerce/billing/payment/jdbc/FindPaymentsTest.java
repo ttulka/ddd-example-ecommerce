@@ -3,12 +3,12 @@ package com.ttulka.ecommerce.billing.payment.jdbc;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ttulka.ecommerce.billing.FindPayments;
+import com.ttulka.ecommerce.billing.payment.FindPayments;
 import com.ttulka.ecommerce.billing.payment.Payment;
 import com.ttulka.ecommerce.billing.payment.PaymentId;
 import com.ttulka.ecommerce.billing.payment.ReferenceId;
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.common.money.Money;
+import com.ttulka.ecommerce.common.primitives.Money;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

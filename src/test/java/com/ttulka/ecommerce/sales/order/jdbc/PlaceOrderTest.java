@@ -3,10 +3,13 @@ package com.ttulka.ecommerce.sales.order.jdbc;
 import java.util.List;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.sales.OrderPlaced;
-import com.ttulka.ecommerce.sales.PlaceOrder;
+import com.ttulka.ecommerce.common.primitives.Money;
+import com.ttulka.ecommerce.common.primitives.Quantity;
 import com.ttulka.ecommerce.sales.order.OrderId;
-import com.ttulka.ecommerce.sales.order.OrderItem;
+import com.ttulka.ecommerce.sales.order.OrderPlaced;
+import com.ttulka.ecommerce.sales.order.PlaceOrder;
+import com.ttulka.ecommerce.sales.order.item.OrderItem;
+import com.ttulka.ecommerce.sales.order.item.ProductId;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +35,9 @@ class PlaceOrderTest {
 
     @Test
     void order_placed_raises_an_event() {
-        placeOrder.place(
-                new OrderId("TEST123"),
-                List.of(new OrderItem("test-code", "Test", 123.5f, 123)));
+        placeOrder.place(new OrderId("TEST123"), List.of(
+                new OrderItem(new ProductId("PTEST"), new Money(123.5f), new Quantity(123))),
+                new Money(123.5f * 123));
 
         verify(eventPublisher).raise(argThat(
                 event -> {
@@ -43,7 +46,7 @@ class PlaceOrderTest {
                     assertAll(
                             () -> assertThat(orderPlaced.when).isNotNull(),
                             () -> assertThat(orderPlaced.items).hasSize(1),
-                            () -> assertThat(orderPlaced.items.get("test-code")).isEqualTo(123),
+                            () -> assertThat(orderPlaced.items.get("PTEST")).isEqualTo(123),
                             () -> assertThat(orderPlaced.total).isCloseTo(123.5f * 123, offset(0.01f))
                     );
                     return true;

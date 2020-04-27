@@ -1,53 +1,24 @@
 package com.ttulka.ecommerce.sales.order;
 
+import com.ttulka.ecommerce.common.primitives.Money;
+import com.ttulka.ecommerce.common.primitives.Quantity;
+import com.ttulka.ecommerce.sales.order.item.OrderItem;
+import com.ttulka.ecommerce.sales.order.item.ProductId;
+
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class OrderItemTest {
 
     @Test
     void order_item_is_created() {
-        OrderItem orderItem = new OrderItem("test-1", "Test 1", 1.5f, 2);
+        OrderItem orderItem = new OrderItem(new ProductId("test-1"), new Money(12.34f), new Quantity(123));
         assertAll(
-                () -> assertThat(orderItem.code()).isEqualTo("test-1"),
-                () -> assertThat(orderItem.title()).isEqualTo("Test 1"),
-                () -> assertThat(orderItem.price()).isEqualTo(1.5f),
-                () -> assertThat(orderItem.quantity()).isEqualTo(2),
-                () -> assertThat(orderItem.total()).isEqualTo(1.5f * 2)
-        );
-    }
-
-    @Test
-    void code_cannot_be_null_or_empty() {
-        assertAll(
-                () -> assertThrows(IllegalArgumentException.class, () -> new OrderItem(null, "Test 1", 1.f, 1)),
-                () -> assertThrows(IllegalArgumentException.class, () -> new OrderItem("", "Test 1", 1.f, 1)),
-                () -> assertThrows(IllegalArgumentException.class, () -> new OrderItem("   ", "Test 1", 1.f, 1))
-        );
-    }
-
-    @Test
-    void title_cannot_be_null_or_empty() {
-        assertAll(
-                () -> assertThrows(IllegalArgumentException.class, () -> new OrderItem("test-1", null, 1.f, 1)),
-                () -> assertThrows(IllegalArgumentException.class, () -> new OrderItem("test-1", "", 1f, 1)),
-                () -> assertThrows(IllegalArgumentException.class, () -> new OrderItem("test-1", "   ", 1.f, 1))
-        );
-    }
-
-    @Test
-    void price_cannot_be_less_than_zero() {
-        assertThrows(IllegalArgumentException.class, () -> new OrderItem("test-1", "Test 1", -1.f, 1));
-    }
-
-    @Test
-    void quantity_cannot_be_less_than_one() {
-        assertAll(
-                () -> assertThrows(IllegalArgumentException.class, () -> new OrderItem("test-1", "Test 1", 1.f, 0)),
-                () -> assertThrows(IllegalArgumentException.class, () -> new OrderItem("test-1", "Test 1", 1.f, -1))
+                () -> assertThat(orderItem.unitPrice()).isEqualTo(new Money(12.34f)),
+                () -> assertThat(orderItem.quantity()).isEqualTo(new Quantity(123)),
+                () -> assertThat(orderItem.total()).isEqualTo(new Money(12.34f * 123))
         );
     }
 }

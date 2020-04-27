@@ -1,13 +1,13 @@
 package com.ttulka.ecommerce.shipping.delivery.jdbc;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.shipping.FindDeliveries;
-import com.ttulka.ecommerce.shipping.PrepareDelivery;
 import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Delivery;
+import com.ttulka.ecommerce.shipping.delivery.FindDeliveries;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
+import com.ttulka.ecommerce.shipping.delivery.PrepareDelivery;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

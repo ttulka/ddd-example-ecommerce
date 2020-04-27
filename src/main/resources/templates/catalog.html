@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+<body>
+    <section layout:fragment="content">
+
+        <h1 th:text="#{catalog.title}">Product Catalog</h1>
+
+        <table th:if="${products}" class="products" cellpadding="10" cellspacing="0" border="0">
+            <tr th:each="product: ${products}" class="product">
+                <th th:text="${product.title}" />
+                <td th:text="${product.description}" />
+                <td th:text="${product.inStock} > 0 ? ${product.inStock} + ' left in stock' : 'sold out'" class="stock" />
+                <td th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}" class="price" />
+                <td>
+                    <form th:action="@{/cart}" method="post">
+                        <input name="productId" th:value="${product.id}" type="hidden">
+                        <input name="title" th:value="${product.title}" type="hidden">
+                        <input name="price" th:value="${product.price}" type="hidden">
+                        <input name="quantity" value="1" type="hidden">
+
+                        <button th:text="#{catalog.product.buy}" type="submit" name="">buy</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+
+    </section>
+</body>
+</html>

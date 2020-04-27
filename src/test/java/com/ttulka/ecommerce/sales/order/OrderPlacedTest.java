@@ -3,8 +3,6 @@ package com.ttulka.ecommerce.sales.order;
 import java.time.Instant;
 import java.util.Map;
 
-import com.ttulka.ecommerce.sales.OrderPlaced;
-
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
