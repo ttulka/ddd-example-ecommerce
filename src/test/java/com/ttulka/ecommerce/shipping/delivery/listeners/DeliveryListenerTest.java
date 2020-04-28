@@ -3,6 +3,7 @@ package com.ttulka.ecommerce.shipping.delivery.listeners;
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import com.ttulka.ecommerce.billing.payment.PaymentCollected;
 import com.ttulka.ecommerce.common.events.EventPublisher;
@@ -22,6 +23,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import static org.awaitility.Awaitility.await;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -49,9 +51,8 @@ class DeliveryListenerTest {
         runTx(() -> eventPublisher.raise(
                 new OrderPlaced(Instant.now(), orderId, Map.of("test-1", 1), 123.5f)));
 
-        Thread.sleep(500);
-
-        verify(updateDelivery).asAccepted(new OrderId(orderId));
+        await().atMost(500, TimeUnit.MILLISECONDS).untilAsserted(
+                () -> verify(updateDelivery).asAccepted(new OrderId(orderId)));
     }
 
     @Test
@@ -66,9 +67,8 @@ class DeliveryListenerTest {
 
         when(findDeliveries.isPrepared(eq(new OrderId(orderId)))).thenReturn(true);
 
-        Thread.sleep(120);
-
-        verify(updateDelivery).asAccepted(new OrderId(orderId));
+        await().atMost(500, TimeUnit.MILLISECONDS).untilAsserted(
+                () -> verify(updateDelivery).asAccepted(new OrderId(orderId)));
     }
 
     @Test
@@ -78,9 +78,8 @@ class DeliveryListenerTest {
 
         runTx(() -> eventPublisher.raise(new GoodsFetched(Instant.now(), orderId)));
 
-        Thread.sleep(120);
-
-        verify(updateDelivery).asFetched(new OrderId(orderId));
+        await().atMost(500, TimeUnit.MILLISECONDS).untilAsserted(
+                () -> verify(updateDelivery).asFetched(new OrderId(orderId)));
     }
 
     @Test
@@ -94,9 +93,8 @@ class DeliveryListenerTest {
 
         when(findDeliveries.isPrepared(eq(new OrderId(orderId)))).thenReturn(true);
 
-        Thread.sleep(120);
-
-        verify(updateDelivery).asFetched(new OrderId(orderId));
+        await().atMost(500, TimeUnit.MILLISECONDS).untilAsserted(
+                () -> verify(updateDelivery).asFetched(new OrderId(orderId)));
     }
 
     @Test
@@ -106,9 +104,8 @@ class DeliveryListenerTest {
 
         runTx(() -> eventPublisher.raise(new PaymentCollected(Instant.now(), orderId)));
 
-        Thread.sleep(120);
-
-        verify(updateDelivery).asPaid(new OrderId(orderId));
+        await().atMost(500, TimeUnit.MILLISECONDS).untilAsserted(
+                () -> verify(updateDelivery).asPaid(new OrderId(orderId)));
     }
 
     @Test
@@ -122,9 +119,8 @@ class DeliveryListenerTest {
 
         when(findDeliveries.isPrepared(eq(new OrderId(orderId)))).thenReturn(true);
 
-        Thread.sleep(120);
-
-        verify(updateDelivery).asPaid(new OrderId(orderId));
+        await().atMost(500, TimeUnit.MILLISECONDS).untilAsserted(
+                () -> verify(updateDelivery).asPaid(new OrderId(orderId)));
     }
 
     private void runTx(Runnable runnable) {

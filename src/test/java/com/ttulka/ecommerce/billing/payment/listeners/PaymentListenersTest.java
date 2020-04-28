@@ -2,6 +2,7 @@ package com.ttulka.ecommerce.billing.payment.listeners;
 
 import java.time.Instant;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.ttulka.ecommerce.billing.payment.CollectPayment;
 import com.ttulka.ecommerce.billing.payment.FindPayments;
@@ -20,6 +21,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
@@ -41,9 +43,8 @@ class PaymentListenersTest {
         runTx(() -> eventPublisher.raise(
                 new OrderPlaced(Instant.now(), "TEST123", Map.of("test", 2), 123.5f)));
 
-        Thread.sleep(1200);
-
-        verify(collectPayment).collect(new ReferenceId("TEST123"), new Money(123.5f));
+        await().atMost(1200, TimeUnit.MILLISECONDS).untilAsserted(
+                () -> verify(collectPayment).collect(new ReferenceId("TEST123"), new Money(123.5f)));
     }
 
     private void runTx(Runnable runnable) {

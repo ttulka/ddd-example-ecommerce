@@ -3,6 +3,7 @@ package com.ttulka.ecommerce.warehouse.listeners;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
 import com.ttulka.ecommerce.sales.order.OrderPlaced;
@@ -24,6 +25,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
@@ -45,18 +47,18 @@ class WarehouseListenersTest {
         runTx(() -> eventPublisher.raise(
                 new OrderPlaced(Instant.now(), "TEST123", Map.of("test-1", 2), 246.f)));
 
-        Thread.sleep(1200);
-
-        verify(fetchGoods).fetchFromOrder(new OrderId("TEST123"), List.of(new ToFetch(new ProductId("test-1"), new Amount(2))));
+        await().atMost(1200, TimeUnit.MILLISECONDS).untilAsserted(
+                () -> verify(fetchGoods).fetchFromOrder(
+                        new OrderId("TEST123"),
+                        List.of(new ToFetch(new ProductId("test-1"), new Amount(2)))));
     }
 
     @Test
     void on_delivery_dispatched_removes_fetched_goods() throws Exception {
         runTx(() -> eventPublisher.raise(new DeliveryDispatched(Instant.now(), "TEST123")));
 
-        Thread.sleep(1200);
-
-        verify(removeFetchedGoods).removeForOrder(new OrderId("TEST123"));
+        await().atMost(1200, TimeUnit.MILLISECONDS).untilAsserted(
+                () -> verify(removeFetchedGoods).removeForOrder(new OrderId("TEST123")));
     }
 
     private void runTx(Runnable runnable) {
