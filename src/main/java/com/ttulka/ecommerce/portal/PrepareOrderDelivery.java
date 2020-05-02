@@ -24,6 +24,7 @@ public class PrepareOrderDelivery {
      * @param address the delivery address
      */
     public void prepareDelivery(@NonNull UUID orderId, @NonNull Address address) {
+        // here a command message PrepareDelivery could be sent for lower coupling
         prepareDelivery.prepare(new OrderId(orderId), address);
     }
 }

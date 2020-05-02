@@ -34,6 +34,7 @@ public class PlaceOrderFromCart {
         if (!cart.hasItems()) {
             throw new PlaceOrderFromCart.NoItemsToOrderException();
         }
+        // here a command message PlaceOrder could be sent for lower coupling
         placeOrder.place(new OrderId(orderId),
                          cart.items().stream()
                                  .map(this::toOrderItem)
