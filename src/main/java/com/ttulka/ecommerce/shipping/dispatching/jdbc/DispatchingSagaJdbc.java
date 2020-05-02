@@ -10,8 +10,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
+@Slf4j
 class DispatchingSagaJdbc implements DispatchingSaga {
 
     private enum State {
@@ -58,7 +60,9 @@ class DispatchingSagaJdbc implements DispatchingSaga {
 
     private boolean isReadyToDispatch(SagaId sagaId) {
         return jdbcTemplate.queryForObject(
-                "SELECT COUNT(state) FROM dispatching_saga WHERE id = ?", Integer.class, sagaId.value())
+                "SELECT COUNT(state) FROM dispatching_saga WHERE id = ? AND state IN (?, ?, ?, ?)",
+                Integer.class, sagaId.value(),
+                State.PREPARED.name(), State.ACCEPTED.name(), State.FETCHED.name(), State.PAID.name())
                == 4 /* prepared, accepted, fetched, paid */;
     }
 
@@ -74,6 +78,7 @@ class DispatchingSagaJdbc implements DispatchingSaga {
 
         } catch (DataIntegrityViolationException e) {
             // this could happen when multiple message come at once (in parallel)
+            log.trace("Failed attempt to dispatch: " + sagaId, e);
         }
     }
 }
