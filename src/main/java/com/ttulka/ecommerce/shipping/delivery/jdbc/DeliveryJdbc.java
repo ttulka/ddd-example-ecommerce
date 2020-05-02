@@ -8,8 +8,10 @@ import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Delivery;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryDispatched;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryId;
+import com.ttulka.ecommerce.shipping.delivery.DeliveryPrepared;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import lombok.AccessLevel;
@@ -32,10 +34,6 @@ final class DeliveryJdbc implements Delivery {
     private final @NonNull OrderId orderId;
     private final @NonNull Address address;
 
-    private boolean prepared;
-    private boolean accepted;
-    private boolean fetched;
-    private boolean paid;
     private boolean dispatched;
 
     private final @NonNull JdbcTemplate jdbcTemplate;
@@ -67,51 +65,30 @@ final class DeliveryJdbc implements Delivery {
 
     @Override
     public void prepare() {
-        if (prepared) {
+        try {
+            jdbcTemplate.update("INSERT INTO deliveries VALUES (?, ?, ?, ?)",
+                                id.value(), orderId.value(), address.person().value(), address.place().value());
+
+        } catch (DataIntegrityViolationException e) {
             throw new DeliveryAlreadyPreparedException();
         }
-        prepared = true;
 
-        jdbcTemplate.update("INSERT INTO deliveries VALUES (?, ?, ?, ?, TRUE, FALSE, FALSE, FALSE, FALSE)",
-                            id.value(), orderId.value(), address.person().value(), address.place().value());
+        eventPublisher.raise(new DeliveryPrepared(Instant.now(), orderId.value()));
 
-        log.debug("Delivery prepared: {}", this);
-    }
-
-    @Override
-    public void markAsAccepted() {
-        accepted = true;
-        jdbcTemplate.update("UPDATE deliveries SET accepted = TRUE WHERE id = ?", id.value());
-
-        log.debug("Delivery marked as accepted: {}", this);
-    }
-
-    @Override
-    public void markAsFetched() {
-        fetched = true;
-        jdbcTemplate.update("UPDATE deliveries SET fetched = TRUE WHERE id = ?", id.value());
-
-        log.debug("Delivery marked as fetched: {}", this);
-    }
-
-    @Override
-    public void markAsPaid() {
-        paid = true;
-        jdbcTemplate.update("UPDATE deliveries SET paid = TRUE WHERE id = ?", id.value());
-
-        log.debug("Delivery marked as paid: {}", this);
+        log.info("Delivery prepared: {}", this);
     }
 
     @Override
     public void dispatch() {
-        if (dispatched) {
+        try {
+            jdbcTemplate.update("INSERT INTO dispatched_deliveries VALUES (?)", id.value());
+
+        } catch (DataIntegrityViolationException e) {
             throw new DeliveryAlreadyDispatchedException();
         }
-        if (!isReadyToDispatch()) {
-            throw new DeliveryNotReadyToBeDispatchedException();
-        }
         dispatched = true;
-        jdbcTemplate.update("UPDATE deliveries SET dispatched = TRUE WHERE id = ?", id.value());
+
+        // do the actual dispatching...
 
         eventPublisher.raise(new DeliveryDispatched(Instant.now(), orderId.value()));
 
@@ -121,10 +98,5 @@ final class DeliveryJdbc implements Delivery {
     @Override
     public boolean isDispatched() {
         return dispatched;
-    }
-
-    @Override
-    public boolean isReadyToDispatch() {
-        return accepted && fetched && paid && !dispatched;
     }
 }

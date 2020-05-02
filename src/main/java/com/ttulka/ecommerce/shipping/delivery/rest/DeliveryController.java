@@ -37,7 +37,7 @@ class DeliveryController {
 
     @GetMapping("/order/{orderId}")
     public Map<String, ?> byOrder(@PathVariable @NonNull Object orderId) {
-        Delivery delivery = findDeliveries.byOrderId(new OrderId(orderId));
+        Delivery delivery = findDeliveries.byOrder(new OrderId(orderId));
         return Map.of(
                 "id", delivery.id().value(),
                 "address", Map.of(

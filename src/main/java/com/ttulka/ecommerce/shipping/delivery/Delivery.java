@@ -16,26 +16,14 @@ public interface Delivery {
      */
     void prepare();
 
-    void markAsAccepted();
-
-    void markAsFetched();
-
-    void markAsPaid();
-
     /**
-     * @throws {@link DeliveryNotReadyToBeDispatchedException} when not ready to be dispatched.
      * @throws {@link DeliveryAlreadyDispatchedException} when already dispatched.
      */
     void dispatch();
 
     boolean isDispatched();
 
-    boolean isReadyToDispatch();
-
     final class DeliveryAlreadyPreparedException extends IllegalStateException {
-    }
-
-    final class DeliveryNotReadyToBeDispatchedException extends IllegalStateException {
     }
 
     final class DeliveryAlreadyDispatchedException extends IllegalStateException {

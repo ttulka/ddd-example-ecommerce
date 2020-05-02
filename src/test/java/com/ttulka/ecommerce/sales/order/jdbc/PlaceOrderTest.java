@@ -45,6 +45,7 @@ class PlaceOrderTest {
                     OrderPlaced orderPlaced = (OrderPlaced) event;
                     assertAll(
                             () -> assertThat(orderPlaced.when).isNotNull(),
+                            () -> assertThat(orderPlaced.orderId).isEqualTo("TEST123"),
                             () -> assertThat(orderPlaced.items).hasSize(1),
                             () -> assertThat(orderPlaced.items.get("PTEST")).isEqualTo(123),
                             () -> assertThat(orderPlaced.total).isCloseTo(123.5f * 123, offset(0.01f))

@@ -37,9 +37,10 @@ class FindDeliveriesJdbc implements FindDeliveries {
 
     @Transactional
     @Override
-    public Delivery byOrderId(OrderId orderId) {
+    public Delivery byOrder(OrderId orderId) {
         var delivery = jdbcTemplate.queryForList(
-                "SELECT id, order_id orderId, person, place, prepared, accepted, fetched, paid, dispatched FROM deliveries " +
+                "SELECT id, order_id orderId, person, place, dd.delivery_id dispatched FROM deliveries " +
+                "LEFT JOIN dispatched_deliveries dd ON id = dd.delivery_id " +
                 "WHERE order_id = ?", orderId.value())
                 .stream().findAny();
 
@@ -62,11 +63,7 @@ class FindDeliveriesJdbc implements FindDeliveries {
                 new Address(
                         new Person((String) delivery.get("person")),
                         new Place((String) delivery.get("place"))),
-                (Boolean) delivery.get("prepared"),
-                (Boolean) delivery.get("accepted"),
-                (Boolean) delivery.get("fetched"),
-                (Boolean) delivery.get("paid"),
-                (Boolean) delivery.get("dispatched"),
+                delivery.get("dispatched") != null,
                 jdbcTemplate, eventPublisher);
     }
 }

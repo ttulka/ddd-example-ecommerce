@@ -13,12 +13,12 @@ public interface FindDeliveries {
     DeliveryInfos all();
 
     /**
-     * Finds a delivery by the order ID.
+     * Finds a delivery by the Order ID.
      *
      * @param orderId the order ID
      * @return the delivery
      */
-    Delivery byOrderId(OrderId orderId);
+    Delivery byOrder(OrderId orderId);
 
     /**
      * Checks if a delivery is prepared for the order ID.

@@ -26,9 +26,11 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 @JdbcTest
 @ContextConfiguration(classes = DeliveryJdbcConfig.class)
-@Sql(statements = "INSERT INTO deliveries VALUES" +
-                  "('000101', '1001', 'Test PersonA', 'Place 1', TRUE, TRUE, TRUE, TRUE, FALSE)," +
-                  "('000102', '1002', 'Test PersonB', 'Place 2', TRUE, TRUE, TRUE, TRUE, TRUE)")
+@Sql(statements = {
+        "INSERT INTO deliveries VALUES" +
+            "('000101', '1001', 'Test PersonA', 'Place 1')," +
+            "('000102', '1002', 'Test PersonB', 'Place 2');",
+        "INSERT INTO dispatched_deliveries VALUES ('000102');"})
 class FindDeliveriesTest {
 
     @Autowired
@@ -53,26 +55,25 @@ class FindDeliveriesTest {
 
     @Test
     void delivery_is_found_by_order_id() {
-        Delivery delivery = findDeliveries.byOrderId(new OrderId("1001"));
+        Delivery delivery = findDeliveries.byOrder(new OrderId("1001"));
         assertAll(
                 () -> assertThat(delivery.id()).isEqualTo(new DeliveryId("000101")),
                 () -> assertThat(delivery.orderId()).isEqualTo(new OrderId("1001")),
                 () -> assertThat(delivery.address()).isEqualTo(new Address(new Person("Test PersonA"), new Place("Place 1"))),
-                () -> assertThat(delivery.isReadyToDispatch()).isTrue(),
                 () -> assertThat(delivery.isDispatched()).isFalse()
         );
     }
 
     @Test
     void delivery_is_not_found_by_order_id() {
-        Delivery delivery = findDeliveries.byOrderId(new OrderId("does not exist"));
+        Delivery delivery = findDeliveries.byOrder(new OrderId("does not exist"));
 
         assertThat(delivery.id()).isEqualTo(new DeliveryId(0));
     }
 
     @Test
     void status_is_merged_with_events_ledger() {
-        Delivery delivery = findDeliveries.byOrderId(new OrderId("1002"));
+        Delivery delivery = findDeliveries.byOrder(new OrderId("1002"));
 
         assertThat(delivery.isDispatched()).isTrue();
     }

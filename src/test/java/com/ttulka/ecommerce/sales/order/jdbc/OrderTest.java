@@ -74,7 +74,7 @@ class OrderTest {
                     OrderPlaced orderPlaced = (OrderPlaced) event;
                     assertAll(
                             () -> assertThat(orderPlaced.when).isNotNull(),
-                            () -> assertThat(orderPlaced.orderId).isNotNull(),
+                            () -> assertThat(orderPlaced.orderId).isEqualTo("TEST123"),
                             () -> assertThat(orderPlaced.items).hasSize(1),
                             () -> assertThat(orderPlaced.items.get("test-1")).isEqualTo(123),
                             () -> assertThat(orderPlaced.total).isCloseTo(12.34f * 123, offset(0.01f))

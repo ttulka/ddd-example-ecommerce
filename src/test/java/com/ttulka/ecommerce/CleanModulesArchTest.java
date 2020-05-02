@@ -127,6 +127,32 @@ class CleanModulesArchTest {
     }
 
     @Test
+    void shipping_dispatching_service_has_no_dependencies_on_others_except_delivery_and_events() {
+        JavaClasses importedClasses = new ClassFileImporter().importPackages(
+                "com.ttulka.ecommerce.shipping.dispatching");
+        ArchRule rule = classes().should().onlyDependOnClassesThat(
+                resideOutsideOfPackages(
+                        "com.ttulka.ecommerce.."
+                ).or(resideInAPackage("com.ttulka.ecommerce.shipping.dispatching.."
+                ).or(resideInAPackage("com.ttulka.ecommerce.shipping.delivery..")
+                ).or(resideInAPackage("com.ttulka.ecommerce.common..")
+                ).or(assignableTo(DomainEvent.class).or(NESTED_CLASSES))));
+        rule.check(importedClasses);
+    }
+
+    @Test
+    void shipping_dispatching_domain_has_no_dependency_to_its_implementation() {
+        JavaClasses importedClasses = new ClassFileImporter().importPackages(
+                "com.ttulka.ecommerce.shipping.dispatching");
+        ArchRule rule = classes()
+                .that().resideOutsideOfPackages(
+                        "com.ttulka.ecommerce.shipping.dispatching.jdbc..")
+                .should().onlyDependOnClassesThat().resideOutsideOfPackages(
+                        "com.ttulka.ecommerce.shipping.dispatching.jdbc..");
+        rule.check(importedClasses);
+    }
+
+    @Test
     void warehouse_service_has_no_dependencies_on_others_except_events() {
         JavaClasses importedClasses = new ClassFileImporter().importPackages(
                 "com.ttulka.ecommerce.warehouse");

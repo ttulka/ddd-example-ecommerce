@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UnknownDeliveryTest {
 
@@ -22,25 +21,19 @@ class UnknownDeliveryTest {
     }
 
     @Test
-    void prepare_and_markAsAccepted_and_markAsFetched_and_markAsPaid_noop() {
+    void prepare_noop() {
         Delivery unknownDelivery = new UnknownDelivery();
         unknownDelivery.prepare();
-        unknownDelivery.markAsAccepted();
-        unknownDelivery.markAsFetched();
-        unknownDelivery.markAsPaid();
 
-        assertThat(unknownDelivery.isReadyToDispatch()).isFalse();
+        assertThat(new UnknownDelivery().isDispatched()).isFalse();
     }
 
     @Test
-    void dispatch_throws() {
-        assertThrows(Delivery.DeliveryNotReadyToBeDispatchedException.class,
-                     () -> new UnknownDelivery().dispatch());
-    }
+    void dispatch_noop() {
+        Delivery unknownDelivery = new UnknownDelivery();
+        unknownDelivery.dispatch();
 
-    @Test
-    void unknown_delivery_is_not_ready_to_dispatch() {
-        assertThat(new UnknownDelivery().isReadyToDispatch()).isFalse();
+        assertThat(new UnknownDelivery().isDispatched()).isFalse();
     }
 
     @Test

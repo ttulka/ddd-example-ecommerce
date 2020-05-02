@@ -60,12 +60,19 @@ CREATE TABLE IF NOT EXISTS deliveries (
     id VARCHAR(64) NOT NULL PRIMARY KEY,
     order_id VARCHAR(64) NOT NULL UNIQUE,
     person VARCHAR(50) NOT NULL,
-    place VARCHAR(100) NOT NULL,
-    prepared BOOLEAN NOT NULL DEFAULT FALSE,
-    accepted BOOLEAN NOT NULL DEFAULT FALSE,
-    fetched BOOLEAN NOT NULL DEFAULT FALSE,
-    paid BOOLEAN NOT NULL DEFAULT FALSE,
-    dispatched BOOLEAN NOT NULL DEFAULT FALSE
+    place VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS dispatched_deliveries (
+    delivery_id VARCHAR(64) NOT NULL PRIMARY KEY
+);
+
+-- ------ SHIPPING DISPATCHING SAGA ------
+
+CREATE TABLE IF NOT EXISTS dispatching_saga (
+    id VARCHAR(64) NOT NULL,
+    state VARCHAR(20) NOT NULL,
+    PRIMARY KEY (id, state)
 );
 
 -- ------ WAREHOUSE ------

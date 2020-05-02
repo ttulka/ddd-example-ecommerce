@@ -51,7 +51,7 @@ class DeliveryControllerTest {
     @Test
     void delivery_by_order() throws Exception {
         Delivery delivery = testDelivery(new DeliveryId("TEST123"), new OrderId("TEST-ORDER1"), "Test Person", "Test Place 123", "test-1", 25);
-        when(findDeliveries.byOrderId(eq(new OrderId("TEST-ORDER1")))).thenReturn(delivery);
+        when(findDeliveries.byOrder(eq(new OrderId("TEST-ORDER1")))).thenReturn(delivery);
 
         mockMvc.perform(get("/delivery/order/TEST-ORDER1"))
                 .andExpect(status().isOk())
