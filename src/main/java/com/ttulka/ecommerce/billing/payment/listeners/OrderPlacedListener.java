@@ -6,14 +6,16 @@ import com.ttulka.ecommerce.common.primitives.Money;
 import com.ttulka.ecommerce.sales.order.OrderPlaced;
 
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Listener for OrderPlaced event.
+ * Payment listener for OrderPlaced event.
  */
+@Component("payment-orderPlacedListener") // a custom name to avoid collision
 @RequiredArgsConstructor
 class OrderPlacedListener {
 

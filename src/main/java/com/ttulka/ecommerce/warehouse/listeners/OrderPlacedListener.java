@@ -10,14 +10,16 @@ import com.ttulka.ecommerce.warehouse.ProductId;
 import com.ttulka.ecommerce.warehouse.ToFetch;
 
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Listener for OrderPlaced event.
+ * Warehouse listener for OrderPlaced event.
  */
+@Component("warehouse-orderPlacedListener") // a custom name to avoid collision
 @RequiredArgsConstructor
 class OrderPlacedListener {
 

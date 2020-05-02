@@ -11,13 +11,14 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 class DispatchingListeners {
 
-    private final DispatchingSaga saga;
+    private final @NonNull DispatchingSaga saga;
 
     @TransactionalEventListener
     @Async

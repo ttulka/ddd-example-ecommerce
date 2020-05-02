@@ -5,14 +5,16 @@ import com.ttulka.ecommerce.warehouse.OrderId;
 import com.ttulka.ecommerce.warehouse.RemoveFetchedGoods;
 
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Listener for DeliveryDispatched event.
+ * Warehouse listener for DeliveryDispatched event.
  */
+@Component("warehouse-deliveryDispatchedListener") // a custom name to avoid collision
 @RequiredArgsConstructor
 class DeliveryDispatchedListener {
 

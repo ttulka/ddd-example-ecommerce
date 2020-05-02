@@ -7,6 +7,7 @@ import com.ttulka.ecommerce.shipping.dispatching.SagaId;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -20,9 +21,9 @@ class DispatchingSagaJdbc implements DispatchingSaga {
         DISPATCHED
     }
 
-    private final DispatchDelivery dispatchDelivery;
+    private final @NonNull DispatchDelivery dispatchDelivery;
 
-    private final JdbcTemplate jdbcTemplate;
+    private final @NonNull JdbcTemplate jdbcTemplate;
 
     @Override
     public void prepared(SagaId sagaId) {
