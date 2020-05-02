@@ -5,6 +5,7 @@ import com.ttulka.ecommerce.shipping.delivery.OrderId;
 import com.ttulka.ecommerce.shipping.dispatching.DispatchingSaga;
 import com.ttulka.ecommerce.shipping.dispatching.SagaId;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import lombok.NonNull;
@@ -62,9 +63,14 @@ class DispatchingSagaJdbc implements DispatchingSaga {
     }
 
     private void dispatch(SagaId sagaId) {
-        jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", sagaId.value(), State.DISPATCHED.name());
+        try {
+            jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", sagaId.value(), State.DISPATCHED.name());
 
-        // here an integration message DispatchDelivery could be sent for lower coupling
-        dispatchDelivery.byOrder(new OrderId(sagaId.value()));
+            // here a command message DispatchDelivery could be sent for lower coupling
+            dispatchDelivery.byOrder(new OrderId(sagaId.value()));
+
+        } catch (DataIntegrityViolationException e) {
+            // this could happen when multiple message come at once (in parallel)
+        }
     }
 }

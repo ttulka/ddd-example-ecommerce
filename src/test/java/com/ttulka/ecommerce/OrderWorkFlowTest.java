@@ -56,7 +56,7 @@ class OrderWorkFlowTest {
 
         // delivery is dispatched
 
-        Thread.sleep(1200);  // possible resend delay due to events ordering
+        Thread.sleep(120);  // wait for all message to come
 
         Object orderId = with()
                 .port(port)
@@ -104,7 +104,7 @@ class OrderWorkFlowTest {
                 .post()
                 .andReturn();
 
-        Thread.sleep(1200);  // possible resend delay due to events ordering
+        Thread.sleep(120);  // wait for all message to come
 
         // (1000-123) left in stock
         String leftInStock = with()
@@ -141,7 +141,7 @@ class OrderWorkFlowTest {
                 .post()
                 .andReturn();
 
-        Thread.sleep(1200);  // possible resend delay due to events ordering
+        Thread.sleep(120);  // wait for all message to come
 
         // payment is collected
 

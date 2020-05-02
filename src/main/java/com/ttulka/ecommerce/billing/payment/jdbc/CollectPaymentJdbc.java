@@ -29,15 +29,7 @@ class CollectPaymentJdbc implements CollectPayment {
         payment.request();
 
         // here an external service like PayPal or Visa is called...
-        processPayment();
 
         payment.collect();
-    }
-
-    private void processPayment() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ignore) {
-        }
     }
 }
