@@ -67,6 +67,9 @@ class DispatchingSagaJdbc implements DispatchingSaga {
             jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", sagaId.value(), State.DISPATCHED.name());
 
             // here a command message DispatchDelivery could be sent for lower coupling
+            // a saga should not query or modify master data, only its private state
+            // this is a shortcut where the saga is calling the Delivery service
+            // better would be when the saga just sends a message
             dispatchDelivery.byOrder(new OrderId(sagaId.value()));
 
         } catch (DataIntegrityViolationException e) {
