@@ -9,12 +9,12 @@ class SagaIdTest {
 
     @Test
     void string_id_value() {
-        SagaId sagaId = new SagaId(123L);
-        assertThat(sagaId.value()).isEqualTo("123");
+        OrderId orderId = new OrderId(123L);
+        assertThat(orderId.value()).isEqualTo("123");
     }
 
     @Test
     void fails_for_null() {
-        assertThrows(IllegalArgumentException.class, () -> new SagaId(null));
+        assertThrows(IllegalArgumentException.class, () -> new OrderId(null));
     }
 }

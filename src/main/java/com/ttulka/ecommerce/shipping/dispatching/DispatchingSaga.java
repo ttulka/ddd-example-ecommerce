@@ -9,11 +9,11 @@ package com.ttulka.ecommerce.shipping.dispatching;
  */
 public interface DispatchingSaga {
 
-    void prepared(SagaId sagaId);
+    void prepared(OrderId orderId);
 
-    void accepted(SagaId sagaId);
+    void accepted(OrderId orderId);
 
-    void fetched(SagaId sagaId);
+    void fetched(OrderId orderId);
 
-    void paid(SagaId sagaId);
+    void paid(OrderId orderId);
 }

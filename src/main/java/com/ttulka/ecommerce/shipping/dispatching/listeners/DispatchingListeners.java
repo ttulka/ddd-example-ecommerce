@@ -4,7 +4,7 @@ import com.ttulka.ecommerce.billing.payment.PaymentCollected;
 import com.ttulka.ecommerce.sales.order.OrderPlaced;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryPrepared;
 import com.ttulka.ecommerce.shipping.dispatching.DispatchingSaga;
-import com.ttulka.ecommerce.shipping.dispatching.SagaId;
+import com.ttulka.ecommerce.shipping.dispatching.OrderId;
 import com.ttulka.ecommerce.warehouse.GoodsFetched;
 
 import org.springframework.scheduling.annotation.Async;
@@ -23,24 +23,24 @@ class DispatchingListeners {
     @TransactionalEventListener
     @Async
     public void on(DeliveryPrepared event) {
-        saga.prepared(new SagaId(event.orderId));
+        saga.prepared(new OrderId(event.orderId));
     }
 
     @TransactionalEventListener
     @Async
     public void on(OrderPlaced event) {
-        saga.accepted(new SagaId(event.orderId));
+        saga.accepted(new OrderId(event.orderId));
     }
 
     @TransactionalEventListener
     @Async
     public void on(GoodsFetched event) {
-        saga.fetched(new SagaId(event.orderId));
+        saga.fetched(new OrderId(event.orderId));
     }
 
     @TransactionalEventListener
     @Async
     public void on(PaymentCollected event) {
-        saga.paid(new SagaId(event.referenceId));
+        saga.paid(new OrderId(event.referenceId));
     }
 }

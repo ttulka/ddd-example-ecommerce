@@ -1,9 +1,8 @@
 package com.ttulka.ecommerce.shipping.dispatching.jdbc;
 
 import com.ttulka.ecommerce.shipping.delivery.DispatchDelivery;
-import com.ttulka.ecommerce.shipping.delivery.OrderId;
 import com.ttulka.ecommerce.shipping.dispatching.DispatchingSaga;
-import com.ttulka.ecommerce.shipping.dispatching.SagaId;
+import com.ttulka.ecommerce.shipping.dispatching.OrderId;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,56 +28,56 @@ class DispatchingSagaJdbc implements DispatchingSaga {
     private final @NonNull JdbcTemplate jdbcTemplate;
 
     @Override
-    public void prepared(SagaId sagaId) {
-        jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", sagaId.value(), State.PREPARED.name());
-        attemptToDispatch(sagaId);
+    public void prepared(OrderId orderId) {
+        jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", orderId.value(), State.PREPARED.name());
+        attemptToDispatch(orderId);
     }
 
     @Override
-    public void accepted(SagaId sagaId) {
-        jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", sagaId.value(), State.ACCEPTED.name());
-        attemptToDispatch(sagaId);
+    public void accepted(OrderId orderId) {
+        jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", orderId.value(), State.ACCEPTED.name());
+        attemptToDispatch(orderId);
     }
 
     @Override
-    public void fetched(SagaId sagaId) {
-        jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", sagaId.value(), State.FETCHED.name());
-        attemptToDispatch(sagaId);
+    public void fetched(OrderId orderId) {
+        jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", orderId.value(), State.FETCHED.name());
+        attemptToDispatch(orderId);
     }
 
     @Override
-    public void paid(SagaId sagaId) {
-        jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", sagaId.value(), State.PAID.name());
-        attemptToDispatch(sagaId);
+    public void paid(OrderId orderId) {
+        jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", orderId.value(), State.PAID.name());
+        attemptToDispatch(orderId);
     }
 
-    private void attemptToDispatch(SagaId sagaId) {
-        if (isReadyToDispatch(sagaId)) {
-            dispatch(sagaId);
+    private void attemptToDispatch(OrderId orderId) {
+        if (isReadyToDispatch(orderId)) {
+            dispatch(orderId);
         }
     }
 
-    private boolean isReadyToDispatch(SagaId sagaId) {
+    private boolean isReadyToDispatch(OrderId orderId) {
         return jdbcTemplate.queryForObject(
-                "SELECT COUNT(state) FROM dispatching_saga WHERE id = ? AND state IN (?, ?, ?, ?)",
-                Integer.class, sagaId.value(),
+                "SELECT COUNT(state) FROM dispatching_saga WHERE order_id = ? AND state IN (?, ?, ?, ?)",
+                Integer.class, orderId.value(),
                 State.PREPARED.name(), State.ACCEPTED.name(), State.FETCHED.name(), State.PAID.name())
                == 4 /* prepared, accepted, fetched, paid */;
     }
 
-    private void dispatch(SagaId sagaId) {
+    private void dispatch(OrderId orderId) {
         try {
-            jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", sagaId.value(), State.DISPATCHED.name());
+            jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", orderId.value(), State.DISPATCHED.name());
 
             // here a command message DispatchDelivery could be sent for lower coupling
             // a saga should not query or modify master data, only its private state
             // this is a shortcut where the saga is calling the Delivery service
             // better would be when the saga just sends a message
-            dispatchDelivery.byOrder(new OrderId(sagaId.value()));
+            dispatchDelivery.byOrder(new com.ttulka.ecommerce.shipping.delivery.OrderId(orderId.value()));
 
         } catch (DataIntegrityViolationException e) {
             // this could happen when multiple message come at once (in parallel)
-            log.trace("Failed attempt to dispatch: " + sagaId, e);
+            log.trace("Failed attempt to dispatch: " + orderId, e);
         }
     }
 }

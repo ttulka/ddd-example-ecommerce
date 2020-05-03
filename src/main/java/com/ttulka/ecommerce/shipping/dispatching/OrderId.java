@@ -9,11 +9,11 @@ import lombok.ToString;
  */
 @EqualsAndHashCode
 @ToString
-public final class SagaId {
+public final class OrderId {
 
     private final @NonNull String id;
 
-    public SagaId(@NonNull Object id) {
+    public OrderId(@NonNull Object id) {
         var idVal = id.toString().strip();
         if (idVal.isBlank()) {
             throw new IllegalArgumentException("ID cannot be empty!");

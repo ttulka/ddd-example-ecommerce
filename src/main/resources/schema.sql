@@ -70,9 +70,9 @@ CREATE TABLE IF NOT EXISTS dispatched_deliveries (
 -- ------ SHIPPING DISPATCHING SAGA ------
 
 CREATE TABLE IF NOT EXISTS dispatching_saga (
-    id VARCHAR(64) NOT NULL,
+    order_id VARCHAR(64) NOT NULL,
     state VARCHAR(20) NOT NULL,
-    PRIMARY KEY (id, state)
+    PRIMARY KEY (order_id, state)
 );
 
 -- ------ WAREHOUSE ------
