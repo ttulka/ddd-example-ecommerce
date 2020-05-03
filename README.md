@@ -150,6 +150,8 @@ The semantic of a package is following: `company.product.domain.service.[entity|
 
 ### Assembling
 
+While a physically monolithic deployment is okay for most cases, a logically monolithic design, where everything is coupled with everything, is evil.
+
 To show that the Monolith architectural pattern is not equal to the Big Ball Of Mud, a modular monolithic architecture was chosen as the start point.
 
 The services can be further cut into separate modules (eg. Maven artifacts) by feature:
