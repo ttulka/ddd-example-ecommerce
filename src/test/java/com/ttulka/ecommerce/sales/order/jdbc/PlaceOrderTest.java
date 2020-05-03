@@ -36,7 +36,7 @@ class PlaceOrderTest {
     @Test
     void order_placed_raises_an_event() {
         placeOrder.place(new OrderId("TEST123"), List.of(
-                new OrderItem(new ProductId("PTEST"), new Money(123.5f), new Quantity(123))),
+                new OrderItem(new ProductId("PTEST"), new Quantity(123))),
                 new Money(123.5f * 123));
 
         verify(eventPublisher).raise(argThat(

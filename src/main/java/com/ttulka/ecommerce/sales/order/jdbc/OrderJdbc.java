@@ -27,20 +27,20 @@ import static java.util.stream.Collectors.summingInt;
  * JDBC implementation for Order entity.
  */
 @EqualsAndHashCode(of = "id")
-@ToString(of = {"id", "items"})
+@ToString(of = {"id", "total", "items"})
 @Slf4j
 final class OrderJdbc implements PlaceableOrder {
 
     private final @NonNull OrderId id;
-    private final @NonNull Collection<OrderItem> items;
     private final @NonNull Money total;
+    private final @NonNull Collection<OrderItem> items;
 
     private final @NonNull JdbcTemplate jdbcTemplate;
     private final @NonNull EventPublisher eventPublisher;
 
     private boolean placed = false;
 
-    public OrderJdbc(@NonNull OrderId id, @NonNull Collection<OrderItem> items, @NonNull Money total,
+    public OrderJdbc(@NonNull OrderId id, @NonNull Money total, @NonNull Collection<OrderItem> items,
                      @NonNull JdbcTemplate jdbcTemplate, @NonNull EventPublisher eventPublisher) {
         if (items.isEmpty()) {
             throw new OrderHasNoItemsException();
@@ -75,8 +75,8 @@ final class OrderJdbc implements PlaceableOrder {
         jdbcTemplate.update("INSERT INTO orders VALUES (?, ?)", id.value(), total.value());
 
         items.forEach(item -> jdbcTemplate.update(
-                "INSERT INTO order_items VALUES (?, ?, ?, ?)",
-                item.productId().value(), item.unitPrice().value(), item.quantity().value(), id.value()));
+                "INSERT INTO order_items VALUES (?, ?, ?)",
+                item.productId().value(), item.quantity().value(), id.value()));
         placed = true;
 
         eventPublisher.raise(toOrderPlaced());

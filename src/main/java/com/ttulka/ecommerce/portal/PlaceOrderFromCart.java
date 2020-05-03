@@ -46,10 +46,7 @@ public class PlaceOrderFromCart {
     }
 
     private OrderItem toOrderItem(CartItem cartItem) {
-        return new OrderItem(
-                new ProductId(cartItem.productId().value()),
-                cartItem.unitPrice(),
-                cartItem.quantity());
+        return new OrderItem(new ProductId(cartItem.productId().value()), cartItem.quantity());
     }
 
     /**

@@ -29,7 +29,7 @@ class PlaceOrderJdbc implements PlaceOrder {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void place(@NonNull OrderId orderId, @NonNull Collection<OrderItem> items, @NonNull Money total) {
-        new OrderJdbc(orderId, items, total, jdbcTemplate, eventPublisher)
+        new OrderJdbc(orderId, total, items, jdbcTemplate, eventPublisher)
                 .place();
     }
 }

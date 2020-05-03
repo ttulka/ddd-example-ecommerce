@@ -33,7 +33,7 @@ final class FindOrdersJdbc implements FindOrders {
     @Override
     public Order byId(OrderId id) {
         var items = jdbcTemplate.queryForList(
-                "SELECT product_id, price, quantity FROM order_items WHERE order_id = ?",
+                "SELECT product_id, quantity FROM order_items WHERE order_id = ?",
                 id.value());
 
         var order = jdbcTemplate.queryForList(
@@ -51,8 +51,8 @@ final class FindOrdersJdbc implements FindOrders {
     private Order toOrder(Map<String, Object> order, List<OrderItem> items) {
         return new OrderJdbc(
                 new OrderId(order.get("id")),
-                items,
                 new Money(((BigDecimal) order.get("total")).floatValue()),
+                items,
                 jdbcTemplate,
                 eventPublisher);
     }
@@ -60,7 +60,6 @@ final class FindOrdersJdbc implements FindOrders {
     private OrderItem toOrderItem(Map<String, Object> item) {
         return new OrderItem(
                 new ProductId(item.get("product_id")),
-                new Money(((BigDecimal) item.get("price")).floatValue()),
                 new Quantity((Integer) item.get("quantity")));
     }
 }

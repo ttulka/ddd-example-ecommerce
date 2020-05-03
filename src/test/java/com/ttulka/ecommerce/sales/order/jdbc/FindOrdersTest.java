@@ -35,9 +35,7 @@ class FindOrdersTest {
                 () -> assertThat(order.id()).isEqualTo(new OrderId(1)),
                 () -> assertThat(order.total()).isEqualTo(new Money(1000.f)),
                 () -> assertThat(order.items()).hasSize(2),
-                () -> assertThat(order.items().get(0).unitPrice()).isEqualTo(new Money(123.5f)),
                 () -> assertThat(order.items().get(0).quantity()).isEqualTo(new Quantity(1)),
-                () -> assertThat(order.items().get(1).unitPrice()).isEqualTo(new Money(321.5f)),
                 () -> assertThat(order.items().get(1).quantity()).isEqualTo(new Quantity(2))
         );
     }
