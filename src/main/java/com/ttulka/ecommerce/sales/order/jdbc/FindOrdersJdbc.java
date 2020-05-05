@@ -45,7 +45,7 @@ final class FindOrdersJdbc implements FindOrders {
                 .map(o -> toOrder(o, items.stream()
                         .map(this::toOrderItem)
                         .collect(Collectors.toList())))
-                .orElseGet(() -> new UnknownOrder());
+                .orElseGet(UnknownOrder::new);
     }
 
     private Order toOrder(Map<String, Object> order, List<OrderItem> items) {

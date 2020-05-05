@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 final class PaymentJdbc implements Payment {
 
     enum Status {
-        NEW, REQUESTED, RECEIVED
+        NEW, REQUESTED, COLLECTED
     }
 
     private final @NonNull PaymentId id;
@@ -89,7 +89,7 @@ final class PaymentJdbc implements Payment {
         if (!isRequested()) {
             throw new PaymentNotRequestedYetException();
         }
-        status = Status.RECEIVED;
+        status = Status.COLLECTED;
 
         jdbcTemplate.update(
                 "UPDATE payments SET status = ? WHERE id = ?",
@@ -102,11 +102,11 @@ final class PaymentJdbc implements Payment {
 
     @Override
     public boolean isRequested() {
-        return Status.REQUESTED == status || Status.RECEIVED == status;
+        return Status.REQUESTED == status || Status.COLLECTED == status;
     }
 
     @Override
     public boolean isCollected() {
-        return Status.RECEIVED == status;
+        return Status.COLLECTED == status;
     }
 }

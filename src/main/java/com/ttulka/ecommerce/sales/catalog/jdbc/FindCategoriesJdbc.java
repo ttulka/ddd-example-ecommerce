@@ -32,6 +32,6 @@ final class FindCategoriesJdbc implements FindCategories {
                 "SELECT id, uri, title FROM categories WHERE id = ?",
                 id.value(), jdbcTemplate).stream()
                 .findFirst()
-                .orElseGet(() -> new UnknownCategory());
+                .orElseGet(UnknownCategory::new);
     }
 }

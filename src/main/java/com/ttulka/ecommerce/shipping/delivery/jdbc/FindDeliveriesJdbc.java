@@ -46,7 +46,7 @@ class FindDeliveriesJdbc implements FindDeliveries {
 
         return delivery
                 .map(this::toDelivery)
-                .orElseGet(() -> new UnknownDelivery());
+                .orElseGet(UnknownDelivery::new);
     }
 
     @Override

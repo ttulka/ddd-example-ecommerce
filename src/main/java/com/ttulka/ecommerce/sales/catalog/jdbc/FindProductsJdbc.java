@@ -33,6 +33,6 @@ final class FindProductsJdbc implements FindProducts {
                 "SELECT id, title, description, price FROM products WHERE id = ?",
                 id.value(), jdbcTemplate).stream()
                 .findFirst()
-                .orElseGet(() -> new UnknownProduct());
+                .orElseGet(UnknownProduct::new);
     }
 }

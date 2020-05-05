@@ -59,7 +59,7 @@ final class OrderJdbc implements PlaceableOrder {
 
     @Override
     public List<OrderItem> items() {
-        return Collections.unmodifiableList(new ArrayList<>(items));
+        return List.copyOf(items);
     }
 
     @Override

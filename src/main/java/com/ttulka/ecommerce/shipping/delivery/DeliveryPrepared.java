@@ -13,7 +13,7 @@ import lombok.ToString;
  * Delivery Prepared domain event.
  */
 @RequiredArgsConstructor
-@EqualsAndHashCode(of = "deliveryId")
+@EqualsAndHashCode(of = "orderId")
 @ToString
 public final class DeliveryPrepared implements DomainEvent {
 

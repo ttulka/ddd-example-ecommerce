@@ -2,4 +2,4 @@ TRUNCATE TABLE payments;
 
 INSERT INTO payments VALUES
     ('101', '1001', 100.5, 'REQUESTED'),
-    ('102', '1002', 200.5, 'RECEIVED');
+    ('102', '1002', 200.5, 'COLLECTED');
