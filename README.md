@@ -216,7 +216,12 @@ Note: Events are actually part of the domain, that's why they are in the package
 ### Anatomy of a Service 
 
 **[Service](http://udidahan.com/2010/11/15/the-known-unknowns-of-soa/)** is the technical authority for a specific business capability.
-- Single domain can contain multiple services (for example, Sales domain contains Catalog, Cart and Order services).
+- There is a one-to-one mapping between a Bounded Context and a Subdomain (ideal case).
+- A Bounded Context defines the boundaries of the biggest services possible.
+- A Bounded Context can be decomposed into multiple service boundaries.
+    - For example, Sales domain contains Catalog, Cart and Order services.
+- A service boundaries are based on service responsibilities and behavior.
+- A service is defined by its logical boundaries, not a physical deployment unit.
 
 **Application** is a deployment unit. A monolithic Application can have more Services.
 - Bootstrap (application container etc.). 
