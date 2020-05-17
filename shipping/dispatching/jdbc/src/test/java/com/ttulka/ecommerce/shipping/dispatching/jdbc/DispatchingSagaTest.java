@@ -1,0 +1,90 @@
+package com.ttulka.ecommerce.shipping.dispatching.jdbc;
+
+import com.ttulka.ecommerce.common.events.EventPublisher;
+import com.ttulka.ecommerce.shipping.delivery.DispatchDelivery;
+import com.ttulka.ecommerce.shipping.dispatching.DispatchingSaga;
+import com.ttulka.ecommerce.shipping.dispatching.OrderId;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ContextConfiguration;
+
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+
+@JdbcTest
+@ContextConfiguration(classes = DispatchingSagaTest.TestConfig.class)
+class DispatchingSagaTest {
+
+    @Autowired
+    private DispatchingSaga saga;
+
+    @MockBean
+    private DispatchDelivery dispatchDelivery;
+
+    @MockBean
+    private EventPublisher eventPublisher;
+
+    @Test
+    void delivery_is_dispatched() {
+        saga.prepared(new OrderId("TEST"));
+        saga.accepted(new OrderId("TEST"));
+        saga.fetched(new OrderId("TEST"));
+        saga.paid(new OrderId("TEST"));
+
+        verify(dispatchDelivery).byOrder(new com.ttulka.ecommerce.shipping.delivery.OrderId("TEST"));
+    }
+
+    @Test
+    void not_paid_delivery_is_not_dispatched() {
+        saga.prepared(new OrderId("TEST"));
+        saga.accepted(new OrderId("TEST"));
+        saga.fetched(new OrderId("TEST"));
+        //saga.paid(new SagaId("TEST"));
+
+        verifyNoInteractions(dispatchDelivery);
+    }
+
+    @Test
+    void not_fetched_delivery_is_not_dispatched() {
+        saga.prepared(new OrderId("TEST"));
+        saga.accepted(new OrderId("TEST"));
+        //saga.fetched(new SagaId("TEST"));
+        saga.paid(new OrderId("TEST"));
+
+        verifyNoInteractions(dispatchDelivery);
+    }
+
+    @Test
+    void not_accepted_delivery_is_not_dispatched() {
+        saga.prepared(new OrderId("TEST"));
+        //saga.accepted(new SagaId("TEST"));
+        saga.fetched(new OrderId("TEST"));
+        saga.paid(new OrderId("TEST"));
+
+        verifyNoInteractions(dispatchDelivery);
+    }
+
+    @Test
+    void not_prepared_delivery_is_not_dispatched() {
+        //saga.prepared(new SagaId("TEST"));
+        saga.accepted(new OrderId("TEST"));
+        saga.fetched(new OrderId("TEST"));
+        saga.paid(new OrderId("TEST"));
+
+        verifyNoInteractions(dispatchDelivery);
+    }
+
+    @Configuration
+    static class TestConfig {
+        @Bean
+        DispatchingSagaJdbc dispatchingSagaJdbc(DispatchDelivery dispatchDelivery, JdbcTemplate jdbcTemplate) {
+            return new DispatchingSagaJdbc(dispatchDelivery, jdbcTemplate);
+        }
+    }
+}

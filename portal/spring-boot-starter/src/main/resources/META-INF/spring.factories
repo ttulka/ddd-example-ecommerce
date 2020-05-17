@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.ttulka.ecommerce.portal.PortalConfig,\
+  com.ttulka.ecommerce.portal.web.PortalWebConfig,\
+  com.ttulka.ecommerce.portal.web.CartController,\
+  com.ttulka.ecommerce.portal.web.CatalogController,\
+  com.ttulka.ecommerce.portal.web.OrderController

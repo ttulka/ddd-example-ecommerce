@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.ttulka.ecommerce.warehouse.jdbc.WarehouseJdbcConfig,\
+  com.ttulka.ecommerce.warehouse.listeners.OrderPlacedListener,\
+  com.ttulka.ecommerce.warehouse.listeners.DeliveryDispatchedListener,\
+  com.ttulka.ecommerce.warehouse.rest.WarehouseController

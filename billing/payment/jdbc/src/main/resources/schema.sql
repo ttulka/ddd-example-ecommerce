@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS payments (
+    id VARCHAR(64) NOT NULL PRIMARY KEY,
+    reference_id VARCHAR(64) NOT NULL,
+    total DECIMAL(10,2),
+    status VARCHAR(50) NOT NULL DEFAULT 'NEW'
+);

@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS deliveries (
+    id VARCHAR(64) NOT NULL PRIMARY KEY,
+    order_id VARCHAR(64) NOT NULL UNIQUE,
+    person VARCHAR(50) NOT NULL,
+    place VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS dispatched_deliveries (
+    delivery_id VARCHAR(64) NOT NULL PRIMARY KEY
+);
