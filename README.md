@@ -219,6 +219,8 @@ com.ttulka.ecommerce.billing:payment-spring-boot-starter
 
 Note: Events are actually part of the domain, that's why they are in the package `..ecommerce.billing.payment` and not in `..ecommerce.billing.payment.events`. They are in a separate module to break the build cyclic dependencies: a dependent module (Listener) needs to know only Events and not the entire Domain. 
 
+See this approach in an alternative brach: [modulith](https://github.com/ttulka/ddd-example-ecommerce/tree/modulith).
+
 ### Anatomy of a Service 
 
 **[Service](http://udidahan.com/2010/11/15/the-known-unknowns-of-soa/)** is the technical authority for a specific business capability.
