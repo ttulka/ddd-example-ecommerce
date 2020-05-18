@@ -10,7 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import io.restassured.RestAssured;
-import io.restassured.filter.cookie.CookieFilter;
+import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 
 import static io.restassured.RestAssured.with;
@@ -32,25 +32,30 @@ class OrderWorkFlowTest {
 
     @Test
     void order_is_shipped() throws Exception {
-        CookieFilter cookieFilter = new CookieFilter(); // share cookies among requests
-
-        with() // add an cart item
-                .filter(cookieFilter)
+        with() // place order
                 .port(port)
-                .basePath("/cart")
-                .param("productId", "p-1")
-                .param("title", "Prod 1")
-                .param("price", 1.f)
-                .param("quantity", 1)
+                .basePath("/order")
+                .contentType(ContentType.JSON)
+                .body("{" +
+                      "\"orderId\": \"order-1\"," +
+                      "\"total\": 123.5," +
+                      "\"items\": [{" +
+                          "\"productId\": \"p-1\"," +
+                          "\"quantity\": 5" +
+                      "}]" +
+                      "}")
                 .post()
                 .andReturn();
 
-        with() // place an order
-                .filter(cookieFilter)
+        with() // prepare delivery
                 .port(port)
-                .basePath("/order")
-                .formParam("name", "Test Name")
-                .formParam("address", "Test Address 123")
+                .basePath("/delivery")
+                .contentType(ContentType.JSON)
+                .body("{" +
+                      "\"orderId\": \"order-1\"," +
+                      "\"name\": \"Test Name\"," +
+                      "\"address\": \"Test Address 123\"" +
+                      "}")
                 .post()
                 .andReturn();
 
@@ -65,12 +70,12 @@ class OrderWorkFlowTest {
                 .andReturn()
                 .jsonPath().getMap("[0]").get("orderId");
 
-        assertThat(orderId).isNotNull().as("No delivery found for a new order.");
+        assertThat(orderId).isEqualTo("order-1").as("No delivery found for a new order.");
 
         JsonPath deliveryJson = with()
                 .port(port)
                 .basePath("/delivery")
-                .get("/order/" + orderId)
+                .get("/order/order-1")
                 .andReturn()
                 .jsonPath();
 
@@ -82,25 +87,30 @@ class OrderWorkFlowTest {
 
     @Test
     void dispatched_items_are_removed_from_stock() throws Exception {
-        CookieFilter cookieFilter = new CookieFilter(); // share cookies among requests
-
-        with() // add an cart item
-                .filter(cookieFilter)
+        with() // place order
                 .port(port)
-                .basePath("/cart")
-                .param("productId", "p-2")
-                .param("title", "Prod 2")
-                .param("price", 2.f)
-                .param("quantity", 123)
+                .basePath("/order")
+                .contentType(ContentType.JSON)
+                .body("{" +
+                      "\"orderId\": \"order-2\"," +
+                      "\"total\": 123.5," +
+                      "\"items\": [{" +
+                          "\"productId\": \"p-2\"," +
+                          "\"quantity\": 123" +
+                      "}]" +
+                      "}")
                 .post()
                 .andReturn();
 
-        with() // place an order
-                .filter(cookieFilter)
+        with() // prepare delivery
                 .port(port)
-                .basePath("/order")
-                .formParam("name", "Test Name")
-                .formParam("address", "Test Address 123")
+                .basePath("/delivery")
+                .contentType(ContentType.JSON)
+                .body("{" +
+                      "\"orderId\": \"order-2\"," +
+                      "\"name\": \"Test Name\"," +
+                      "\"address\": \"Test Address 123\"" +
+                      "}")
                 .post()
                 .andReturn();
 
@@ -119,25 +129,30 @@ class OrderWorkFlowTest {
 
     @Test
     void payment_for_an_order_is_collected() throws Exception {
-        CookieFilter cookieFilter = new CookieFilter(); // share cookies among requests
-
-        with() // add an cart item
-                .filter(cookieFilter)
+        with() // place order
                 .port(port)
-                .basePath("/cart")
-                .param("productId", "p-3")
-                .param("title", "Prod 3")
-                .param("price", 3.50f)
-                .param("quantity", 3)
+                .basePath("/order")
+                .contentType(ContentType.JSON)
+                .body("{" +
+                      "\"orderId\": \"order-3\"," +
+                      "\"total\": 123.5," +
+                      "\"items\": [{" +
+                          "\"productId\": \"p-3\"," +
+                          "\"quantity\": 5" +
+                      "}]" +
+                      "}")
                 .post()
                 .andReturn();
 
-        with() // place an order
-                .filter(cookieFilter)
+        with() // prepare delivery
                 .port(port)
-                .basePath("/order")
-                .formParam("name", "Test Name")
-                .formParam("address", "Test Address 123")
+                .basePath("/delivery")
+                .contentType(ContentType.JSON)
+                .body("{" +
+                      "\"orderId\": \"order-3\"," +
+                      "\"name\": \"Test Name\"," +
+                      "\"address\": \"Test Address 123\"" +
+                      "}")
                 .post()
                 .andReturn();
 
@@ -154,6 +169,6 @@ class OrderWorkFlowTest {
 
         assertAll(
                 () -> assertThat(payment.get("collected")).isEqualTo(true).as("Payment is not collected."),
-                () -> assertThat(payment.get("total")).isEqualTo(10.5f).as("Payment does not match."));
+                () -> assertThat(payment.get("total")).isEqualTo(123.5f).as("Payment does not match."));
     }
 }

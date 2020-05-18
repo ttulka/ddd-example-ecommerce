@@ -5,12 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ttulka.ecommerce.sales</groupId>
     <artifactId>catalog-modules</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>domain</module>
         <module>jdbc</module>
+        <module>rest</module>
         <module>spring-boot-starter</module>
     </modules>
 </project>

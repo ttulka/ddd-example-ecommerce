@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.ttulka.ecommerce</groupId>
         <artifactId>ecommerce-parent</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
         <relativePath>../../../parent/pom.xml</relativePath>
     </parent>
 
@@ -17,12 +17,12 @@
         <dependency>
             <groupId>com.ttulka.ecommerce.sales</groupId>
             <artifactId>order-events</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ttulka.ecommerce.common</groupId>
             <artifactId>common-primitives</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

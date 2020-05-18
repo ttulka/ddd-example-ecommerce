@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.ttulka.ecommerce</groupId>
         <artifactId>ecommerce-parent</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
         <relativePath>../parent/pom.xml</relativePath>
     </parent>
 
@@ -16,47 +16,47 @@
         <dependency>
             <groupId>com.ttulka.ecommerce.sales</groupId>
             <artifactId>catalog-spring-boot-starter</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ttulka.ecommerce.sales</groupId>
             <artifactId>cart-spring-boot-starter</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ttulka.ecommerce.sales</groupId>
             <artifactId>order-spring-boot-starter</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ttulka.ecommerce.warehouse</groupId>
             <artifactId>warehouse-spring-boot-starter</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ttulka.ecommerce.billing</groupId>
             <artifactId>payment-spring-boot-starter</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ttulka.ecommerce.shipping</groupId>
             <artifactId>delivery-spring-boot-starter</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ttulka.ecommerce.shipping</groupId>
             <artifactId>dispatching-spring-boot-starter</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ttulka.ecommerce.portal</groupId>
             <artifactId>portal-spring-boot-starter</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.ttulka.ecommerce.common</groupId>
             <artifactId>common-events</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>

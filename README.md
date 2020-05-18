@@ -1,4 +1,4 @@
-# DDD Example Project in Java: E-Commerce (Modulith)
+# DDD Example Project in Java: E-Commerce (Microfrontend)
 
 *Disclaimer:* This is an alternative branch, for more info please check out [master](https://github.com/ttulka/ddd-example-ecommerce).
 
@@ -19,11 +19,3 @@ mvn spring-boot:run -f application/pom.xml
 ## About the Branch
 
 TDB
-
-In this branch, all services are cut into separate Maven modules and brought together again in a "modulithic" application later.
-
-Every service has multiple Maven modules for a layer (technical cut).
-
-Although the final artifact (the application) is a physically monolithic deployment unit, logical separation by feature/component into services is projected into the code structure. 
-
-In a real-world scenario there would be a separate Git repository for each domain or service.
