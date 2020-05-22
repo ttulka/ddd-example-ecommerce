@@ -26,6 +26,7 @@ mvn spring-boot:run
   + [Packaging](#packaging)
   + [Assembling](#assembling)
   + [Anatomy of a Service](#anatomy-of-a-service)
+- [Where to Next](#where-to-next)
 
 ## Domains
 
@@ -278,4 +279,20 @@ As a concrete example consider the Business Capability to find payments in Billi
 
 ![Service Anatomy](doc/service-anatomy-example.png)
 
-There is no arrow from Configuration to Gateways because `PaymentController` is annotated with Spring's `@Component` which makes it available for component scanning the application is based on. This is only one possible approach. Another option would be to put the Controller as a Bean into the Configuration, etc..  
+There is no arrow from Configuration to Gateways because `PaymentController` is annotated with Spring's `@Component` which makes it available for component scanning the application is based on. This is only one possible approach. Another option would be to put the Controller as a Bean into the Configuration, etc..
+
+## Conclusion
+
+The goal of this project is to demonstrate basic principles of Domain-Driven Design in a simple but non-trivial example.
+
+For the sake of simplicity a very well-known domain (e-commerce) was chosen. As every domain differs in context of business, several assumption must have been made.
+
+Although all fundamental use-case were implemented, there is still a room for improvement. Cross-cutting concerns like authentication, authorization or monitoring are not implemented.
+
+### Where to Next
+
+Check out the alternative branches to see additional concepts in action:
+
+- [Modulith](https://github.com/ttulka/ddd-example-ecommerce/tree/modulith): A separate Maven module per service.
+- [Microfrontends](https://github.com/ttulka/ddd-example-ecommerce/tree/microfrontend): Service Web Components as part of the service codebase.
+
