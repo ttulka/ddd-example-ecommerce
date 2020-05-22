@@ -44,7 +44,7 @@ class DeliveryControllerTest {
     private PrepareDelivery prepareDelivery;
 
     @Test
-    void all_deliveries() throws Exception {
+    void all_deliveries_are_listed() throws Exception {
         DeliveryInfos deliveryInfos = testDeliveryInfos(new DeliveryId("TEST123"), new OrderId("TEST-ORDER1"));
         when(findDeliveries.all()).thenReturn(deliveryInfos);
 
@@ -56,7 +56,7 @@ class DeliveryControllerTest {
     }
 
     @Test
-    void delivery_by_order() throws Exception {
+    void delivery_by_order_is_listed() throws Exception {
         Delivery delivery = testDelivery(new DeliveryId("TEST123"), new OrderId("TEST-ORDER1"), "Test Person", "Test Place 123", "test-1", 25);
         when(findDeliveries.byOrder(eq(new OrderId("TEST-ORDER1")))).thenReturn(delivery);
 
