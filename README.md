@@ -26,7 +26,8 @@ mvn spring-boot:run
   + [Packaging](#packaging)
   + [Assembling](#assembling)
   + [Anatomy of a Service](#anatomy-of-a-service)
-- [Where to Next](#where-to-next)
+- [Conclusion](#conclusion)
+  + [Where to Next](#where-to-next)
 
 ## Domains
 
