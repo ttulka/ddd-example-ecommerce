@@ -70,6 +70,6 @@ customElements.define(pageName, class extends HTMLElement {
     }
     _prepareDelivery(orderId, delivery) {
         deliveryService.prepare(orderId, delivery)
-            .then(_ => console.debug('Delivery prepared', orderId, delivery));;
+            .then(_ => console.debug('Delivery prepared', orderId, delivery));
     }
 });
