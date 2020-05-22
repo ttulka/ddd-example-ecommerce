@@ -49,7 +49,7 @@ class CartControllerTest {
         mockMvc.perform(get("/cart"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is("test-1")))
+                .andExpect(jsonPath("$[0].productId", is("test-1")))
                 .andExpect(jsonPath("$[0].title", is("Test")))
                 .andExpect(jsonPath("$[0].price", is(123.0))) /* price x quantity */
                 .andExpect(jsonPath("$[0].quantity", is(123)));

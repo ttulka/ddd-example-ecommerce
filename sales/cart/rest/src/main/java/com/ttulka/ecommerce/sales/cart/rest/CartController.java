@@ -38,7 +38,7 @@ class CartController {
         CartId cartId = new CartIdFromCookies(request, response).cartId();
         return retrieveCart.byId(cartId).items().stream()
                 .map(item -> Map.of(
-                        "id", item.productId().value(),
+                        "productId", item.productId().value(),
                         "title", item.title().value(),
                         "price", item.total().value(),
                         "quantity", item.quantity().value()))
@@ -52,7 +52,7 @@ class CartController {
         retrieveCart.byId(cartId).add(new CartItem(
                 new ProductId(addRequest.get("productId")),
                 new Title((String)addRequest.get("title")),
-                new Money(((Double)addRequest.get("price")).floatValue()),
+                new Money(((Number)addRequest.get("price")).floatValue()),
                 new Quantity((Integer)addRequest.get("quantity"))));
     }
 
