@@ -12,6 +12,7 @@
         <module>domain</module>
         <module>jdbc</module>
         <module>rest</module>
+        <module>webcomp</module>
         <module>spring-boot-starter</module>
     </modules>
 </project>

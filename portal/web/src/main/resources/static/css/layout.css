@@ -2,19 +2,24 @@ body {
     font-family: sans-serif;
     padding: 0;
     margin: 0;
-    background-color: beige;
+    background-color: #ffffe6;
     color: #222;
 }
 
 a {
     color: inherit;
 }
+input {
+    border: 1px solid gray;
+    padding: 0.2em 0.5em;
+}
 
 #header {
-    background-color: olivedrab;
+    background-color: #66a3ff;
     color: white;
     font-weight: bold;
-    padding: 1em 2em;
+    padding: 0 2em;
+    height: 3em;
 }
 
 #content {
@@ -38,7 +43,14 @@ a {
 .error {
     color: red;
 }
+input.error {
+    border-color: red;
+}
 
+catalog-categories-menu {
+    float: left;
+    padding: 1em;
+}
 .categories a {
     color: inherit;
     display: inline-block;
@@ -47,9 +59,15 @@ a {
 .categories a.home {
     text-decoration: none;
 }
-.categories a.cart {
-    text-decoration: none;
+
+cart-menu-link {
+    display: inline-block;
     float: right;
+    padding: 1em;
+}
+cart-menu-link a {
+    text-decoration: none;
+    color: yellow;
 }
 
 .products .product th, .products .product td {
@@ -68,12 +86,21 @@ a {
     color: darkgreen;
 }
 
+cart-buy-button .buy {
+    border: 1px solid #888;
+    background-color: #ddd;
+    padding: 0.2em 0.5em;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 .cart .item td {
     border-bottom: 1px solid grey;
 }
-.cart .item .remove a {
+.cart .item .remove {
     text-decoration: none;
     color: red;
+    cursor: pointer;
 }
 .cart .item .quantity {
     font-weight: bold;

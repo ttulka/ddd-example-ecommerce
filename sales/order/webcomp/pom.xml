@@ -3,16 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.ttulka.ecommerce.sales</groupId>
-    <artifactId>catalog-modules</artifactId>
-    <version>1.2-SNAPSHOT</version>
-    <packaging>pom</packaging>
+    <parent>
+        <groupId>com.ttulka.ecommerce</groupId>
+        <artifactId>ecommerce-parent</artifactId>
+        <version>1.2-SNAPSHOT</version>
+        <relativePath>../../../parent/pom.xml</relativePath>
+    </parent>
 
-    <modules>
-        <module>domain</module>
-        <module>jdbc</module>
-        <module>rest</module>
-        <module>webcomp</module>
-        <module>spring-boot-starter</module>
-    </modules>
+    <groupId>com.ttulka.ecommerce.sales</groupId>
+    <artifactId>order-webcomp</artifactId>
+
 </project>
