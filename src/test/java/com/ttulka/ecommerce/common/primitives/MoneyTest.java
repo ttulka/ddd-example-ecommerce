@@ -20,6 +20,11 @@ class MoneyTest {
     }
 
     @Test
+    void zero_money_has_a_zero_value() {
+        assertThat(Money.ZERO.value()).isEqualTo(0.f);
+    }
+
+    @Test
     void money_fails_for_a_negative_value() {
         assertThrows(IllegalArgumentException.class, () -> new Money(-12.34f));
     }
