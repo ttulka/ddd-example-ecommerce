@@ -2,14 +2,12 @@ package com.ttulka.ecommerce;
 
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
-import io.restassured.RestAssured;
 import io.restassured.filter.cookie.CookieFilter;
 import io.restassured.path.json.JsonPath;
 
@@ -24,11 +22,6 @@ class OrderWorkFlowTest {
 
     @LocalServerPort
     private int port;
-
-    @BeforeAll
-    static void setupRestAssured() {
-        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    }
 
     @Test
     void order_is_shipped() throws Exception {
@@ -58,7 +51,7 @@ class OrderWorkFlowTest {
 
         Thread.sleep(120);  // wait for all message to come
 
-        Object orderId = with()
+        Object orderId = with().log().ifValidationFails()
                 .port(port)
                 .basePath("/delivery")
                 .get()
@@ -67,7 +60,7 @@ class OrderWorkFlowTest {
 
         assertThat(orderId).isNotNull().as("No delivery found for a new order.");
 
-        JsonPath deliveryJson = with()
+        JsonPath deliveryJson = with().log().ifValidationFails()
                 .port(port)
                 .basePath("/delivery")
                 .get("/order/" + orderId)
@@ -107,7 +100,7 @@ class OrderWorkFlowTest {
         Thread.sleep(120);  // wait for all message to come
 
         // (1000-123) left in stock
-        String leftInStock = with()
+        String leftInStock = with().log().ifValidationFails()
                 .port(port)
                 .basePath("/warehouse/stock")
                 .get("p-2")
@@ -145,7 +138,7 @@ class OrderWorkFlowTest {
 
         // payment is collected
 
-        Map<String, Object> payment = with()
+        Map<String, Object> payment = with().log().ifValidationFails()
                 .port(port)
                 .basePath("/payment")
                 .get()
