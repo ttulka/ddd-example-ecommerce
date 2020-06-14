@@ -14,6 +14,16 @@ class QuantityTest {
     }
 
     @Test
+    void zero_quantity_has_a_zero_value() {
+        assertThat(Quantity.ZERO.value()).isEqualTo(0);
+    }
+
+    @Test
+    void one_quantity_has_a_value_equals_one() {
+        assertThat(Quantity.ONE.value()).isEqualTo(1);
+    }
+
+    @Test
     void quantity_fails_for_a_value_less_than_zero() {
         assertThrows(IllegalArgumentException.class, () -> new Quantity(-1));
     }
