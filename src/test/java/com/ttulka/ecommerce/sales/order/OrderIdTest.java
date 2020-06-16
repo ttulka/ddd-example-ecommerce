@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class OrderIdTest {
 
-    private static final String STR_64_CHARS = "0123456789012345678901234567890123456789012345678901234567890123";
-
     @Test
     void string_id_value() {
         OrderId orderId = new OrderId(123L);
