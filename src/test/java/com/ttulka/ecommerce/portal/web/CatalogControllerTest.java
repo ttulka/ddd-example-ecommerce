@@ -11,6 +11,7 @@ import com.ttulka.ecommerce.sales.catalog.product.Product;
 import com.ttulka.ecommerce.sales.catalog.product.ProductId;
 import com.ttulka.ecommerce.sales.catalog.product.Products;
 import com.ttulka.ecommerce.sales.catalog.product.Title;
+import com.ttulka.ecommerce.warehouse.Amount;
 import com.ttulka.ecommerce.warehouse.InStock;
 import com.ttulka.ecommerce.warehouse.Warehouse;
 
@@ -46,7 +47,7 @@ class CatalogControllerTest {
     void index_has_products() throws Exception {
         Products products = testProducts();
         when(findProducts.all()).thenReturn(products);
-        when(warehouse.leftInStock(any())).thenReturn(new InStock(1));
+        when(warehouse.leftInStock(any())).thenReturn(new InStock(new Amount(1)));
 
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
@@ -57,7 +58,7 @@ class CatalogControllerTest {
     void category_has_products() throws Exception {
         Products products = testProducts();
         when(findProductsFromCategory.byUri(new Uri("test-category"))).thenReturn(products);
-        when(warehouse.leftInStock(any())).thenReturn(new InStock(1));
+        when(warehouse.leftInStock(any())).thenReturn(new InStock(new Amount(1)));
 
         mockMvc.perform(get("/category/test-category"))
                 .andExpect(status().isOk())

@@ -1,5 +1,6 @@
 package com.ttulka.ecommerce.warehouse.rest;
 
+import com.ttulka.ecommerce.warehouse.Amount;
 import com.ttulka.ecommerce.warehouse.InStock;
 import com.ttulka.ecommerce.warehouse.ProductId;
 import com.ttulka.ecommerce.warehouse.Warehouse;
@@ -27,7 +28,7 @@ class WarehouseControllerTest {
 
     @Test
     void left_in_stock() throws Exception {
-        when(warehouse.leftInStock(eq(new ProductId("test-123")))).thenReturn(new InStock(456));
+        when(warehouse.leftInStock(eq(new ProductId("test-123")))).thenReturn(new InStock(new Amount(456)));
 
         mockMvc.perform(get("/warehouse/stock/test-123"))
                 .andExpect(status().isOk())

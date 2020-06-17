@@ -70,7 +70,7 @@ class FetchGoodsTest {
         fetchGoods.fetchFromOrder(new OrderId(123), List.of(
                 new ToFetch(new ProductId(productCode), new Amount(1))));
 
-        assertThat(warehouse.leftInStock(new ProductId(productCode))).isEqualTo(new InStock(1));
+        assertThat(warehouse.leftInStock(new ProductId(productCode))).isEqualTo(new InStock(new Amount(1)));
     }
 
     @Test
@@ -79,7 +79,7 @@ class FetchGoodsTest {
         fetchGoods.fetchFromOrder(new OrderId(123), List.of(
                 new ToFetch(new ProductId(productCode), new Amount(2))));
 
-        assertThat(warehouse.leftInStock(new ProductId(productCode))).isEqualTo(new InStock(0));
+        assertThat(warehouse.leftInStock(new ProductId(productCode))).isEqualTo(new InStock(Amount.ZERO));
     }
 
     @Test

@@ -23,6 +23,6 @@ class WarehouseController {
 
     @GetMapping("/stock/{productId}")
     public Integer productsInStock(@PathVariable @NonNull String productId) {
-        return warehouse.leftInStock(new ProductId(productId)).amount();
+        return warehouse.leftInStock(new ProductId(productId)).amount().value();
     }
 }
