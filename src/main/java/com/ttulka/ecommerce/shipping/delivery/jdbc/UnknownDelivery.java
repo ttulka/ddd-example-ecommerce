@@ -7,14 +7,12 @@ import com.ttulka.ecommerce.shipping.delivery.OrderId;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.ToString;
 
 /**
  * Null object implementation for Delivery entity.
  */
-@RequiredArgsConstructor
-@Slf4j
+@ToString
 final class UnknownDelivery implements Delivery {
 
     @Override

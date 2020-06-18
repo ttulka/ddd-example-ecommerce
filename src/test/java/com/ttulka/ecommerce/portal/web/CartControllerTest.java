@@ -33,10 +33,6 @@ class CartControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-//    @MockBean
-//    private ListCartItems listCartItems;
-//    @MockBean
-//    private RemoveCartItem removeCartItem;
     @MockBean
     private RetrieveCart retrieveCart;
 

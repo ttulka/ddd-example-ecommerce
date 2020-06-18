@@ -35,16 +35,17 @@ final class CartIdFromCookies {
                             .findAny()
                             .orElseGet(() -> UUID.randomUUID().toString())
                     : UUID.randomUUID().toString());
-            save();
+
+            saveCookie(cartId.value());
         }
         return cartId;
     }
 
-    private void save() {
-        response.addCookie(cookie(COOKIE_NAME, cartId.value()));
+    private void saveCookie(String value) {
+        response.addCookie(asCookie(COOKIE_NAME, value));
     }
 
-    private Cookie cookie(String name, String value) {
+    private Cookie asCookie(String name, String value) {
         var cookie = new Cookie(name, value);
         cookie.setPath("/");
         return cookie;
