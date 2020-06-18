@@ -24,8 +24,9 @@ final class WarehouseJdbc implements Warehouse {
                 "SELECT amount FROM products_in_stock WHERE product_id = ?",
                 Integer.class, productId.value())
                 .stream().findAny()
+                .map(Amount::new)
                 .map(InStock::new)
-                .orElseGet(() -> new InStock(0));
+                .orElseGet(() -> new InStock(Amount.ZERO));
     }
 
     @Override

@@ -28,7 +28,7 @@ class WarehouseController {
 
     @GetMapping("/stock/{productId}")
     public Integer leftInStock(@PathVariable @NonNull String productId) {
-        return warehouse.leftInStock(new ProductId(productId)).amount();
+        return warehouse.leftInStock(new ProductId(productId)).amount().value();
     }
 
     @PostMapping("/stock")
@@ -37,7 +37,7 @@ class WarehouseController {
                 .map(ProductId::new)
                 .map(pId -> Map.of(
                         "productId", pId.value(),
-                        "inStock", warehouse.leftInStock(pId).amount()))
+                        "inStock", warehouse.leftInStock(pId).amount().value()))
                 .toArray();
     }
 }

@@ -49,7 +49,7 @@ class GoodsFetchingJdbc implements FetchGoods, RemoveFetchedGoods {
                     Instant.now(), item.productId().value(), inStock.needsYet(item.amount()).value()));
         }
         if (!inStock.isSoldOut()) {
-            int amountToFetch = Math.min(item.amount().value(), inStock.amount());
+            int amountToFetch = Math.min(item.amount().value(), inStock.amount().value());
             jdbcTemplate.update(
                     "INSERT INTO fetched_products VALUES (?, ?, ?)",
                     item.productId().value(), amountToFetch, orderId.value());
