@@ -32,19 +32,19 @@ class WarehouseTest {
     @Test
     void left_in_stock_returned() {
         InStock inStock = warehouse.leftInStock(new ProductId("test-1"));
-        assertThat(inStock).isEqualTo(new InStock(123));
+        assertThat(inStock).isEqualTo(new InStock(new Amount(123)));
     }
 
     @Test
     void zero_left_in_stock_returned_for_an_unknown_product() {
         InStock inStock = warehouse.leftInStock(new ProductId("XXX"));
-        assertThat(inStock).isEqualTo(new InStock(0));
+        assertThat(inStock).isEqualTo(new InStock(new Amount(0)));
     }
 
     @Test
     void product_is_put_into_stock() {
         warehouse.putIntoStock(new ProductId("test-xxx"), new Amount(123));
-        assertThat(warehouse.leftInStock(new ProductId("test-xxx"))).isEqualTo(new InStock(123));
+        assertThat(warehouse.leftInStock(new ProductId("test-xxx"))).isEqualTo(new InStock(new Amount(123)));
     }
 
     @Configuration

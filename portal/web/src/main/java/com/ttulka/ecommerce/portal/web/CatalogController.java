@@ -55,7 +55,7 @@ class CatalogController {
                 "title", product.title().value(),
                 "description", product.description().value(),
                 "price", product.price().value(),
-                "inStock", inStock(product).amount());
+                "inStock", inStock(product).amount().value());
     }
 
     private InStock inStock(Product product) {

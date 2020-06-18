@@ -17,7 +17,6 @@ import com.ttulka.ecommerce.warehouse.Warehouse;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +34,6 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 
 @JdbcTest
-@AutoConfigureTestDatabase
 @ContextConfiguration(classes = FetchGoodsTest.TestConfig.class)
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 class FetchGoodsTest {
@@ -74,7 +72,7 @@ class FetchGoodsTest {
         fetchGoods.fetchFromOrder(new OrderId(123), List.of(
                 new ToFetch(new ProductId(productCode), new Amount(1))));
 
-        assertThat(warehouse.leftInStock(new ProductId(productCode))).isEqualTo(new InStock(1));
+        assertThat(warehouse.leftInStock(new ProductId(productCode))).isEqualTo(new InStock(new Amount(1)));
     }
 
     @Test
@@ -83,7 +81,7 @@ class FetchGoodsTest {
         fetchGoods.fetchFromOrder(new OrderId(123), List.of(
                 new ToFetch(new ProductId(productCode), new Amount(2))));
 
-        assertThat(warehouse.leftInStock(new ProductId(productCode))).isEqualTo(new InStock(0));
+        assertThat(warehouse.leftInStock(new ProductId(productCode))).isEqualTo(new InStock(new Amount(0)));
     }
 
     @Test

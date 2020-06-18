@@ -8,7 +8,9 @@ import lombok.ToString;
  */
 @EqualsAndHashCode
 @ToString
-public final class Amount {
+public final class Amount implements Comparable<Amount> {
+
+    public static final Amount ZERO = new Amount(0);
 
     private final int amount;
 
@@ -21,5 +23,20 @@ public final class Amount {
 
     public int value() {
         return amount;
+    }
+
+    public Amount add(Amount addend) {
+        return new Amount(amount + addend.amount);
+    }
+
+    public Amount subtract(Amount addend) {
+        return new Amount(amount - addend.amount);
+    }
+
+    @Override
+    public int compareTo(Amount other) {
+        if (amount > other.amount) return 1;
+        if (amount < other.amount) return -1;
+        return 0;
     }
 }
