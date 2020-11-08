@@ -74,7 +74,7 @@ class DispatchDeliveryTest {
 
         @Bean
         DispatchDelivery dispatchDelivery(FindDeliveries findDeliveries) {
-            return new DispatchDelivery(findDeliveries);
+            return new DispatchDeliveryJdbc(findDeliveries);
         }
     }
 }
