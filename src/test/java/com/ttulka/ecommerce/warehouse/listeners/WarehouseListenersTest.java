@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ttulka.ecommerce.sales.order.OrderPlaced;
-import com.ttulka.ecommerce.shipping.delivery.DeliveryDispatched;
+import com.ttulka.ecommerce.shipping.dispatching.DeliveryDispatched;
 import com.ttulka.ecommerce.warehouse.Amount;
 import com.ttulka.ecommerce.warehouse.FetchGoods;
 import com.ttulka.ecommerce.warehouse.OrderId;

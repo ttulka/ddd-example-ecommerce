@@ -1,4 +1,4 @@
-package com.ttulka.ecommerce.shipping.delivery;
+package com.ttulka.ecommerce.shipping.dispatching;
 
 import java.time.Instant;
 

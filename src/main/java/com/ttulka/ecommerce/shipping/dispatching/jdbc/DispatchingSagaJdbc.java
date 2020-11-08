@@ -1,6 +1,6 @@
 package com.ttulka.ecommerce.shipping.dispatching.jdbc;
 
-import com.ttulka.ecommerce.shipping.delivery.DispatchDelivery;
+import com.ttulka.ecommerce.shipping.dispatching.Dispatching;
 import com.ttulka.ecommerce.shipping.dispatching.DispatchingSaga;
 import com.ttulka.ecommerce.shipping.dispatching.OrderId;
 
@@ -23,8 +23,7 @@ class DispatchingSagaJdbc implements DispatchingSaga {
         DISPATCHED
     }
 
-    private final @NonNull DispatchDelivery dispatchDelivery;
-
+    private final @NonNull Dispatching dispatching;
     private final @NonNull JdbcTemplate jdbcTemplate;
 
     @Override
@@ -69,11 +68,7 @@ class DispatchingSagaJdbc implements DispatchingSaga {
         try {
             jdbcTemplate.update("INSERT INTO dispatching_saga VALUES (?, ?)", orderId.value(), State.DISPATCHED.name());
 
-            // here a command message DispatchDelivery could be sent for lower coupling
-            // a saga should not query or modify master data, only its private state
-            // this is a shortcut where the saga is calling the Delivery service
-            // better would be when the saga just sends a message
-            dispatchDelivery.byOrder(new com.ttulka.ecommerce.shipping.delivery.OrderId(orderId.value()));
+            dispatching.dispatch(orderId);
 
         } catch (DataIntegrityViolationException e) {
             // this could happen when multiple message come at once (in parallel)

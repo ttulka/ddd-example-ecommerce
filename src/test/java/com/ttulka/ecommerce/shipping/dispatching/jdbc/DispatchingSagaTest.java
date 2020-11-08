@@ -1,7 +1,7 @@
 package com.ttulka.ecommerce.shipping.dispatching.jdbc;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.shipping.delivery.DispatchDelivery;
+import com.ttulka.ecommerce.shipping.dispatching.Dispatching;
 import com.ttulka.ecommerce.shipping.dispatching.DispatchingSaga;
 import com.ttulka.ecommerce.shipping.dispatching.OrderId;
 
@@ -15,14 +15,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 @JdbcTest
-@ContextConfiguration(classes = DispatchingSagaJdbcConfig.class)
+@ContextConfiguration(classes = DispatchingJdbcConfig.class)
 class DispatchingSagaTest {
 
     @Autowired
     private DispatchingSaga saga;
 
     @MockBean
-    private DispatchDelivery dispatchDelivery;
+    private Dispatching dispatching;
 
     @MockBean
     private EventPublisher eventPublisher;
@@ -34,7 +34,7 @@ class DispatchingSagaTest {
         saga.fetched(new OrderId("TEST"));
         saga.paid(new OrderId("TEST"));
 
-        verify(dispatchDelivery).byOrder(new com.ttulka.ecommerce.shipping.delivery.OrderId("TEST"));
+        verify(dispatching).dispatch(new OrderId("TEST"));
     }
 
     @Test
@@ -44,7 +44,7 @@ class DispatchingSagaTest {
         saga.fetched(new OrderId("TEST"));
         //saga.paid(new SagaId("TEST"));
 
-        verifyNoInteractions(dispatchDelivery);
+        verifyNoInteractions(dispatching);
     }
 
     @Test
@@ -54,7 +54,7 @@ class DispatchingSagaTest {
         //saga.fetched(new SagaId("TEST"));
         saga.paid(new OrderId("TEST"));
 
-        verifyNoInteractions(dispatchDelivery);
+        verifyNoInteractions(dispatching);
     }
 
     @Test
@@ -64,7 +64,7 @@ class DispatchingSagaTest {
         saga.fetched(new OrderId("TEST"));
         saga.paid(new OrderId("TEST"));
 
-        verifyNoInteractions(dispatchDelivery);
+        verifyNoInteractions(dispatching);
     }
 
     @Test
@@ -74,6 +74,6 @@ class DispatchingSagaTest {
         saga.fetched(new OrderId("TEST"));
         saga.paid(new OrderId("TEST"));
 
-        verifyNoInteractions(dispatchDelivery);
+        verifyNoInteractions(dispatching);
     }
 }
