@@ -62,8 +62,8 @@ class OrderWorkFlowTest {
 
         JsonPath deliveryJson = with().log().ifValidationFails()
                 .port(port)
-                .basePath("/delivery")
-                .get("/order/" + orderId)
+                .basePath("/delivery/order")
+                .get(orderId.toString())
                 .andReturn()
                 .jsonPath();
 

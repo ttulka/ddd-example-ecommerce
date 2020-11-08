@@ -6,7 +6,6 @@ import java.util.UUID;
 import com.ttulka.ecommerce.common.events.EventPublisher;
 import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Delivery;
-import com.ttulka.ecommerce.shipping.delivery.DeliveryDispatched;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryId;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryPrepared;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
@@ -87,10 +86,6 @@ final class DeliveryJdbc implements Delivery {
             throw new DeliveryAlreadyDispatchedException();
         }
         dispatched = true;
-
-        // do the actual dispatching...
-
-        eventPublisher.raise(new DeliveryDispatched(Instant.now(), orderId.value()));
 
         log.info("Delivery dispatched: {}", this);
     }

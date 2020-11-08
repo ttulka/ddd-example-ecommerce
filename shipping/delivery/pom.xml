@@ -12,6 +12,7 @@
         <module>domain</module>
         <module>events</module>
         <module>jdbc</module>
+        <module>listeners</module>
         <module>rest</module>
         <module>spring-boot-starter</module>
     </modules>

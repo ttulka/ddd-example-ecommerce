@@ -5,7 +5,6 @@ import java.util.UUID;
 import com.ttulka.ecommerce.common.events.EventPublisher;
 import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Delivery;
-import com.ttulka.ecommerce.shipping.delivery.DeliveryDispatched;
 import com.ttulka.ecommerce.shipping.delivery.DeliveryId;
 import com.ttulka.ecommerce.shipping.delivery.FindDeliveries;
 import com.ttulka.ecommerce.shipping.delivery.OrderId;
@@ -25,8 +24,6 @@ import org.springframework.test.context.jdbc.Sql;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.Mockito.verify;
 
 @JdbcTest
 @ContextConfiguration(classes = DeliveryTest.TestConfig.class)
@@ -103,23 +100,6 @@ class DeliveryTest {
         Delivery delivery = findDeliveries.byOrder(new OrderId(1002));
 
         assertThrows(Delivery.DeliveryAlreadyDispatchedException.class, () -> delivery.dispatch());
-    }
-
-    @Test
-    void dispatching_a_delivery_raises_an_event() {
-        Delivery delivery = findDeliveries.byOrder(new OrderId(1001));
-        delivery.dispatch();
-
-        verify(eventPublisher).raise(argThat(
-                event -> {
-                    assertThat(event).isInstanceOf(DeliveryDispatched.class);
-                    DeliveryDispatched deliveryDispatched = (DeliveryDispatched) event;
-                    assertAll(
-                            () -> assertThat(deliveryDispatched.when).isNotNull(),
-                            () -> assertThat(deliveryDispatched.orderId).isEqualTo("1001")
-                    );
-                    return true;
-                }));
     }
 
     @Configuration

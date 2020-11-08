@@ -1,7 +1,7 @@
 package com.ttulka.ecommerce.shipping.dispatching.jdbc;
 
 import com.ttulka.ecommerce.common.events.EventPublisher;
-import com.ttulka.ecommerce.shipping.delivery.DispatchDelivery;
+import com.ttulka.ecommerce.shipping.dispatching.Dispatching;
 import com.ttulka.ecommerce.shipping.dispatching.DispatchingSaga;
 import com.ttulka.ecommerce.shipping.dispatching.OrderId;
 
@@ -25,7 +25,7 @@ class DispatchingSagaTest {
     private DispatchingSaga saga;
 
     @MockBean
-    private DispatchDelivery dispatchDelivery;
+    private Dispatching dispatching;
 
     @MockBean
     private EventPublisher eventPublisher;
@@ -37,7 +37,7 @@ class DispatchingSagaTest {
         saga.fetched(new OrderId("TEST"));
         saga.paid(new OrderId("TEST"));
 
-        verify(dispatchDelivery).byOrder(new com.ttulka.ecommerce.shipping.delivery.OrderId("TEST"));
+        verify(dispatching).dispatch(new OrderId("TEST"));
     }
 
     @Test
@@ -47,7 +47,7 @@ class DispatchingSagaTest {
         saga.fetched(new OrderId("TEST"));
         //saga.paid(new SagaId("TEST"));
 
-        verifyNoInteractions(dispatchDelivery);
+        verifyNoInteractions(dispatching);
     }
 
     @Test
@@ -57,7 +57,7 @@ class DispatchingSagaTest {
         //saga.fetched(new SagaId("TEST"));
         saga.paid(new OrderId("TEST"));
 
-        verifyNoInteractions(dispatchDelivery);
+        verifyNoInteractions(dispatching);
     }
 
     @Test
@@ -67,7 +67,7 @@ class DispatchingSagaTest {
         saga.fetched(new OrderId("TEST"));
         saga.paid(new OrderId("TEST"));
 
-        verifyNoInteractions(dispatchDelivery);
+        verifyNoInteractions(dispatching);
     }
 
     @Test
@@ -77,14 +77,14 @@ class DispatchingSagaTest {
         saga.fetched(new OrderId("TEST"));
         saga.paid(new OrderId("TEST"));
 
-        verifyNoInteractions(dispatchDelivery);
+        verifyNoInteractions(dispatching);
     }
 
     @Configuration
     static class TestConfig {
         @Bean
-        DispatchingSagaJdbc dispatchingSagaJdbc(DispatchDelivery dispatchDelivery, JdbcTemplate jdbcTemplate) {
-            return new DispatchingSagaJdbc(dispatchDelivery, jdbcTemplate);
+        DispatchingSagaJdbc dispatchingSagaJdbc(Dispatching dispatching, JdbcTemplate jdbcTemplate) {
+            return new DispatchingSagaJdbc(dispatching, jdbcTemplate);
         }
     }
 }
