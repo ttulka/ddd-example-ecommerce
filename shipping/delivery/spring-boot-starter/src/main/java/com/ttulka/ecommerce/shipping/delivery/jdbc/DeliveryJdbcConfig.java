@@ -25,7 +25,7 @@ class DeliveryJdbcConfig {
     }
 
     @Bean
-    DispatchDelivery dispatchDeliveryJdbc(FindDeliveries findDeliveries) {
+    DispatchDeliveryJdbc dispatchDeliveryJdbc(FindDeliveries findDeliveries) {
         return new DispatchDeliveryJdbc(findDeliveries);
     }
 }
