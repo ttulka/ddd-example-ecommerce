@@ -83,8 +83,8 @@ final class CartJdbc implements Cart {
     private boolean hasItem(CartItem item) {
         return jdbcTemplate.queryForObject(
                 "SELECT COUNT(product_id) FROM cart_items " +
-                "WHERE product_id = ? AND title = ? AND price = ?", Integer.class,
-                item.productId().value(), item.title().value(), item.unitPrice().value()) > 0;
+                "WHERE cart_id = ? AND product_id = ? AND title = ? AND price = ?", Integer.class,
+                id.value(), item.productId().value(), item.title().value(), item.unitPrice().value()) > 0;
     }
 
     @Override
