@@ -14,9 +14,7 @@ export default {
 
     removeItem: productId =>
         fetch('/cart?productId=' + productId, {
-            method: 'DELETE',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(item)
+            method: 'DELETE'
         })
             .catch(console.error),
     
