@@ -292,8 +292,10 @@ Although all fundamental use-case were implemented, there is still a room for im
 
 ### Where to Next
 
-Check out the alternative branches to see additional concepts in action:
+Check out the alternative branches and repos to see additional concepts and technologies in action:
 
 - [Modulith](https://github.com/ttulka/ddd-example-ecommerce/tree/modulith): A separate Maven module per service.
 - [Microfrontends](https://github.com/ttulka/ddd-example-ecommerce/tree/microfrontend): Service Web Components as part of the service codebase.
+- [Microservices](https://github.com/ttulka/ddd-example-ecommerce-microservices): Deployments with Docker and Kubernetes.
+- [Kotlin](https://github.com/ttulka/ddd-example-ecommerce-kotlin): The same project again, this time in Kotlin.
 
