@@ -1,4 +1,4 @@
-# DDD Example Project in Java: E-Commerce (Microfrontend)
+# DDD Example Project in Java: eCommerce (Microfrontend)
 
 *Disclaimer:* This is an alternative branch, for more info please check out [master](https://github.com/ttulka/ddd-example-ecommerce).
 
