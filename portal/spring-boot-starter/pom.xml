@@ -16,11 +16,6 @@
     <dependencies>
         <dependency>
             <groupId>com.ttulka.ecommerce.portal</groupId>
-            <artifactId>portal-use-cases</artifactId>
-            <version>1.2-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ttulka.ecommerce.portal</groupId>
             <artifactId>portal-web</artifactId>
             <version>1.2-SNAPSHOT</version>
         </dependency>

@@ -1,6 +1,6 @@
 const template = document.createElement('template');
 template.innerHTML = `
-    <a href="/cart" class="cart">&#x1F6D2; <span class="amount"></span></a>
+    <a href="/shopping-cart" class="cart">&#x1F6D2; <span class="amount"></span></a>
 `;
 customElements.define('cart-menu-link', class extends HTMLElement {
     constructor() {

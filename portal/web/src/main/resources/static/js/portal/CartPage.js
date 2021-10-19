@@ -6,7 +6,7 @@ import {register} from './page.js';
 
 const pageName = 'portal-cart-page';
 
-register(pageName, '/cart');
+register(pageName, '/shopping-cart');
 
 const template = document.createElement('template');
 template.innerHTML = `

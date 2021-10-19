@@ -23,7 +23,7 @@ customElements.define(pageName, class extends HTMLElement {
         this._categoryUri = null;
         this._addItemListener = e => {
             this._addItemIntoCart(e.detail)
-                .then(_ => window.dispatchEvent(new CustomEvent('page:nav', {detail: {href: '/cart'}})));
+                .then(_ => window.dispatchEvent(new CustomEvent('page:nav', {detail: {href: '/shopping-cart'}})));
             e.preventDefault();
         }
     }

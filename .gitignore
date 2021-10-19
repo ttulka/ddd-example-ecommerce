@@ -13,3 +13,4 @@ target
 .gradle
 *.h2.db
 .DS_Store
+.factorypath
