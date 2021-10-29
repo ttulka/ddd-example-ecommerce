@@ -6,10 +6,10 @@ Programming language is Java 11 with heavy use of Spring framework.
 
 ```sh
 # build
-mvn clean install
+./mvnw clean install
 
 # run 
-mvn spring-boot:run
+./mvnw spring-boot:run
 
 # open in browser http://localhost:8080
 ```

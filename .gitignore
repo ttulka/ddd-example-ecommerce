@@ -13,3 +13,11 @@ target
 .gradle
 *.h2.db
 .DS_Store
+.vscode
+.factorypath
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.history/
