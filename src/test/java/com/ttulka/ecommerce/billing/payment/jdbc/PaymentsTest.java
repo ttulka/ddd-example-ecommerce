@@ -38,7 +38,7 @@ class PaymentsTest {
         Payments payments = findPayments.all();
         List<Payment> list = payments.stream().collect(Collectors.toList());
         assertAll(
-                () -> assertThat(list.size()).isEqualTo(3),
+                () -> assertThat(list.size()).isGreaterThanOrEqualTo(3),
                 () -> assertThat(list.get(0).id()).isEqualTo(new PaymentId("000")),
                 () -> assertThat(list.get(1).id()).isEqualTo(new PaymentId("001")),
                 () -> assertThat(list.get(2).id()).isEqualTo(new PaymentId("002"))
