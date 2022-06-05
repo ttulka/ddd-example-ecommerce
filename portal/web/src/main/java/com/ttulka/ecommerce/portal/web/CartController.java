@@ -2,9 +2,6 @@ package com.ttulka.ecommerce.portal.web;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.ttulka.ecommerce.common.primitives.Money;
 import com.ttulka.ecommerce.common.primitives.Quantity;
 import com.ttulka.ecommerce.sales.cart.CartId;
@@ -13,6 +10,8 @@ import com.ttulka.ecommerce.sales.cart.item.CartItem;
 import com.ttulka.ecommerce.sales.cart.item.ProductId;
 import com.ttulka.ecommerce.sales.cart.item.Title;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

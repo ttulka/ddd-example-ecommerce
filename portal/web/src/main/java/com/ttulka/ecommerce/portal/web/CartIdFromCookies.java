@@ -3,12 +3,11 @@ package com.ttulka.ecommerce.portal.web;
 import java.util.Arrays;
 import java.util.UUID;
 
+import com.ttulka.ecommerce.sales.cart.CartId;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.ttulka.ecommerce.sales.cart.CartId;
-
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 

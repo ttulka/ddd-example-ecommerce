@@ -2,9 +2,6 @@ package com.ttulka.ecommerce.portal.web;
 
 import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.ttulka.ecommerce.portal.PlaceOrderFromCart;
 import com.ttulka.ecommerce.portal.PrepareOrderDelivery;
 import com.ttulka.ecommerce.sales.cart.Cart;
@@ -13,6 +10,8 @@ import com.ttulka.ecommerce.shipping.delivery.Address;
 import com.ttulka.ecommerce.shipping.delivery.Person;
 import com.ttulka.ecommerce.shipping.delivery.Place;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -18,8 +18,6 @@ mvn spring-boot:run -f application/pom.xml
 
 ## About the Branch
 
-TDB
-
 In this branch, all services are cut into separate Maven modules and brought together again in a "modulithic" application later.
 
 Every service has multiple Maven modules for a layer (technical cut).

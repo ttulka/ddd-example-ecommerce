@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.ttulka.ecommerce.sales.catalog.FindCategories;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,18 +11,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 /**
  * Configuration for Portal Web.
  */
 @Configuration
 class PortalWebConfig {
-
-    @Bean
-    LayoutDialect layoutDialect() {
-        return new LayoutDialect();
-    }
 
     /**
      * Web Layout Advice for Portal.

@@ -83,12 +83,19 @@
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
+            <version>5.1.0</version><!-- should be fixed in spring boot 3.0.0 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.codehaus.groovy</groupId>
+                    <artifactId>groovy-xml</artifactId>
+                </exclusion>
+            </exclusions>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.tngtech.archunit</groupId>
             <artifactId>archunit</artifactId>
-            <version>0.13.1</version>
+            <version>0.23.1</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
