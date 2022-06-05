@@ -1,0 +1,2 @@
+com.ttulka.ecommerce.sales.catalog.jdbc.CatalogJdbcConfig
+com.ttulka.ecommerce.sales.catalog.rest.CatalogController

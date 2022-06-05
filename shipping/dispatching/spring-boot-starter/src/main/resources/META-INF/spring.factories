@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.ttulka.ecommerce.shipping.dispatching.jdbc.DispatchingSagaJdbcConfig,\
-  com.ttulka.ecommerce.shipping.dispatching.listeners.DispatchingListeners

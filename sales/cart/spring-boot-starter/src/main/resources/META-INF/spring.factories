@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.ttulka.ecommerce.sales.cart.jdbc.CartJdbcConfig,\
-  com.ttulka.ecommerce.sales.cart.rest.CartController

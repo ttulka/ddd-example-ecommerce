@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.ttulka.ecommerce.sales.order.jdbc.OrderJdbcConfig,\
-  com.ttulka.ecommerce.sales.order.rest.OrderController
